@@ -1,8 +1,7 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
-import { TanStackDevtools } from "@tanstack/react-devtools"
+import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-router"
 
 import appCss from "../styles.css?url"
+import { QueryProvider } from "@/lib/query-client"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -15,7 +14,12 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Cogesto Consulting | Conseil, finance et performance",
+      },
+      {
+        name: "description",
+        content:
+          "Cogesto Consulting accompagne les entreprises publiques et privées en stratégie, finance, organisation et management de la performance.",
       },
     ],
     links: [
@@ -32,27 +36,17 @@ export const Route = createRootRoute({
     </main>
   ),
   shellComponent: RootDocument,
+  component: () => <Outlet />,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+        <QueryProvider>{children}</QueryProvider>
         <Scripts />
       </body>
     </html>
