@@ -10,9 +10,9 @@ export function SiteFooter() {
       <div className="page-shell">
         <div className="grid gap-5 rounded-[32px] border border-slate-200/80 bg-white px-5 py-6 shadow-[0_20px_55px_rgba(15,23,42,0.05)] lg:grid-cols-[1.1fr_0.9fr] lg:px-7">
           <div>
-            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400">
-              Cogesto Consulting
-            </p>
+            <span className="inline-flex h-16 w-[178px] items-center justify-center overflow-hidden rounded-[18px] border border-slate-200 bg-white px-2.5 py-2 shadow-[0_12px_30px_rgba(21,32,54,0.08)]">
+              <img src="/brand/cogesto-logo-official.svg" alt="Cogesto Consulting" className="h-full w-full object-contain" decoding="async" />
+            </span>
             <h2 className="mt-3 font-heading text-[1.85rem] leading-[1.05] tracking-[-0.05em] text-slate-950 sm:text-[2.4rem]">
               Conseil, finance et management de la performance.
             </h2>

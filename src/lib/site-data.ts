@@ -41,12 +41,12 @@ export const navItems: Array<NavItem> = [
   { href: "/", label: "Accueil" },
   {
     href: "/about",
-    label: "À propos",
+    label: "A propos",
     description: "Mission, valeurs, équipe dirigeante et engagements.",
   },
   {
     href: "/expertises",
-    label: "Expertises",
+    label: "Nos expertises",
     description: "Expertises fonctionnelles et sectorielles.",
   },
   {
@@ -54,7 +54,7 @@ export const navItems: Array<NavItem> = [
     label: "Business Linkage Program",
     description: "Accompagnement PME, Oil & Gas, marché et financement.",
   },
-  { href: "/events", label: "Events / News" },
+  { href: "/events", label: "Évènements" },
   { href: "/contact", label: "Contact" },
 ]
 
@@ -70,45 +70,30 @@ export const siteMenuItems: Array<SiteNavItem> = [
     },
     description: "Mission, valeurs, équipe dirigeante et engagements du cabinet.",
     href: "/about",
-    label: "À propos",
+    label: "A propos",
     sections: [
       {
-        title: "Explorer",
+        title: "A propos",
         links: [
           {
-            description: "Mission, valeurs, équipe et engagements du cabinet.",
-            href: "/about",
-            label: "Le cabinet",
+            description: "La mission du cabinet et sa proposition de valeur.",
+            href: "/about#mission",
+            label: "Notre mission",
           },
           {
-            description: "Vision, proposition de valeur et engagements du cabinet.",
-            href: "/about",
-            label: "Mission et valeurs",
+            description: "Créativité, respect, engagement, éthique et responsabilité.",
+            href: "/about#valeurs",
+            label: "Nos valeurs",
           },
           {
             description: "Gouvernance, conseil d’administration et comité exécutif.",
-            href: "/about",
-            label: "Équipe dirigeante",
-          },
-        ],
-      },
-      {
-        title: "Accès rapide",
-        links: [
-          {
-            description: "Méthode d’intervention et promesse d’accompagnement.",
-            href: "/about",
-            label: "Proposition de valeur",
+            href: "/about#equipe",
+            label: "Notre equipe",
           },
           {
-            description: "Intégrité, confidentialité, responsabilité sociale et écologique.",
-            href: "/about",
-            label: "Engagements",
-          },
-          {
-            description: "Vision et message du Président du Groupe.",
-            href: "/about",
-            label: "Mot du Président",
+            description: "Intégrité, confidentialité, anti-corruption et engagements sociaux.",
+            href: "/about#engagements",
+            label: "Nos engagements",
           },
         ],
       },
@@ -127,37 +112,17 @@ export const siteMenuItems: Array<SiteNavItem> = [
     label: "Nos expertises",
     sections: [
       {
-        title: "Explorer",
+        title: "Nos expertises",
         links: [
           {
-            description: "Vue d’ensemble de l’offre du cabinet.",
-            href: "/expertises",
-            label: "Toutes les expertises",
-          },
-          {
             description: "Conseil, organisation, capital humain, performance et finance.",
-            href: "/expertises",
+            href: "/expertises#fonctionnelles",
             label: "Expertises fonctionnelles",
           },
           {
             description: "Secteurs d’intervention et connaissance des marchés.",
-            href: "/expertises",
+            href: "/expertises#sectorielles",
             label: "Expertises sectorielles",
-          },
-        ],
-      },
-      {
-        title: "Accès rapide",
-        links: [
-          {
-            description: "Stratégie d’entreprise, organisation et capital humain.",
-            href: "/expertises",
-            label: "Stratégie et organisation",
-          },
-          {
-            description: "Management de la performance, conseil financier et ingénierie financière.",
-            href: "/expertises",
-            label: "Finance et performance",
           },
         ],
       },
@@ -173,40 +138,35 @@ export const siteMenuItems: Array<SiteNavItem> = [
     },
     description: "Le Business Linkage Program présenté sur une page dédiée.",
     href: "/business-linkage-program",
-    label: "Program",
+    label: "Business Linkage Program",
     sections: [
       {
-        title: "Explorer",
+        title: "Business Linkage Program",
         links: [
           {
-            description: "Contexte, objectifs, résultats et consultants du dispositif.",
-            href: "/business-linkage-program",
-            label: "Vue d’ensemble du programme",
-          },
-          {
             description: "Origine, enjeux et contenu local dans l’Oil & Gas.",
-            href: "/business-linkage-program",
-            label: "Contexte du programme",
+            href: "/business-linkage-program#contexte",
+            label: "Contexte du BLP",
           },
           {
             description: "Institutions et partenaires mobilisés autour du dispositif.",
-            href: "/business-linkage-program",
+            href: "/business-linkage-program#partenaires",
             label: "Partenaires du BLP",
           },
-        ],
-      },
-      {
-        title: "Accès rapide",
-        links: [
           {
             description: "Objectifs opérationnels et résultats attendus pour les PME.",
-            href: "/business-linkage-program",
-            label: "Objectifs et résultats",
+            href: "/business-linkage-program#objectifs",
+            label: "Objectif du BLP",
           },
           {
             description: "Consultants, experts et accompagnateurs mobilisés.",
-            href: "/business-linkage-program",
+            href: "/business-linkage-program#consultants",
             label: "Consultants du BLP",
+          },
+          {
+            description: "Cérémonies, séminaires et actions de terrain du programme.",
+            href: "/business-linkage-program#evenements",
+            label: "Évènements du BLP",
           },
         ],
       },
@@ -218,9 +178,9 @@ export const siteMenuItems: Array<SiteNavItem> = [
 
 export const footerLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/about", label: "À propos" },
-  { href: "/expertises", label: "Expertises" },
-  { href: "/business-linkage-program", label: "Program" },
+  { href: "/about", label: "A propos" },
+  { href: "/expertises", label: "Nos expertises" },
+  { href: "/business-linkage-program", label: "Business Linkage Program" },
   { href: "/events", label: "Évènements" },
   { href: "/contact", label: "Contact" },
 ]
@@ -459,6 +419,7 @@ export const detailedFunctionalExpertise = [
       "Formalisation et déclinaison des critères de performance",
       "Optimisation de la fonction contrôle de gestion et pilotage",
       "Pilotage des coûts, rentabilité et comptabilité analytique",
+      "Évaluation et amélioration de système de comptabilité analytique",
     ],
     atouts: [
       "Expérience avérée dans le management de la performance.",
@@ -516,7 +477,9 @@ export const detailedFunctionalExpertise = [
   {
     title: "Appui aux fonctions supports des entreprises",
     enjeux: [
-      "Compétitivité croissante, nouvelles contraintes réglementaires et exigences des investisseurs et directions générales.",
+      "Compétitivité croissante.",
+      "Nouvelles contraintes réglementaires.",
+      "Exigences des investisseurs et des directions générales.",
       "Transformation des fonctions Finance, Contrôle de Gestion, SI et Capital Humain pour accroître leurs performances.",
     ],
     savoirFaire: [
@@ -529,7 +492,6 @@ export const detailedFunctionalExpertise = [
       "Assistance dans les relations avec les organismes bancaires",
       "Accompagnement des Directeurs et responsables du Capital Humain",
       "Accompagnement dans le déploiement de chantiers de systèmes d’information",
-      "Assistance sur des problématiques comptables, fiscales, juridiques et sociales",
     ],
     atouts: [
       "Démarche orientée performance.",
@@ -595,7 +557,7 @@ export const commitments = [
   "Préserver les intérêts des clients",
   "Préserver notre intégrité",
   "Garantir la confidentialité",
-  "Adhérer à la charte anti-corruption",
+  "Adhérer à la charte anti-corruption.",
   "Favoriser le transfert de compétences",
 ]
 
@@ -615,11 +577,11 @@ export const leaders = [
       "CPA à Montréal, expert-comptable inscrit à l’ONECCA du Sénégal, spécialiste audit, IFRS, finance et conseil aux USA, au Canada et en Afrique.",
   },
   {
-    image: "/media/cogesto/team/dr-amadou-ba.png",
-    name: "Dr. Amadou Ba",
-    role: "Vice-Président",
+    image: "/media/cogesto/team/mame-ngone-sow.png",
+    name: "Mame Ngoné Sow",
+    role: "Conseiller juridique senior",
     summary:
-      "Expert senior en politiques publiques et développement, avec une quarantaine d’années d’expérience en administration, formation et accompagnement stratégique.",
+      "Avocate au Barreau de l’Ontario, juriste corporate avec une vingtaine d’années d’expérience et une expertise en droit international.",
   },
 ]
 
@@ -629,7 +591,7 @@ export const aboutPresidentMessage = [
   "Conscients que la plupart des entreprises africaines sont souvent confrontées à des problématiques majeures liées à leur faible niveau de productivité, leur sous-capitalisation, aux difficultés d’accès aux marchés et aux financements et au déficit de personnel qualifié, nous œuvrons pour contribuer de manière efficace à la performance durable des organisations.",
   "En tant qu’entreprise de conseil, nous avons toujours eu pour objectif d’apporter des solutions innovantes et adaptées aux défis auxquels nos clients sont confrontés, et notre présence en Afrique nous offre une opportunité unique de soutenir le développement économique et social du continent à travers la formation de talents locaux.",
   "Accompagnés par une équipe composée de professionnels hautement qualifiés et expérimentés qui partagent tous une passion commune pour l’excellence et l’impact positif, nous croyons fermement en la valeur de la collaboration et de l’échange de connaissances.",
-  "En ma qualité de Président du Groupe Cogesto, je m’engage à soutenir le développement professionnel du capital humain et à créer un environnement propice à l’apprentissage et à l’innovation.",
+  "En ma qualité de Président du Groupe Cogesto, je m’engage à soutenir le développement professionnel du capital humain et à créer un environnement propice à l’apprentissage et à l’innovation, tout en encourageant chacun à continuer à alimenter les forces par lesquelles nous construirons l’Afrique que nous voulons.",
 ]
 
 export const aboutBoardMembers = [
@@ -646,7 +608,7 @@ export const aboutBoardMembers = [
       "Certified Public Accountant (CPA) à Montréal, expert-comptable inscrit à l’ONECCA du Sénégal, avec plus de 25 ans d’expérience avérée dans le conseil et la finance aux USA et au Canada, spécialiste audit et normes IFRS, titulaire d’un MBA en Finance Internationale.",
   },
   {
-    name: "Mame Ngone Sow",
+    name: "Mame Ngoné Sow",
     role: "Conseiller juridique senior",
     summary:
       "Avocate au Barreau de l’Ontario, avec une vingtaine d’années d’expérience, titulaire d’un LLM en droit informatique de l’Université de Montréal, d’un LLM en droit international privé et d’un certificat en droit international public et comparé.",
@@ -693,14 +655,14 @@ export const socialCommitments = [
     href: "https://usercontent.one/wp/www.cogestoconsulting.com/wp-content/uploads/2023/11/Lettre-de_claration-politique-environnementale-5-Octobre-2023-vf.pdf?media=1699980106",
     title: "Lettre déclaration politique environnementale",
     summary:
-      "Cogesto Consulting s’engage à révolutionner son impact environnemental et social avec des actions concrètes, de la réduction de l’empreinte carbone à la promotion de l’égalité des chances.",
+      "Découvrez comment Cogesto Consulting s’engage à révolutionner son impact environnemental et social avec des actions concrètes. De la réduction de l’empreinte carbone à la promotion de l’égalité des chances, plongez dans notre déclaration d’engagement pour un avenir durable.",
   },
   {
     date: "05-10-2023",
     href: "https://usercontent.one/wp/www.cogestoconsulting.com/wp-content/uploads/2023/11/Lettre-declaration-Politique-RSE-5-Octobre-2023.pdf?media=1699980106",
     title: "Lettre déclaration Politique RSE",
     summary:
-      "Cogesto Consulting redéfinit la responsabilité d’entreprise avec un engagement profond envers les employés, l’environnement et l’éthique des affaires.",
+      "Cogesto Consulting redéfinit la responsabilité d’entreprise avec un engagement profond envers les employés, l’environnement, et l’éthique des affaires. Cette déclaration détaille notre dévouement à l’excellence, à l’intégrité et au bien-être communautaire.",
   },
 ]
 
@@ -714,19 +676,19 @@ export const programObjectives = [
 ]
 
 export const programResults = [
-  "80 PME solides identifiées dans le cadre du programme.",
-  "60 PME ciblées sélectionnées pour bénéficier d’une formation sur les compétences de base.",
-  "40 PME sélectionnées pour bénéficier de l’assistance technique, du marché et du financement.",
+  "80 solides PME seront identifiées dans le cadre de ce programme.",
+  "60 PME ciblées seront sélectionnées pour bénéficier d’une formation sur les compétences de base.",
+  "40 PME seront sélectionnées pour bénéficier d’assistance technique nécessaire aux PME à forts potentiels ciblées pour leur permettre d’avoir accès aux marchés et aux financements.",
   "Développement de partenariats commerciaux avec des entreprises du secteur pétrolier et gazier.",
-  "Accès à des opportunités d’investissement dans le secteur Oil & Gas.",
+  "Accès aux opportunités d’investissement dans le secteur Oil & Gaz.",
 ]
 
 export const programContextHighlights = [
-  "Découvertes majeures de gaz et de pétrole au Sénégal entre 2014 et 2015.",
-  "Loi 2019-04 relative au contenu local pour accroître la valeur ajoutée créée au Sénégal.",
-  "Initiative d’Invest In Africa financée par la Banque Africaine de Développement et en partenariat avec le Fonds pour les Partenariats Africains.",
-  "Réponse concrète au déficit de compétences locales dans le secteur de l’Oil & Gas.",
-  "Appui technique pour aider les PME à intégrer les chaînes d’approvisionnement des grandes entreprises et à accéder au financement.",
+  "Une production pétrolière estimée à plus de 100 000 barils par jour en phase de plateau, soit environ 5 millions de tonnes par an.",
+  "Une production de gaz naturel liquéfié estimée à plus de 2,5 millions de tonnes par an dès 2023 et pouvant atteindre 10 millions de tonnes par an à terme.",
+  "Des réserves de gaz estimées à 450 milliards de mètres cubes pour le gisement en eaux profondes de Grand Tortue/Ahmeyim, avec une zone pouvant contenir jusqu’à 2 800 milliards de mètres cubes de gaz naturel.",
+  "La loi 2019-04 relative au contenu local dans le secteur des hydrocarbures vise l’accroissement de la valeur localement ajoutée.",
+  "Le programme apporte un appui technique aux PME sénégalaises pour renforcer compétences, technicité, normes QHSE, infrastructures et accès au financement.",
 ]
 
 export const programPartners = [
@@ -758,25 +720,25 @@ export const programExperts = [
 
 export const programConsultants = [
   {
-    image: "/media/cogesto/team/babacar-sow-4.png",
+    image: "/media/cogesto/blp/consultants/lamine-kaba.png",
+    name: "Directeur de mission",
+    role: "Consultant ingénieur industriel et pétrolier BLP",
+    summary:
+      "35 ans d’expérience, ingénieur en électromécanique, ancien dirigeant et responsable opérations dans le secteur Oil & Gas.",
+  },
+  {
+    image: "/media/cogesto/blp/consultants/babacar-sow-blp.png",
     name: "Babacar Sow",
-    role: "Senior Advisor en stratégie",
+    role: "Engaging Partner - Senior Advisor en stratégie",
     summary:
-      "Président de Cogesto Consulting SAS, avec plus de 30 ans d’expérience dans le conseil, l’audit, le contrôle de gestion et l’administration des entreprises.",
+      "Président de Cogesto Consulting SAS, plus de 30 ans d’expérience dans les métiers du conseil et de l’administration des entreprises.",
   },
   {
-    image: "/media/cogesto/team/dr-amadou-ba.png",
-    name: "Dr. Amadou Ba",
-    role: "Expert senior en politiques publiques et développement",
+    image: "/media/cogesto/blp/consultants/amy-rose-konate-blp.png",
+    name: "Amy Rose Konaté",
+    role: "Directrice de mission adjointe - développement personnel et coaching",
     summary:
-      "Profil senior mobilisé sur les questions de développement, d’organisation, d’administration publique et d’accompagnement de projets structurants.",
-  },
-  {
-    image: "/media/cogesto/team/equipe-cogesto-11.png",
-    name: "Équipe BLP Cogesto",
-    role: "Coaching, accompagnement et renforcement de capacités",
-    summary:
-      "Une équipe d’experts de haut niveau mobilisée pour accompagner la croissance des entreprises dans le secteur de l’Oil & Gas.",
+      "28 ans d’expérience professionnelle, consultante en organisation stratégique et conduite du changement, coach professionnelle certifiée.",
   },
 ]
 
@@ -784,26 +746,78 @@ export const programExpertRoster = [
   {
     highlights: [
       "35 ans d’expérience",
+      "Consultant indépendant",
       "Ingénieur en électromécanique",
-      "Ancien dirigeant chez Libya Oil au Sénégal, au Tchad et au Soudan",
-      "Ancien responsable opérations et supply chez Exxon Mobil Afrique",
+      "Ancien Conseiller Spécial de l’Administrateur Général Libya Oil Sénégal",
+      "Ancien Administrateur Général Libya Oil Tchad et Libya Oil Sudan",
+      "Ancien Directeur de l’Exploitation et de la Clientèle Libya Oil Sudan et Libya Oil Sénégal",
+      "Ancien Chef Supply Fuel Projet SAP R3 Afrique Exxon Mobil Afrique et Moyen Orient",
+      "Ancien Directeur des Opérations Exxon Mobil Afrique de l’Ouest",
+      "Ancien Chef de Dépôt Dakar Océan Terminal Mobil Côte d’Ivoire",
+      "Ancien Responsable Support Technique et Projet Mobil Sénégal",
+      "Ancien Chef de Service Maintenance et Projet Sonacos Sénégal",
+      "Ancien Chef de Division Électricité et Instrumentation Sonacos Sénégal",
+      "Ancien Ingénieur Production Sonacos Sénégal",
     ],
+    image: "/media/cogesto/blp/consultants/lamine-kaba.png",
     title: "Directeur de mission, consultant ingénieur industriel et pétrolier",
   },
   {
     highlights: [
-      "22 ans d’expérience en RH et organisation",
-      "Ancienne DRH de Neurotech, Matforce et Unilever Sénégal",
-      "Certifiée RSE et audit des processus RH",
+      "Président de Cogesto Consulting SAS",
+      "+30 ans d’expérience dans les métiers du conseil et de l’administration des entreprises",
+      "Ancien Directeur Développement à l’International de Jet Group",
+      "Ancien Directeur Administratif et Financier",
+      "Ancien Directeur Audit et Contrôle de Gestion",
+      "Ancien Manager - PricewaterhouseCoopers",
+      "Master 2 en Comptabilité, Contrôle et Audit",
+      "DESS en Diagnostic Économique des Firmes",
+      "Diplôme du Cycle Normal - Option Finances-Comptabilité",
     ],
+    image: "/media/cogesto/blp/consultants/babacar-sow-blp.png",
+    title: "Engaging Partner, Senior Advisor en stratégie",
+  },
+  {
+    highlights: [
+      "28 ans d’expérience professionnelle",
+      "Consultante en organisation stratégique et conduite du changement",
+      "Coach professionnelle certifiée, coach d’entreprise, développement personnel et communication",
+      "Coach et formatrice en séminaires et renforcement de capacités",
+      "Master 2 Coach professionnel et personnel certifié",
+      "Master 2 Conseil en Organisation spécialiste de la conduite du changement",
+      "Master 1 Ingénieur du Commerce et de la distribution",
+      "DUT Technicien en Marketing-Communication",
+    ],
+    image: "/media/cogesto/blp/consultants/amy-rose-konate-blp.png",
+    title: "Directrice de mission adjointe, experte senior en développement personnel et coaching",
+  },
+  {
+    highlights: [
+      "22 ans d’expérience en RH et organisation",
+      "Consultante experte en RH et organisation",
+      "Ancienne DRH de Neurotech, Matforce et Unilever Sénégal",
+      "Senior Executive Program - BEM Management School Bordeaux",
+      "Experte certifiée en Responsabilité Sociétale d’Entreprise et audit des processus RH",
+      "DESS Management des Ressources Humaines - École Supérieure de Commerce Sup de Co",
+    ],
+    image: "/media/cogesto/blp/consultants/equipe-cogesto-12.png",
     title: "Experte en organisation et capital humain",
   },
   {
     highlights: [
-      "27 ans d’expérience en conseil et business",
       "Certified Public Accountant à Montréal, spécialiste IFRS",
-      "Expériences en direction financière et analyse financière en Amérique du Nord",
+      "27 ans d’expérience dans le conseil et le business",
+      "Administrative and Financial Director",
+      "Former Financial Analyst Consultant at L’Oréal",
+      "Former Financial Accountant at the League of Conservation Voters in Washington DC",
+      "Former Real Estate Accountant at US Home Corporation in Maryland",
+      "Former Accountant at Robert Half International in Maryland",
+      "Master in Business Management in a Chinese context - Université de Sherbrooke",
+      "Master’s Degree in Consulting - Université du Québec en Outaouais",
+      "MBA in International Finance - New York Institute of Technology",
+      "Master’s degree in Economic Administration and Business Management - University of Orleans",
     ],
+    image: "/media/cogesto/blp/consultants/equipe-cogesto-14.png",
     title: "Experte en organisation et finance",
   },
   {
@@ -811,8 +825,15 @@ export const programExpertRoster = [
       "Spécialiste en restructuration d’entreprises et diagnostic organisationnel",
       "37 ans d’expérience en conseil et en entreprise",
       "Président de SOFICO SAS, cabinet de conseil financier et conseil à l’investissement",
-      "Ancien consultant chez Arthur Andersen & Co et Coopers & Lybrand",
+      "Business développeur",
+      "Ancien Directeur Général Adjoint de la Société de Conserveries en Afrique SA",
+      "Ancien Conseiller du Groupe Dong Won dans leur stratégie d’implantation en Afrique",
+      "Ancien Directeur Général de la Société d’Exploitation de la société Nouvelle des Conserveries du Sénégal",
+      "Ancien Directeur Général de la Société Sénégalaise d’équipements en Hygiène Sécurité et Environnement",
+      "Ancien Directeur Général de la Société AFRI PECHE",
+      "Ancien Consultant chez Arthur Andersen & Co et Coopers & Lybrand",
     ],
+    image: "/media/cogesto/blp/consultants/consultant-5.png",
     title: "Senior en restructuration d’entreprises",
   },
   {
@@ -820,41 +841,77 @@ export const programExpertRoster = [
       "Expert international en marchés financiers et banque",
       "32 ans d’expérience dans les métiers du conseil et de la finance",
       "Docteur en économie et enseignant chercheur",
+      "Expert financier de l’équipe d’experts en charge de l’élaboration de la loi sur le développement des PME et la modernisation de l’économie",
       "Ancien Directeur de l’Antenne de la BRVM au Sénégal",
+      "Membre du pool d’experts formateurs en Marchés Financiers en zones UEMOA et CEMAC",
+      "Ancien Gestionnaire du Fonds de Coparticipation Post-Conflit de la Guinée Bissau",
+      "Ancien Directeur Administratif et Financier de la SONES",
     ],
+    image: "/media/cogesto/blp/consultants/consultant-6.png",
     title: "Économiste, expert en banque et finance",
   },
   {
     highlights: [
       "29 ans d’expérience",
-      "Enseignant, formateur et concepteur de programmes",
+      "Enseignant vacataire",
+      "Directeur, formateur et concepteur de programmes",
+      "Assistant au Département de Littérature Comparée",
+      "Enseignant vacataire au Département de African Studies de SUNY Albany",
+      "Instructeur en langue française dans le lycée",
+      "Moniteur de langue pour les étudiants de 1ère année",
       "Ph.D. Philosophy",
-      "Expérience académique internationale",
+      "Cours dans le programme doctoral du Program de Humanistic Studies",
+      "Diplôme d’Études Approfondies",
     ],
+    image: "/media/cogesto/blp/consultants/consultant-7.png",
     title: "Expert en pédagogie",
   },
   {
     highlights: [
       "27 ans d’expérience dans le conseil et la formation",
       "Consultant international en management de projets et stratégie de développement",
-      "Spécialiste ingénierie de formation Oil & Gas et contenu local",
+      "Consultant dans l’ingénierie de la formation dans les domaines Oil & Gas et contenu local",
+      "Ancien Directeur scientifique",
+      "Chargé de cours dans plusieurs académies",
+      "Membre de l’Association des Consultants Pétroliers, groupe local content et training",
+      "Membre de l’association AND Alternatives Nouvelles de Développement, Montpellier",
+      "Membre du Groupe des Professionnels Sénégalais du Oil and Gas de la Diaspora",
+      "Ingénieur de projet de formation et de développement à l’international",
+      "Ingénieur événementiel de séminaires, forums et ateliers scientifiques",
+      "Ancien responsable d’unité d’enseignement Master 2 IDS en Ingénierie de Projet, Consulting",
+      "Ancien responsable départemental à Paris CPCV 2010-2013 en ingénierie sociale et de formation",
     ],
+    image: "/media/cogesto/blp/consultants/consultant-8.png",
     title: "Expert en management de projet et renforcement de compétences",
   },
   {
     highlights: [
       "28 ans d’expérience en logistique et supply chain",
       "Consultant et coach, DG Confluence Conseils & Events",
-      "Interventions en distribution, agroalimentaire et industries",
+      "Spécialisé dans la distribution, l’agroalimentaire et les industries",
+      "Chef de projets Intelligence Économique et Sales Intelligence",
+      "Enseignant formateur à la FASEG, BEM Dakar, ISM et 3FPT",
+      "Consultant pour le montage de la Direction Export de Dalia Food Maroc",
+      "Consultant pour la restructuration de la Direction Commerciale Africaine de l’Automobile",
+      "Ancien consultant pour le montage de l’usine de farine de Olam à Diamniadio",
+      "Ancien Directeur Général Adjoint de NMA - Directeur du Business Unit Pastami",
+      "Ancien Coordonnateur des ventes locales et export de Patisen Pakmaya",
     ],
+    image: "/media/cogesto/blp/consultants/consultant-9.png",
     title: "Expert senior en logistique et supply chain",
   },
   {
     highlights: [
       "25 ans d’expérience en administration et conseil HSE",
-      "Ancien directeur HSE chez DP World Afrique et ExxonMobil Afrique de l’Ouest et du Centre",
+      "Consultant HSE et chef de projet",
+      "Ancien Directeur HSE chez Lomé Containers Terminal",
+      "Ancien Directeur adjoint HSE chez Dubai Port World",
+      "Ancien Directeur HSE chez DP World Afrique",
+      "Ancien Directeur HSE chez ExxonMobil Afrique de l’Ouest et du Centre",
+      "Diplôme d’ingénieur chimiste de la Wayne State University - Detroit",
       "Formation en gestion des opérations pétrolières et systèmes intégrés",
     ],
+    image: "/media/cogesto/blp/consultants/consultant-10.png",
     title: "QHSE et sécurité au BLP",
   },
   {
@@ -862,25 +919,57 @@ export const programExpertRoster = [
       "Avocate au Barreau de l’Ontario",
       "Senior Associate DLA Piper Africa",
       "Spécialiste en droit corporate, droit informatique et droit international",
+      "Titulaire d’un LLM en droit informatique de l’Université de Montréal",
+      "Titulaire d’un LLM en droit international privé",
+      "Certificat en droit international public et comparé de l’Université Howard à Washington",
     ],
+    image: "/media/cogesto/team/mame-ngone-sow.png",
     title: "Avocate au Barreau de l’Ontario, consultante senior et juriste corporate",
   },
   {
     highlights: [
       "38 ans d’expérience en fiscalité",
-      "Ancien directeur du contrôle interne de la DGID",
-      "Ancien conseiller technique du Directeur général des Impôts et Domaines",
+      "Ancien Directeur du Contrôle interne de la DGID",
+      "Ancien Conseiller Technique du Directeur Général des Impôts et des Domaines",
+      "Ancien Chef du Centre des Professions Réglementées",
+      "Ancien Chef du Centre des Services Fiscaux de Dakar Plateau II",
+      "Ancien Chef du Centre des Services Fiscaux des Parcelles Assainies",
+      "Ancien Chef de la Section Taxes Indirectes au Bureau de la Législation et du Contentieux",
+      "Ancien Vérificateur à la DVEF/DGID",
+      "Ancien Chef d’Inspection fusionnée d’Assiette et de Contrôle",
+      "Ancien Inspecteur divisionnaire aux Impôts de Kaolack, Tambacounda et Dakar",
     ],
+    image: "/media/cogesto/blp/consultants/cheikh-ahmadou-bamba-badji-1.png",
     title: "Consultant senior en organisation et fiscalité",
   },
   {
     highlights: [
+      "Expert-comptable diplômé inscrit à l’ONECCA Sénégal",
       "21 ans d’expérience",
-      "Expert-comptable inscrit à l’ONECCA Sénégal",
-      "Expérience chez Baker Tilly, NSIA, SAHAM et Mazars",
+      "Consultant indépendant : conseil et consultant stratégique, corporate finance",
+      "Ancien Manager chez Baker Tilly Sénégal : audit et conseil financier, juridique, fiscal et organisationnel",
+      "Ancien Directeur Général et Directeur Adjoint chez NSIA",
+      "Ancien Directeur Financier et Directeur Adjoint chez SAHAM",
+      "Senior Manager chez Mazars : audit, due diligences, conseil stratégique et corporate finance",
     ],
+    image: "/media/cogesto/blp/consultants/equipe-cogesto-13.png",
     title: "Expert senior en structuration de financement",
   },
+]
+
+export const programEventGallery = [
+  { alt: "Séminaire BLP", src: "/media/cogesto/blp/tof8105-300x200.jpg" },
+  { alt: "Session BLP", src: "/media/cogesto/blp/tof8077-300x200.jpg" },
+  { alt: "Participants BLP", src: "/media/cogesto/blp/tof8062-300x200.jpg" },
+  { alt: "Atelier BLP", src: "/media/cogesto/blp/tof7780-3-300x200.jpg" },
+  { alt: "Lancement BLP", src: "/media/cogesto/blp/tof8053-1-300x200.jpg" },
+  { alt: "Échange BLP", src: "/media/cogesto/blp/tof7861-300x200.jpg" },
+  { alt: "Cérémonie BLP", src: "/media/cogesto/blp/tof7979-1-300x200.jpg" },
+  { alt: "Panel BLP", src: "/media/cogesto/blp/tof7969-1-300x200.jpg" },
+  { alt: "Communication BLP", src: "/media/cogesto/blp/design-32.jpg" },
+  { alt: "Objectifs BLP", src: "/media/cogesto/blp/design-30.jpg" },
+  { alt: "Partenaires BLP", src: "/media/cogesto/blp/design-31.jpg" },
+  { alt: "Séance terrain BLP", src: "/media/cogesto/blp/tof2870-1200x801.jpg" },
 ]
 
 export const events = [
@@ -904,6 +993,49 @@ export const events = [
     title: "Sessions de coaching de l’équipe dirigeante de FGI",
     summary:
       "Sessions de coaching pour renforcer les pratiques de pilotage, de gouvernance et de transformation.",
+  },
+]
+
+export const eventGalleries = [
+  {
+    images: [
+      "/media/cogesto/events/launch/tof4019.jpg",
+      "/media/cogesto/events/launch/1-2.jpg",
+      "/media/cogesto/events/launch/7-2.jpg",
+      "/media/cogesto/events/launch/4-2.jpg",
+      "/media/cogesto/events/launch/5-2.jpg",
+      "/media/cogesto/events/launch/6-2.jpg",
+      "/media/cogesto/events/launch/2-2.jpg",
+      "/media/cogesto/events/launch/3-2.jpg",
+    ],
+    title: "Cérémonie lancement BLP 14 juin 2023",
+  },
+  {
+    images: [
+      "/media/cogesto/events/training/design-2.jpg",
+      "/media/cogesto/events/training/1.jpg",
+      "/media/cogesto/events/training/7.jpg",
+      "/media/cogesto/events/training/6.jpg",
+      "/media/cogesto/events/training/4.jpg",
+      "/media/cogesto/events/training/5.jpg",
+      "/media/cogesto/events/training/2.jpg",
+      "/media/cogesto/events/training/3.jpg",
+    ],
+    title: "Séminaires de formation organisé par 3FPT",
+  },
+  {
+    images: [
+      "/media/cogesto/events/coaching/telechargement-2.jpeg",
+      "/media/cogesto/events/coaching/1-1.jpg",
+      "/media/cogesto/events/coaching/2-1.jpg",
+      "/media/cogesto/events/coaching/3-1.jpg",
+      "/media/cogesto/events/coaching/4-1.jpg",
+      "/media/cogesto/events/coaching/5-1.jpg",
+      "/media/cogesto/events/coaching/6-1.jpg",
+      "/media/cogesto/events/coaching/8.jpg",
+      "/media/cogesto/events/coaching/7-1.jpg",
+    ],
+    title: "Sessions de coaching de l’équipe dirigeante de la société de bourse FGI",
   },
 ]
 

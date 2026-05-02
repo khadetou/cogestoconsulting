@@ -4,6 +4,7 @@ import { ArrowRight, CirclePlay, MoveRight } from "lucide-react"
 import { useEffect } from "react"
 
 import { EventCard, ExpertiseCard } from "@/components/cards"
+import { TeamPortrait } from "@/components/team-portrait"
 import {
   events,
   homeProcessSteps,
@@ -133,7 +134,7 @@ export function AboutHomeSection() {
             <div className="mt-10">
               <Link
                 to="/about"
-                className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(20,40,75,0.16)] transition-transform duration-200 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.16)] transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Découvrir le cabinet
                 <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/18 bg-white/12 text-white">
@@ -203,7 +204,7 @@ export function ExpertisePreview() {
         <div className="mt-8 flex justify-center">
           <Link
             to="/expertises"
-            className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(20,40,75,0.12)]"
+            className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)]"
           >
             Voir toutes les expertises
             <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
@@ -226,7 +227,7 @@ export function MethodSection() {
           </h2>
           <Link
             to="/about"
-            className="inline-flex items-center gap-3 self-start rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(20,40,75,0.12)] lg:self-auto"
+            className="inline-flex items-center gap-3 self-start rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)] lg:self-auto"
           >
             Notre proposition de valeur
             <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
@@ -243,7 +244,7 @@ export function MethodSection() {
                 className={cn(
                   "flex items-center justify-between gap-4 px-0 py-5 sm:px-1",
                   step.active
-                    ? "rounded-[28px] bg-primary text-white shadow-[0_24px_55px_rgba(8,32,64,0.18)]"
+                    ? "rounded-[28px] bg-primary text-white shadow-[0_24px_55px_rgba(21,32,54,0.18)]"
                     : "border-b border-slate-200 text-slate-900",
                 )}
               >
@@ -356,7 +357,7 @@ export function EventsPreview() {
         <div className="mt-10 flex justify-center">
           <Link
             to="/events"
-            className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(20,40,75,0.12)]"
+            className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)]"
           >
             Voir tous les évènements
             <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
@@ -389,7 +390,7 @@ export function TeamSection() {
               key={leader.name}
               className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]"
             >
-              <img src={leader.image} alt={leader.name} className="aspect-[4/3] w-full object-cover object-top" />
+              <TeamPortrait src={leader.image} alt={leader.name} />
               <div className="p-5">
                 <h3 className="font-heading text-[1.45rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{leader.name}</h3>
                 <p className="mt-1 text-sm font-semibold text-primary">{leader.role}</p>
@@ -407,7 +408,7 @@ export function CtaSection() {
   return (
     <section className="section-pad bg-white">
       <div className="page-shell">
-        <div className="overflow-hidden rounded-[30px] border border-white/10 bg-primary p-8 text-white shadow-[0_30px_80px_rgba(8,32,64,0.18)] sm:p-12 lg:p-16">
+        <div className="overflow-hidden rounded-[30px] border border-white/10 bg-primary p-8 text-white shadow-[0_30px_80px_rgba(21,32,54,0.18)] sm:p-12 lg:p-16">
           <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <p className="eyebrow text-white/70 before:bg-white/20">Renforcez votre compétitivité</p>

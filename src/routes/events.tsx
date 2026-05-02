@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react"
 import { EventCard } from "@/components/cards"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
-import { events } from "@/lib/site-data"
+import { eventGalleries, events } from "@/lib/site-data"
 
 export const Route = createFileRoute("/events")({
   head: () => ({
@@ -26,6 +26,9 @@ const blpStory = [
   "Ce programme vise en particulier à apporter un appui technique aux PME sénégalaises pour leur intégration dans les chaînes d’approvisionnement des grandes entreprises par le renforcement de leurs capacités, de leurs normes QHSE, de leurs infrastructures et par l’accès au financement.",
   "Depuis la cérémonie d’information et de lancement officiel organisée le 14 juin 2023 à l’Hôtel King Fahd Place, Cogesto Consulting a mené plusieurs activités dans le cadre du BLP.",
   "Après des sessions de formation et de sensibilisation sur les opportunités du secteur de l’Oil & Gas, Cogesto Consulting déploie une phase de diagnostic 360° pour les entreprises bénéficiaires de l’accompagnement.",
+  "À travers ces activités, Cogesto Consulting œuvre au quotidien pour permettre aux entreprises sénégalaises de se préparer aux exigences et normes du secteur.",
+  "À côté de ses partenaires et des entreprises accompagnées, Cogesto Consulting est résolument engagé pour le développement et la prospérité des entreprises africaines dans le domaine du Oil & Gas.",
+  "Cogesto Consulting s’est donné pour mission de créer un écosystème plus fort et plus durable dans le secteur du Oil & Gas, offrant non seulement des opportunités de croissance pour les entreprises mais aussi contribuant à l’économie globale du continent africain.",
 ]
 
 function EventsPage() {
@@ -100,6 +103,25 @@ function EventsPage() {
                 Sessions de coaching de l’équipe dirigeante de la société de bourse FGI, animées par Amy Rose Konaté, pour renforcer les pratiques de pilotage, de gouvernance et de transformation.
               </p>
             </article>
+          </div>
+
+          <div className="mt-12 grid gap-6">
+            {eventGalleries.map((gallery) => (
+              <section key={gallery.title} className="rounded-[32px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
+                <h3 className="font-heading text-[1.55rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{gallery.title}</h3>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {gallery.images.map((src) => (
+                    <img
+                      key={src}
+                      src={src}
+                      alt={gallery.title}
+                      className="aspect-[3/2] w-full rounded-[20px] border border-slate-200/80 object-cover"
+                      loading="lazy"
+                    />
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         </div>
       </section>

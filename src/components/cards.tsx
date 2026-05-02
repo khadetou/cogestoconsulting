@@ -22,7 +22,7 @@ export function ExpertiseCard({
       className={cn(
         "group flex h-full min-h-[420px] flex-col overflow-hidden rounded-[28px] border p-5 md:min-h-[470px] md:p-6",
         featured
-          ? "border-[#123a63] bg-[#06182f] text-white shadow-[0_38px_80px_rgba(4,16,31,0.22)]"
+          ? "border-[#978360] bg-[#0c1422] text-white shadow-[0_38px_80px_rgba(5,8,18,0.24)]"
           : "border-slate-200/80 bg-white text-slate-950 shadow-[0_20px_55px_rgba(15,23,42,0.06)]",
       )}
     >
@@ -67,7 +67,7 @@ export function ExpertiseCard({
             className={cn(
               "absolute inset-0",
               featured
-                ? "bg-[linear-gradient(180deg,rgba(6,17,28,0.04),rgba(6,17,28,0.34))]"
+                ? "bg-[linear-gradient(180deg,rgba(151,131,96,0.08),rgba(5,8,18,0.34))]"
                 : "bg-[linear-gradient(180deg,rgba(10,20,32,0.02),rgba(10,20,32,0.18))]",
             )}
           />

@@ -8,6 +8,7 @@ import {
   events,
   programConsultants,
   programContextHighlights,
+  programEventGallery,
   programExpertRoster,
   programObjectives,
   programPartners,
@@ -42,7 +43,13 @@ function ProgramPage() {
               Le Business Linkage Program accompagne la croissance des entreprises dans le secteur du pétrole et du gaz grâce à l’assistance technique, à la formation, au renforcement de capacités et à l’accès aux marchés ainsi qu’au financement.
             </p>
           </div>
-          <img src="/media/cogesto/tof8053.jpg" alt="Cérémonie de lancement du BLP" className="rounded-[2rem] border border-white/10 object-cover shadow-2xl" />
+          <div className="rounded-[2rem] border border-white/10 bg-white p-6 shadow-2xl">
+            <img
+              src="/media/cogesto/blp/business-linkage-program-logo.png"
+              alt="Business Linkage Program"
+              className="mx-auto max-h-[280px] w-full object-contain"
+            />
+          </div>
         </div>
       </section>
 
@@ -55,10 +62,13 @@ function ProgramPage() {
                 Accompagner la croissance des entreprises dans <span className="accent-text">l’Oil & Gas.</span>
               </h2>
               <p className="section-copy mt-6">
-                Les découvertes pétrolières et gazières de 2014-2015 ont fait émerger un potentiel économique majeur pour le Sénégal, mais aussi un besoin fort de montée en compétence des PME locales afin de favoriser leur intégration dans la chaîne de valeur de l’industrie.
+                Les découvertes, durant la période 2014-2015, ont permis au Sénégal d’initier deux projets majeurs, gazier et pétrolier, avec une mise en production prévue en 2024.
               </p>
               <p className="section-copy mt-4">
-                Le programme vise à répondre au déficit de compétences locales, à l’exigence de contenu local et aux difficultés d’accès aux marchés et aux financements qui freinent encore les entreprises nationales.
+                Ce secteur pétrolier et gazier naissant présente de nombreux atouts pour le Sénégal et les PME locales. Le Sénégal a créé en 2016 un Comité Stratégique d’Orientation et érigé en 2019 la loi 2019-04 relative au contenu local dans le secteur des hydrocarbures.
+              </p>
+              <p className="section-copy mt-4">
+                Consciente des enjeux du secteur pétrolier, la Banque Africaine de Développement a mis en place un mécanisme d’assistance technique aux PME locales sur sollicitation d’Invest In Africa et avec l’appui du Fonds d’Assistance au Secteur Privé Africain.
               </p>
               <div className="mt-8 grid gap-3">
                 {programContextHighlights.map((item) => (
@@ -120,7 +130,14 @@ function ProgramPage() {
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
             {programConsultants.map((consultant) => (
               <article key={consultant.name} className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]">
-                <img src={consultant.image} alt={consultant.name} className="aspect-[4/3] w-full object-cover object-top" />
+                <div className="aspect-[4/3] overflow-hidden bg-[linear-gradient(180deg,#fbfbf8_0%,#f5f2ec_100%)]">
+                  <img
+                    src={consultant.image}
+                    alt={consultant.name}
+                    className="h-full w-full scale-[3.05] object-cover object-[center_42%]"
+                    loading="lazy"
+                  />
+                </div>
                 <div className="p-5">
                   <h3 className="font-heading text-[1.45rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{consultant.name}</h3>
                   <p className="mt-1 text-sm font-semibold text-primary">{consultant.role}</p>
@@ -137,13 +154,24 @@ function ProgramPage() {
                 Un pool de consultants mobilisés selon les besoins du programme.
               </h3>
               <p className="mt-4 text-[1rem] leading-7 text-slate-600">
-                Le site officiel présente aussi une équipe pluridisciplinaire couvrant ingénierie industrielle, RH, organisation, restructuration, pédagogie, formation, fiscalité, finance, QHSE, logistique et droit corporate.
+                Une équipe d’experts de très haut niveau est mobilisée pour accompagner la croissance des entreprises dans le secteur de l’Oil & Gaz.
               </p>
             </div>
 
             <div className="mt-8 grid gap-4 lg:grid-cols-3">
               {programExpertRoster.map((expert) => (
-                <article key={expert.title} className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+                <article key={expert.title} className="overflow-hidden rounded-[24px] border border-slate-200 bg-slate-50">
+                  {"image" in expert && expert.image ? (
+                    <div className="aspect-[4/3] overflow-hidden bg-[linear-gradient(180deg,#fbfbf8_0%,#f5f2ec_100%)]">
+                      <img
+                        src={expert.image}
+                        alt={expert.title}
+                        className="h-full w-full scale-[3.05] object-cover object-[center_42%]"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="p-5">
                   <h4 className="font-heading text-[1.2rem] leading-[1.12] tracking-[-0.03em] text-slate-950">{expert.title}</h4>
                   <ul className="mt-4 space-y-2.5">
                     {expert.highlights.map((highlight) => (
@@ -152,6 +180,7 @@ function ProgramPage() {
                       </li>
                     ))}
                   </ul>
+                  </div>
                 </article>
               ))}
             </div>
@@ -171,6 +200,18 @@ function ProgramPage() {
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
             {events.map((event) => (
               <EventCard key={event.title} {...event} />
+            ))}
+          </div>
+
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {programEventGallery.map((image) => (
+              <img
+                key={image.src}
+                src={image.src}
+                alt={image.alt}
+                className="aspect-[3/2] w-full rounded-[22px] border border-slate-200/80 object-cover shadow-[0_12px_30px_rgba(15,23,42,0.06)]"
+                loading="lazy"
+              />
             ))}
           </div>
 

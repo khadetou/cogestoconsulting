@@ -3,6 +3,7 @@ import { ArrowRight, Check, Leaf, ShieldCheck } from "lucide-react"
 
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
+import { TeamPortrait } from "@/components/team-portrait"
 import {
   aboutApproach,
   aboutBoardMembers,
@@ -51,7 +52,7 @@ function AboutPage() {
             </div>
             <div>
               <span className="eyebrow">Le mot du Président</span>
-              <h2 className="section-title mt-6 max-w-[12ch]">
+              <h2 className="section-title mt-6 max-w-[15ch]">
                 Une vision tournée vers <span className="accent-text">le développement de l’Afrique.</span>
               </h2>
               <div className="mt-6 space-y-4">
@@ -80,6 +81,12 @@ function AboutPage() {
               </p>
               <p className="section-copy mt-4">
                 Cogesto Consulting aide les clients à résoudre des problèmes importants afin d’assurer le développement durable de leur entreprise. Créer de la valeur en apportant aux entreprises un savoir-faire éprouvé est notre credo.
+              </p>
+              <p className="section-copy mt-4">
+                C’est pourquoi, Cogesto Consulting a mobilisé des experts capables d’apporter leur expertise sectorielle et fonctionnelle aux clients publics et privés, afin de leur permettre de répondre aux enjeux stratégiques et opérationnels spécifiques à leurs besoins et réalités.
+              </p>
+              <p className="section-copy mt-4">
+                Les méthodes et approches utilisées favorisent le renforcement des compétences des collaborateurs des clients, à travers un mécanisme de partage du retour d’expérience d’experts seniors.
               </p>
             </article>
 
@@ -150,6 +157,12 @@ function AboutPage() {
               <h2 className="section-title mt-6 max-w-[12ch]">
                 Intégrité, confidentialité et <span className="accent-text">responsabilité.</span>
               </h2>
+              <p className="section-copy mt-6 max-w-[48ch]">
+                Notre ambition est de devenir une référence d’excellence parmi les cabinets de conseil en organisation et management. Nous exprimons ainsi notre ferme volonté d’intervenir en contributeur de performance dans le domaine précis où nous apportons une vraie valeur.
+              </p>
+              <p className="section-copy mt-4 max-w-[48ch]">
+                Pour cela, nous prenons les engagements suivants vis-à-vis de nos clients :
+              </p>
               <div className="mt-8 grid gap-3">
                 {commitments.map((item) => (
                   <article key={item} className="flex items-center gap-4 rounded-[24px] border border-slate-200/80 bg-white px-5 py-4 shadow-[0_14px_36px_rgba(15,23,42,0.04)]">
@@ -213,7 +226,7 @@ function ProfileCard({
 }) {
   return (
     <article className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]">
-      <img src={image} alt={name} className="aspect-[4/3] w-full object-cover object-top" />
+      <TeamPortrait src={image} alt={name} />
       <div className="p-5">
         <h3 className="font-heading text-[1.45rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{name}</h3>
         <p className="mt-1 text-sm font-semibold text-primary">{role}</p>

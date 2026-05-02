@@ -45,7 +45,7 @@ function ContactPage() {
               href={contact.mapLink}
               icon={<MapPin className="size-5" />}
               title="Adresse"
-              value={contact.address}
+              value={`9, Imm Saliou Ndione Fenêtre Mermoz, Dakar Sénégal. ${contact.address}`}
             />
             <ContactCard
               href={`mailto:${contact.email}`}

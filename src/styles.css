@@ -53,34 +53,40 @@
 }
 
 :root {
-    --background: #fbfcfd;
-    --foreground: #171429;
+    --background: #fbfbf8;
+    --foreground: #152036;
     --card: #ffffff;
-    --card-foreground: #171429;
+    --card-foreground: #152036;
     --popover: #ffffff;
-    --popover-foreground: #171429;
-    --primary: #082040;
+    --popover-foreground: #152036;
+    --primary: #152036;
     --primary-foreground: #ffffff;
-    --secondary: #edf3f8;
-    --secondary-foreground: #14284b;
-    --muted: #f4f6f8;
-    --muted-foreground: #687386;
-    --accent: #4f6f8e;
+    --secondary: #f5f2ec;
+    --secondary-foreground: #152036;
+    --muted: #f7f5f0;
+    --muted-foreground: #6f6b62;
+    --accent: #978360;
     --accent-foreground: #ffffff;
     --destructive: oklch(0.577 0.245 27.325);
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    --ring: #4f6f8e;
-    --chart-1: #082040;
-    --chart-2: #4f6f8e;
-    --chart-3: #9cb7cf;
-    --chart-4: #d8e6f1;
-    --chart-5: #123a63;
+    --border: #e6e0d4;
+    --input: #e6e0d4;
+    --ring: #978360;
+    --chart-1: #152036;
+    --chart-2: #978360;
+    --chart-3: #243653;
+    --chart-4: #d8ceb9;
+    --chart-5: #776747;
     --radius: 1rem;
-    --navy: #082040;
-    --gold: #d6aa42;
-    --gold-dark: #9a6c12;
-    --ivory: #fbfcfd;
+    --navy: #152036;
+    --gold: #978360;
+    --gold-dark: #776747;
+    --ivory: #fbfbf8;
+    --brand-ink: #152036;
+    --brand-deep: #0c1422;
+    --brand-night: #050812;
+    --brand-mid: #243653;
+    --brand-soft: #978360;
+    --brand-mist: #f5f2ec;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -92,20 +98,20 @@
 }
 
 .dark {
-    --background: #06182f;
-    --foreground: #f5f8fb;
-    --card: #082040;
-    --card-foreground: #f5f8fb;
-    --popover: #082040;
-    --popover-foreground: #f5f8fb;
-    --primary: #d9ecff;
-    --primary-foreground: #082040;
-    --secondary: #123a63;
-    --secondary-foreground: #f5f8fb;
-    --muted: #0c294f;
-    --muted-foreground: #bfd0df;
-    --accent: #9cb7cf;
-    --accent-foreground: #06182f;
+    --background: #0c1422;
+    --foreground: #fbfbf8;
+    --card: #152036;
+    --card-foreground: #fbfbf8;
+    --popover: #152036;
+    --popover-foreground: #fbfbf8;
+    --primary: #f5f2ec;
+    --primary-foreground: #152036;
+    --secondary: #243653;
+    --secondary-foreground: #fbfbf8;
+    --muted: #1d2a42;
+    --muted-foreground: #d8ceb9;
+    --accent: #978360;
+    --accent-foreground: #ffffff;
     --destructive: oklch(0.704 0.191 22.216);
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
@@ -187,8 +193,8 @@
   .inner-hero {
     @apply relative overflow-hidden bg-navy;
     background-image:
-      linear-gradient(120deg, rgba(31, 110, 169, 0.22), transparent 42%),
-      linear-gradient(180deg, #082040 0%, #06182f 100%);
+      linear-gradient(120deg, rgba(151, 131, 96, 0.24), transparent 42%),
+      linear-gradient(180deg, #152036 0%, #0c1422 100%);
   }
 
   .inner-hero::after {
@@ -211,16 +217,16 @@
 
   .partners-section {
     background:
-      radial-gradient(circle at 18% 18%, rgba(79, 111, 142, 0.14), transparent 26%),
-      radial-gradient(circle at 78% 10%, rgba(214, 227, 255, 0.22), transparent 24%),
-      linear-gradient(180deg, #fbfdff 0%, #f4f8fb 100%);
+      radial-gradient(circle at 18% 18%, rgba(151, 131, 96, 0.14), transparent 26%),
+      radial-gradient(circle at 78% 10%, rgba(21, 32, 54, 0.1), transparent 24%),
+      linear-gradient(180deg, #fbfbf8 0%, #f5f2ec 100%);
   }
 
   .hero-section {
     background:
-      radial-gradient(circle at 12% 18%, rgba(79, 111, 142, 0.28), transparent 26%),
-      radial-gradient(circle at 88% 14%, rgba(156, 183, 207, 0.18), transparent 18%),
-      linear-gradient(180deg, #082040 0%, #06182f 55%, #04101f 100%);
+      radial-gradient(circle at 12% 18%, rgba(151, 131, 96, 0.26), transparent 26%),
+      radial-gradient(circle at 88% 14%, rgba(36, 54, 83, 0.3), transparent 18%),
+      linear-gradient(180deg, #152036 0%, #0c1422 55%, #050812 100%);
   }
 
   .hero-ambient {
@@ -235,7 +241,7 @@
     top: 8%;
     height: 320px;
     width: 260px;
-    background: rgba(79, 111, 142, 0.3);
+    background: rgba(151, 131, 96, 0.26);
   }
 
   .hero-ambient--right {
@@ -243,17 +249,12 @@
     top: 14%;
     height: 280px;
     width: 220px;
-    background: rgba(156, 183, 207, 0.24);
+    background: rgba(36, 54, 83, 0.36);
   }
 
   .hero-shell {
     margin-inline: auto;
     width: min(1840px, calc(100vw - 22px));
-  }
-
-  .hero-banner {
-    position: relative;
-    background: #0b1622;
   }
 
   .hero-banner__background,
@@ -268,49 +269,39 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
+    object-position: 54% 45%;
+    z-index: 0;
   }
 
   .hero-banner__wash {
     background:
-      linear-gradient(90deg, rgba(7, 18, 28, 0.82) 0%, rgba(7, 18, 28, 0.58) 38%, rgba(7, 18, 28, 0.14) 100%),
-      linear-gradient(180deg, rgba(8, 19, 31, 0.12), rgba(8, 19, 31, 0.28));
+      linear-gradient(90deg, rgba(5, 8, 18, 0.9) 0%, rgba(12, 20, 34, 0.76) 38%, rgba(21, 32, 54, 0.4) 72%, rgba(21, 32, 54, 0.16) 100%),
+      linear-gradient(180deg, rgba(5, 8, 18, 0.08), rgba(5, 8, 18, 0.3));
+    z-index: 1;
   }
 
   .hero-banner__left-fade {
-    background: radial-gradient(circle at 16% 26%, rgba(7, 18, 28, 0.14), transparent 26%);
+    background:
+      radial-gradient(circle at 18% 28%, rgba(21, 32, 54, 0.28), transparent 28%),
+      linear-gradient(115deg, rgba(151, 131, 96, 0.14), transparent 55%);
+    z-index: 2;
   }
 
   .hero-banner__bottom-fade {
-    background: linear-gradient(180deg, transparent 62%, rgba(8, 19, 31, 0.84) 100%);
-  }
-
-  .hero-banner__badge {
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
-    z-index: 10;
-    width: 240px;
-    border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(7, 18, 28, 0.3);
-    padding: 1.1rem 1.2rem;
-    backdrop-filter: blur(14px);
-    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
+    background: linear-gradient(180deg, transparent 56%, rgba(5, 8, 18, 0.92) 100%);
+    z-index: 3;
   }
 
   .showcase-band {
     background:
-      radial-gradient(circle at 14% 30%, rgba(158, 207, 215, 0.2), transparent 24%),
-      linear-gradient(180deg, #f8fafb 0%, #f2f5f7 100%);
+      radial-gradient(circle at 14% 30%, rgba(151, 131, 96, 0.16), transparent 24%),
+      linear-gradient(180deg, #fbfbf8 0%, #f5f2ec 100%);
   }
 
   @media (max-width: 767px) {
-    .hero-banner__badge {
-      left: 1.25rem;
-      right: 1.25rem;
-      top: auto;
-      bottom: 1.25rem;
-      width: auto;
+    .hero-banner__background {
+      object-position: 57% 46%;
     }
+
   }
 }
