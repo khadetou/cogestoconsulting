@@ -4,6 +4,7 @@ import { ArrowRight, Handshake, Target, TrendingUp } from "lucide-react"
 import { EventCard } from "@/components/cards"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
+import { TeamPortrait } from "@/components/team-portrait"
 import {
   events,
   programConsultants,
@@ -130,14 +131,7 @@ function ProgramPage() {
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
             {programConsultants.map((consultant) => (
               <article key={consultant.name} className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]">
-                <div className="aspect-[4/3] overflow-hidden bg-[linear-gradient(180deg,#fbfbf8_0%,#f5f2ec_100%)]">
-                  <img
-                    src={consultant.image}
-                    alt={consultant.name}
-                    className="h-full w-full scale-[3.05] object-cover object-[center_42%]"
-                    loading="lazy"
-                  />
-                </div>
+                <TeamPortrait src={consultant.image} alt={consultant.name} />
                 <div className="p-5">
                   <h3 className="font-heading text-[1.45rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{consultant.name}</h3>
                   <p className="mt-1 text-sm font-semibold text-primary">{consultant.role}</p>
@@ -162,14 +156,7 @@ function ProgramPage() {
               {programExpertRoster.map((expert) => (
                 <article key={expert.title} className="overflow-hidden rounded-[24px] border border-slate-200 bg-slate-50">
                   {"image" in expert && expert.image ? (
-                    <div className="aspect-[4/3] overflow-hidden bg-[linear-gradient(180deg,#fbfbf8_0%,#f5f2ec_100%)]">
-                      <img
-                        src={expert.image}
-                        alt={expert.title}
-                        className="h-full w-full scale-[3.05] object-cover object-[center_42%]"
-                        loading="lazy"
-                      />
-                    </div>
+                    <TeamPortrait src={expert.image} alt={expert.title} />
                   ) : null}
                   <div className="p-5">
                   <h4 className="font-heading text-[1.2rem] leading-[1.12] tracking-[-0.03em] text-slate-950">{expert.title}</h4>
