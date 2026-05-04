@@ -15,6 +15,11 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessLinkageProgramRouteImport } from './routes/business-linkage-program'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PagesSlugRouteImport } from './routes/pages.$slug'
+import { Route as BusinessLinkageProgramParcoursEntrepreneurRouteImport } from './routes/business-linkage-program_.parcours-entrepreneur'
+import { Route as BusinessLinkageProgramFinanceVerteDurableRouteImport } from './routes/business-linkage-program_.finance-verte-durable'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminBuilderSlugRouteImport } from './routes/admin.builder.$slug'
 
 const ExpertisesRoute = ExpertisesRouteImport.update({
   id: '/expertises',
@@ -46,6 +51,33 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PagesSlugRoute = PagesSlugRouteImport.update({
+  id: '/pages/$slug',
+  path: '/pages/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessLinkageProgramParcoursEntrepreneurRoute =
+  BusinessLinkageProgramParcoursEntrepreneurRouteImport.update({
+    id: '/business-linkage-program_/parcours-entrepreneur',
+    path: '/business-linkage-program/parcours-entrepreneur',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BusinessLinkageProgramFinanceVerteDurableRoute =
+  BusinessLinkageProgramFinanceVerteDurableRouteImport.update({
+    id: '/business-linkage-program_/finance-verte-durable',
+    path: '/business-linkage-program/finance-verte-durable',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBuilderSlugRoute = AdminBuilderSlugRouteImport.update({
+  id: '/admin/builder/$slug',
+  path: '/admin/builder/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +86,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/business-linkage-program/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
+  '/business-linkage-program/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  '/pages/$slug': typeof PagesSlugRoute
+  '/admin/builder/$slug': typeof AdminBuilderSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +99,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/business-linkage-program/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
+  '/business-linkage-program/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  '/pages/$slug': typeof PagesSlugRoute
+  '/admin/builder/$slug': typeof AdminBuilderSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +113,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/business-linkage-program_/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
+  '/business-linkage-program_/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  '/pages/$slug': typeof PagesSlugRoute
+  '/admin/builder/$slug': typeof AdminBuilderSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +128,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/admin/login'
+    | '/business-linkage-program/finance-verte-durable'
+    | '/business-linkage-program/parcours-entrepreneur'
+    | '/pages/$slug'
+    | '/admin/builder/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +141,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/admin/login'
+    | '/business-linkage-program/finance-verte-durable'
+    | '/business-linkage-program/parcours-entrepreneur'
+    | '/pages/$slug'
+    | '/admin/builder/$slug'
   id:
     | '__root__'
     | '/'
@@ -97,6 +154,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/admin/login'
+    | '/business-linkage-program_/finance-verte-durable'
+    | '/business-linkage-program_/parcours-entrepreneur'
+    | '/pages/$slug'
+    | '/admin/builder/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +168,11 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   ExpertisesRoute: typeof ExpertisesRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  BusinessLinkageProgramFinanceVerteDurableRoute: typeof BusinessLinkageProgramFinanceVerteDurableRoute
+  BusinessLinkageProgramParcoursEntrepreneurRoute: typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  PagesSlugRoute: typeof PagesSlugRoute
+  AdminBuilderSlugRoute: typeof AdminBuilderSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +219,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pages/$slug': {
+      id: '/pages/$slug'
+      path: '/pages/$slug'
+      fullPath: '/pages/$slug'
+      preLoaderRoute: typeof PagesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business-linkage-program_/parcours-entrepreneur': {
+      id: '/business-linkage-program_/parcours-entrepreneur'
+      path: '/business-linkage-program/parcours-entrepreneur'
+      fullPath: '/business-linkage-program/parcours-entrepreneur'
+      preLoaderRoute: typeof BusinessLinkageProgramParcoursEntrepreneurRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business-linkage-program_/finance-verte-durable': {
+      id: '/business-linkage-program_/finance-verte-durable'
+      path: '/business-linkage-program/finance-verte-durable'
+      fullPath: '/business-linkage-program/finance-verte-durable'
+      preLoaderRoute: typeof BusinessLinkageProgramFinanceVerteDurableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/builder/$slug': {
+      id: '/admin/builder/$slug'
+      path: '/admin/builder/$slug'
+      fullPath: '/admin/builder/$slug'
+      preLoaderRoute: typeof AdminBuilderSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +264,13 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   ExpertisesRoute: ExpertisesRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  BusinessLinkageProgramFinanceVerteDurableRoute:
+    BusinessLinkageProgramFinanceVerteDurableRoute,
+  BusinessLinkageProgramParcoursEntrepreneurRoute:
+    BusinessLinkageProgramParcoursEntrepreneurRoute,
+  PagesSlugRoute: PagesSlugRoute,
+  AdminBuilderSlugRoute: AdminBuilderSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,11 +1,14 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
-import { ArrowRight, Handshake, Target, TrendingUp } from "lucide-react"
+import { ArrowRight, Handshake, Leaf, RouteIcon, Target, TrendingUp } from "lucide-react"
 
+import type { BuilderPage } from "@/builder/types"
+import { PublicPayloadBackedPage, getPublicPayloadPageHead } from "@/builder/public-page-route"
 import { EventCard } from "@/components/cards"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
 import { TeamPortrait } from "@/components/team-portrait"
 import {
+  businessLinkageOffers,
   events,
   programConsultants,
   programContextHighlights,
@@ -15,22 +18,34 @@ import {
   programPartners,
   programResults,
 } from "@/lib/site-data"
+import { getPublishedBuilderPage } from "@/server/payload/pages"
+
+const programMeta = {
+  description:
+    "Business Linkage Program : accompagnement des PME sénégalaises pour le secteur Oil & Gas, accès marché et financement.",
+  title: "Business Linkage Program | Cogesto Consulting",
+}
 
 export const Route = createFileRoute("/business-linkage-program")({
-  head: () => ({
-    meta: [
-      { title: "Business Linkage Program | Cogesto Consulting" },
-      {
-        name: "description",
-        content:
-          "Business Linkage Program : accompagnement des PME sénégalaises pour le secteur Oil & Gas, accès marché et financement.",
-      },
-    ],
-  }),
+  head: ({ loaderData }) =>
+    getPublicPayloadPageHead(loaderData, programMeta.title, programMeta.description),
+  loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "business-linkage-program" } }),
   component: ProgramPage,
 })
 
 function ProgramPage() {
+  const page = Route.useLoaderData() as unknown as BuilderPage | undefined
+
+  return (
+    <PublicPayloadBackedPage
+      fallback={<ProgramBasePage />}
+      page={page}
+      slug="business-linkage-program"
+    />
+  )
+}
+
+function ProgramBasePage() {
   return (
     <PageLayout>
       <section className="inner-hero text-white">
@@ -106,6 +121,57 @@ function ProgramPage() {
                 <p className="mt-3 text-[0.98rem] leading-6 text-slate-600">{partner.description}</p>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="offres" className="py-16 sm:py-20">
+        <div className="page-shell">
+          <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
+            <div>
+              <span className="eyebrow">Offres BLP</span>
+              <h2 className="section-title mt-6 max-w-[13ch]">
+                Deux parcours pour <span className="accent-text">accélérer les entrepreneurs.</span>
+              </h2>
+            </div>
+            <p className="section-copy max-w-[56ch] lg:justify-self-end">
+              Le Business Linkage Program se prolonge avec des dispositifs ciblés pour structurer les projets durables et renforcer la trajectoire des dirigeants d’entreprise.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            {businessLinkageOffers.map((offer, index) => {
+              const Icon = index === 0 ? Leaf : RouteIcon
+
+              return (
+                <article key={offer.href} className="group overflow-hidden rounded-[30px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]">
+                  <div className="aspect-[16/10] overflow-hidden bg-slate-950">
+                    <img
+                      alt={offer.label}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.035]"
+                      loading="lazy"
+                      src={offer.image}
+                    />
+                  </div>
+                  <div className="p-6">
+                    <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-secondary text-primary">
+                      <Icon className="size-5" />
+                    </span>
+                    <h3 className="mt-5 font-heading text-[1.75rem] leading-[1.08] tracking-[-0.05em] text-slate-950">
+                      {offer.label}
+                    </h3>
+                    <p className="mt-3 text-[1rem] leading-7 text-slate-600">{offer.description}</p>
+                    <a
+                      className="mt-6 inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white"
+                      href={offer.href}
+                    >
+                      Découvrir
+                      <ArrowRight className="size-4" />
+                    </a>
+                  </div>
+                </article>
+              )
+            })}
           </div>
         </div>
       </section>

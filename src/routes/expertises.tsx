@@ -4,10 +4,19 @@ import { ArrowRight, Check } from "lucide-react"
 import gsap from "gsap"
 import { useEffect, useMemo, useRef } from "react"
 
+import type { BuilderPage } from "@/builder/types"
+import { PublicPayloadBackedPage, getPublicPayloadPageHead } from "@/builder/public-page-route"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { detailedFunctionalExpertise, sectorExpertise } from "@/lib/site-data"
+import { getPublishedBuilderPage } from "@/server/payload/pages"
+
+const expertisesMeta = {
+  description:
+    "Expertises fonctionnelles et sectorielles de Cogesto Consulting : stratégie, organisation, gouvernance, performance, transformation, investissement, formation et fonctions supports.",
+  title: "Expertises | Cogesto Consulting",
+}
 
 const expertiseVisuals: Record<string, { icon: string; image: string; kicker: string }> = {
   "Appui aux fonctions supports des entreprises": {
@@ -100,20 +109,19 @@ const sectorGroups = [
 ]
 
 export const Route = createFileRoute("/expertises")({
-  head: () => ({
-    meta: [
-      { title: "Expertises | Cogesto Consulting" },
-      {
-        name: "description",
-        content:
-          "Expertises fonctionnelles et sectorielles de Cogesto Consulting : stratégie, organisation, gouvernance, performance, transformation, investissement, formation et fonctions supports.",
-      },
-    ],
-  }),
+  head: ({ loaderData }) =>
+    getPublicPayloadPageHead(loaderData, expertisesMeta.title, expertisesMeta.description),
+  loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "expertises" } }),
   component: ExpertisesPage,
 })
 
 function ExpertisesPage() {
+  const page = Route.useLoaderData() as unknown as BuilderPage | undefined
+
+  return <PublicPayloadBackedPage fallback={<ExpertisesBasePage />} page={page} slug="expertises" />
+}
+
+function ExpertisesBasePage() {
   const scopeRef = useRef<HTMLDivElement>(null)
   const firstExpertise = useMemo(() => detailedFunctionalExpertise[0]?.title ?? "", [])
 
@@ -176,16 +184,16 @@ function ExpertisesPage() {
                     <TabsTrigger
                       key={item.title}
                       value={item.title}
-                      className="!h-auto min-h-[84px] justify-start rounded-[22px] px-4 py-4 text-left data-active:bg-primary data-active:text-white data-active:shadow-[0_18px_35px_rgba(21,32,54,0.18)]"
+                      className="group/tab !h-auto min-h-[84px] justify-start rounded-[22px] px-4 py-4 text-left text-slate-600 hover:bg-slate-50 hover:text-slate-950 data-active:!bg-primary data-active:!text-white data-active:shadow-[0_18px_35px_rgba(21,32,54,0.18)] data-[state=active]:!bg-primary data-[state=active]:!text-white"
                     >
-                      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary data-[state=active]:bg-white/10">
+                      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary transition-colors group-data-active/tab:bg-white/12 group-data-active/tab:text-white group-data-[state=active]/tab:bg-white/12 group-data-[state=active]/tab:text-white">
                         <Icon icon={visual.icon} className="size-5" />
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.16em] opacity-70">
+                        <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-slate-400 opacity-100 transition-colors group-data-active/tab:text-white/62 group-data-[state=active]/tab:text-white/62">
                           {visual.kicker}
                         </span>
-                        <span className="mt-1 block whitespace-normal font-heading text-[1.05rem] leading-tight tracking-[-0.03em]">
+                        <span className="mt-1 block whitespace-normal font-heading text-[1.05rem] leading-tight tracking-[-0.03em] text-slate-700 transition-colors group-hover/tab:text-slate-950 group-data-active/tab:text-white group-data-[state=active]/tab:text-white">
                           {item.title}
                         </span>
                       </span>
@@ -228,12 +236,12 @@ function ExpertisesPage() {
                   <TabsTrigger
                     key={group.title}
                     value={group.title}
-                    className="!h-auto min-h-[76px] justify-start rounded-[22px] px-4 py-4 text-left data-active:bg-primary data-active:text-white data-active:shadow-[0_18px_35px_rgba(21,32,54,0.18)]"
+                    className="group/tab !h-auto min-h-[76px] justify-start rounded-[22px] px-4 py-4 text-left text-slate-600 hover:bg-slate-50 hover:text-slate-950 data-active:!bg-primary data-active:!text-white data-active:shadow-[0_18px_35px_rgba(21,32,54,0.18)] data-[state=active]:!bg-primary data-[state=active]:!text-white"
                   >
-                    <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary">
+                    <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary transition-colors group-data-active/tab:bg-white/12 group-data-active/tab:text-white group-data-[state=active]/tab:bg-white/12 group-data-[state=active]/tab:text-white">
                       <Icon icon={group.icon} className="size-5" />
                     </span>
-                    <span className="block whitespace-normal font-heading text-[1.08rem] leading-tight tracking-[-0.03em]">
+                    <span className="block whitespace-normal font-heading text-[1.08rem] leading-tight tracking-[-0.03em] text-slate-700 transition-colors group-hover/tab:text-slate-950 group-data-active/tab:text-white group-data-[state=active]/tab:text-white">
                       {group.title}
                     </span>
                   </TabsTrigger>

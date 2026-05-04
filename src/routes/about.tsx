@@ -1,6 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { ArrowRight, Check, Leaf, ShieldCheck } from "lucide-react"
 
+import type { BuilderPage } from "@/builder/types"
+import { PublicPayloadBackedPage, getPublicPayloadPageHead } from "@/builder/public-page-route"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
 import { TeamPortrait } from "@/components/team-portrait"
@@ -14,22 +16,26 @@ import {
   socialCommitments,
   values,
 } from "@/lib/site-data"
+import { getPublishedBuilderPage } from "@/server/payload/pages"
+
+const aboutMeta = {
+  description: "Mission, valeurs, proposition de valeur, équipe dirigeante et engagements de Cogesto Consulting.",
+  title: "À propos | Cogesto Consulting",
+}
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "À propos | Cogesto Consulting" },
-      {
-        name: "description",
-        content:
-          "Mission, valeurs, proposition de valeur, équipe dirigeante et engagements de Cogesto Consulting.",
-      },
-    ],
-  }),
+  head: ({ loaderData }) => getPublicPayloadPageHead(loaderData, aboutMeta.title, aboutMeta.description),
+  loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "about" } }),
   component: AboutPage,
 })
 
 function AboutPage() {
+  const page = Route.useLoaderData() as unknown as BuilderPage | undefined
+
+  return <PublicPayloadBackedPage fallback={<AboutBasePage />} page={page} slug="about" />
+}
+
+function AboutBasePage() {
   return (
     <PageLayout>
       <section className="inner-hero text-white">

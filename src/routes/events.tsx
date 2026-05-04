@@ -1,22 +1,23 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { ArrowRight } from "lucide-react"
 
+import type { BuilderPage } from "@/builder/types"
+import { PublicPayloadBackedPage, getPublicPayloadPageHead } from "@/builder/public-page-route"
 import { EventCard } from "@/components/cards"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
 import { eventGalleries, events } from "@/lib/site-data"
+import { getPublishedBuilderPage } from "@/server/payload/pages"
+
+const eventsMeta = {
+  description: "Cérémonies, formations et sessions de coaching menées par Cogesto Consulting.",
+  title: "Évènements | Cogesto Consulting",
+}
 
 export const Route = createFileRoute("/events")({
-  head: () => ({
-    meta: [
-      { title: "Évènements | Cogesto Consulting" },
-      {
-        name: "description",
-        content:
-          "Cérémonies, formations et sessions de coaching menées par Cogesto Consulting.",
-      },
-    ],
-  }),
+  head: ({ loaderData }) =>
+    getPublicPayloadPageHead(loaderData, eventsMeta.title, eventsMeta.description),
+  loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "events" } }),
   component: EventsPage,
 })
 
@@ -32,6 +33,12 @@ const blpStory = [
 ]
 
 function EventsPage() {
+  const page = Route.useLoaderData() as unknown as BuilderPage | undefined
+
+  return <PublicPayloadBackedPage fallback={<EventsBasePage />} page={page} slug="events" />
+}
+
+function EventsBasePage() {
   return (
     <PageLayout>
       <section className="inner-hero text-white">

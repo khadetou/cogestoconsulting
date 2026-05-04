@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
+import type { MouseEvent } from "react"
 
 import type { SiteNavItem } from "@/lib/site-data"
 import { contact, siteMenuItems } from "@/lib/site-data"
@@ -22,7 +23,16 @@ const itemIcon = {
   "Nos expertises": BriefcaseBusiness,
 } as const
 
-export function SiteHeader() {
+const editablePageSlugs = new Set([
+  "accueil",
+  "about",
+  "expertises",
+  "business-linkage-program",
+  "events",
+  "contact",
+])
+
+export function SiteHeader({ editorNavigation = false }: { editorNavigation?: boolean }) {
   const location = useLocation()
   const headerRef = useRef<HTMLDivElement>(null)
   const [desktopMenuLabel, setDesktopMenuLabel] = useState<string | null>(null)
@@ -88,19 +98,36 @@ export function SiteHeader() {
     )
   }
 
+  function navTo(href: string) {
+    return editorNavigation ? getEditorBuilderPath(href) : href
+  }
+
+  function handleEditorNav(event: MouseEvent<HTMLElement>, href: string) {
+    if (!editorNavigation) return
+
+    event.preventDefault()
+    event.stopPropagation()
+    window.top?.location.assign(navTo(href))
+  }
+
   const ActiveIcon = activeDesktopItem
     ? itemIcon[activeDesktopItem.label as keyof typeof itemIcon]
     : Globe2
 
   return (
-    <div ref={headerRef} className="relative z-40" onKeyDown={(event) => {
+    <div ref={headerRef} className={cn("relative z-40", editorNavigation && "puck-editor-site-nav")} onKeyDown={(event) => {
       if (event.key === "Escape") {
         setDesktopMenuLabel(null)
         setDrawerOpen(false)
       }
     }}>
       <header className="relative z-50 flex items-center justify-between gap-4 rounded-full border border-[#978360]/22 bg-[#152036]/78 px-4 py-3 shadow-[0_18px_55px_rgba(5,8,18,0.18),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl sm:px-6 lg:px-7">
-        <Link to="/" className="flex min-w-0 items-center gap-3 text-sm font-semibold tracking-tight text-white">
+        <Link
+          to={navTo("/")}
+          target={editorNavigation ? "_top" : undefined}
+          className="flex min-w-0 items-center gap-3 text-sm font-semibold tracking-tight text-white"
+          onClick={(event) => handleEditorNav(event, "/")}
+        >
           <span className="inline-flex h-12 w-[156px] shrink-0 items-center justify-center px-1">
             <img
               src="/brand/cogesto-logo-official.svg"
@@ -135,7 +162,9 @@ export function SiteHeader() {
             ) : (
               <Link
                 key={item.label}
-                to={item.href}
+                target={editorNavigation ? "_top" : undefined}
+                to={navTo(item.href)}
+                onClick={(event) => handleEditorNav(event, item.href)}
                 onMouseEnter={() => setDesktopMenuLabel(null)}
                 className={cn(
                   "inline-flex items-center rounded-full px-4 py-2.5 text-[0.92rem] font-medium transition-colors duration-200",
@@ -157,8 +186,10 @@ export function SiteHeader() {
             <Mail className="size-4" />
           </a>
           <Link
-            to="/contact"
+            target={editorNavigation ? "_top" : undefined}
+            to={navTo("/contact")}
             className="inline-flex items-center gap-2 rounded-full border border-[#978360]/24 bg-white/8 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#978360]/16"
+            onClick={(event) => handleEditorNav(event, "/contact")}
           >
             Contactez-nous
           </Link>
@@ -200,9 +231,13 @@ export function SiteHeader() {
                   {activeDesktopItem.description}
                 </p>
                 <Link
-                  to={activeDesktopItem.href}
+                  target={editorNavigation ? "_top" : undefined}
+                  to={navTo(activeDesktopItem.href)}
                   className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-bold text-slate-950 shadow-[0_18px_35px_rgba(255,255,255,0.12)] transition-transform duration-200 hover:-translate-y-0.5"
-                  onClick={() => setDesktopMenuLabel(null)}
+                  onClick={(event) => {
+                    setDesktopMenuLabel(null)
+                    handleEditorNav(event, activeDesktopItem.href)
+                  }}
                 >
                   Vue d’ensemble
                   <span className="inline-flex size-7 items-center justify-center rounded-full bg-slate-900 text-white">
@@ -220,9 +255,13 @@ export function SiteHeader() {
                   {activeDesktopLinks.map((link) => (
                     <Link
                       key={`${link.sectionTitle}-${link.href}`}
-                      to={link.href}
+                      target={editorNavigation ? "_top" : undefined}
+                      to={navTo(link.href)}
                       className="group rounded-[16px] border border-transparent px-3.5 py-3 transition-colors duration-200 hover:border-white/10 hover:bg-white/[0.055]"
-                      onClick={() => setDesktopMenuLabel(null)}
+                      onClick={(event) => {
+                        setDesktopMenuLabel(null)
+                        handleEditorNav(event, link.href)
+                      }}
                     >
                       <div className="flex items-center justify-between gap-4">
                         <div className="min-w-0">
@@ -284,8 +323,10 @@ export function SiteHeader() {
                     {mobileSections.includes(item.label) ? (
                       <div className="border-t border-white/8 px-4 pb-4 pt-3">
                         <Link
-                          to={item.href}
+                          target={editorNavigation ? "_top" : undefined}
+                          to={navTo(item.href)}
                           className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/64"
+                          onClick={(event) => handleEditorNav(event, item.href)}
                         >
                           Vue d’ensemble
                           <ArrowRight className="size-3.5" />
@@ -298,8 +339,10 @@ export function SiteHeader() {
                                 {section.links.map((link) => (
                                   <Link
                                     key={`${section.title}-${link.label}`}
-                                    to={link.href}
+                                    target={editorNavigation ? "_top" : undefined}
+                                    to={navTo(link.href)}
                                     className="flex items-center justify-between rounded-2xl border border-transparent px-3 py-2.5 text-white transition-colors hover:border-white/10 hover:bg-white/[0.04]"
+                                    onClick={(event) => handleEditorNav(event, link.href)}
                                   >
                                     <span className="block text-sm font-semibold text-white">{link.label}</span>
                                     <ArrowRight className="size-4 shrink-0 text-white/42" />
@@ -315,8 +358,10 @@ export function SiteHeader() {
                 ) : (
                   <Link
                     key={item.label}
-                    to={item.href}
+                    target={editorNavigation ? "_top" : undefined}
+                    to={navTo(item.href)}
                     className="flex items-center justify-between rounded-[22px] border border-white/8 bg-white/[0.04] px-4 py-3 text-[0.95rem] font-semibold text-white"
+                    onClick={(event) => handleEditorNav(event, item.href)}
                   >
                     {item.label}
                     <ArrowRight className="size-4 text-white/50" />
@@ -332,9 +377,11 @@ export function SiteHeader() {
                   <p className="mt-1 truncate text-xs text-white/58">{contact.email}</p>
                 </div>
                 <Link
-                  to="/contact"
+                  target={editorNavigation ? "_top" : undefined}
+                  to={navTo("/contact")}
                   className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-slate-950 transition-transform hover:-translate-y-0.5"
                   aria-label="Contacter le cabinet"
+                  onClick={(event) => handleEditorNav(event, "/contact")}
                 >
                   <ArrowRight className="size-4" />
                 </Link>
@@ -345,4 +392,12 @@ export function SiteHeader() {
       ) : null}
     </div>
   )
+}
+
+function getEditorBuilderPath(href: string) {
+  if (href === "/") return "/admin/builder/accueil"
+
+  const slug = href.replace(/^\/pages\//, "").replace(/^\//, "").replace(/\/+$/g, "")
+
+  return slug && editablePageSlugs.has(slug) ? `/admin/builder/${slug}` : href
 }

@@ -7,6 +7,9 @@ import tailwindcss from "@tailwindcss/vite"
 import { nitro } from "nitro/vite"
 
 const config = defineConfig({
+  optimizeDeps: {
+    exclude: ["@payloadcms/db-sqlite", "file-type", "payload"],
+  },
   plugins: [
     devtools(),
     nitro(),

@@ -5,6 +5,11 @@ dist-ssr
 *.local
 count.txt
 .env
+.payload
+.vercel
+playwright-report
+public/uploads
+test-results
 .nitro
 .tanstack
 .wrangler

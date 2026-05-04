@@ -2,28 +2,35 @@ import { createFileRoute } from "@tanstack/react-router"
 import { Mail, MapPin, Phone } from "lucide-react"
 import type { ReactNode } from "react"
 
+import type { BuilderPage } from "@/builder/types"
+import { PublicPayloadBackedPage, getPublicPayloadPageHead } from "@/builder/public-page-route"
 import { PartnerLogoCarousel } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { contact } from "@/lib/site-data"
+import { getPublishedBuilderPage } from "@/server/payload/pages"
+
+const contactMeta = {
+  description: "Contactez Cogesto Consulting : adresse, email, téléphone et coordonnées.",
+  title: "Contact | Cogesto Consulting",
+}
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact | Cogesto Consulting" },
-      {
-        name: "description",
-        content:
-          "Contactez Cogesto Consulting : adresse, email, téléphone et coordonnées.",
-      },
-    ],
-  }),
+  head: ({ loaderData }) =>
+    getPublicPayloadPageHead(loaderData, contactMeta.title, contactMeta.description),
+  loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "contact" } }),
   component: ContactPage,
 })
 
 function ContactPage() {
+  const page = Route.useLoaderData() as unknown as BuilderPage | undefined
+
+  return <PublicPayloadBackedPage fallback={<ContactBasePage />} page={page} slug="contact" />
+}
+
+function ContactBasePage() {
   return (
     <PageLayout>
       <section className="inner-hero text-white">

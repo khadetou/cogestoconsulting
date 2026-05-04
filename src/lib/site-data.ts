@@ -159,6 +159,16 @@ export const siteMenuItems: Array<SiteNavItem> = [
             label: "Objectif du BLP",
           },
           {
+            description: "Accompagnement à la structuration de projets verts et durables.",
+            href: "/business-linkage-program/finance-verte-durable",
+            label: "Finance verte ou durable",
+          },
+          {
+            description: "Parcours d’accompagnement pour renforcer la posture entrepreneuriale.",
+            href: "/business-linkage-program/parcours-entrepreneur",
+            label: "Parcours de l’entrepreneur",
+          },
+          {
             description: "Consultants, experts et accompagnateurs mobilisés.",
             href: "/business-linkage-program#consultants",
             label: "Consultants du BLP",
@@ -705,6 +715,74 @@ export const programPartners = [
     name: "Fonds pour les Partenariats Africains (FAPA)",
   },
 ]
+
+export const businessLinkageOffers = [
+  {
+    description:
+      "Structurer les projets à impact, préparer les dossiers de financement et aligner les entreprises avec les exigences ESG des partenaires.",
+    href: "/business-linkage-program/finance-verte-durable",
+    image: "/media/cogesto/ai/business-linkage/finance-verte-durable.png",
+    label: "Finance verte ou durable",
+  },
+  {
+    description:
+      "Un parcours d’accompagnement pour aider les dirigeants à clarifier leur modèle, renforcer leur pilotage et accélérer leur accès au marché.",
+    href: "/business-linkage-program/parcours-entrepreneur",
+    image: "/media/cogesto/ai/business-linkage/parcours-entrepreneur.png",
+    label: "Parcours de l’entrepreneur",
+  },
+]
+
+export const businessLinkageOfferPages = {
+  "finance-verte-durable": {
+    eyebrow: "Business Linkage Program",
+    heroImage: "/media/cogesto/ai/business-linkage/finance-verte-durable.png",
+    intro:
+      "Cogesto Consulting accompagne les entrepreneurs et PME dans la structuration de projets compatibles avec les standards de finance verte, durable et à impact.",
+    lead:
+      "L’objectif est de transformer une ambition environnementale ou sociale en projet finançable, documenté et crédible auprès des banques, fonds, institutions et partenaires techniques.",
+    slug: "finance-verte-durable",
+    title: "Finance verte ou durable",
+    outcomes: [
+      "Clarification du modèle économique et de l’impact attendu.",
+      "Structuration du dossier de financement et des hypothèses clés.",
+      "Préparation des indicateurs ESG, risques et mesures d’atténuation.",
+      "Accompagnement à la présentation du projet auprès des partenaires.",
+    ],
+    steps: [
+      "Diagnostic du projet, du besoin de financement et du niveau de maturité.",
+      "Alignement avec les critères de finance durable, climat, inclusion ou transition.",
+      "Construction du plan d’action, du budget, des indicateurs et du récit investisseur.",
+      "Préparation des supports de décision et coaching avant échanges financiers.",
+    ],
+    target:
+      "Entrepreneurs, PME, organisations et porteurs de projets engagés dans l’énergie, l’agriculture, l’économie circulaire, les services essentiels ou la transition durable.",
+  },
+  "parcours-entrepreneur": {
+    eyebrow: "Business Linkage Program",
+    heroImage: "/media/cogesto/ai/business-linkage/parcours-entrepreneur.png",
+    intro:
+      "Le Parcours de l’entrepreneur aide les dirigeants à consolider leur vision, leur posture, leur organisation et leur capacité à saisir les opportunités de marché.",
+    lead:
+      "Le dispositif combine diagnostic, formation, coaching, outils de gestion et mise en situation pour faire progresser l’entreprise de manière structurée.",
+    slug: "parcours-entrepreneur",
+    title: "Parcours de l’entrepreneur",
+    outcomes: [
+      "Une vision d’entreprise clarifiée et traduite en priorités opérationnelles.",
+      "Des outils de pilotage adaptés aux réalités de l’entreprise.",
+      "Une meilleure préparation à la négociation, au financement et aux partenariats.",
+      "Un plan de croissance concret, séquencé et suivi.",
+    ],
+    steps: [
+      "Diagnostic entrepreneurial et cartographie des besoins du dirigeant.",
+      "Ateliers sur modèle économique, marché, organisation, finance et leadership.",
+      "Coaching individuel ou collectif sur les décisions clés de croissance.",
+      "Plan d’action, suivi des progrès et préparation aux opportunités commerciales.",
+    ],
+    target:
+      "Entrepreneurs, fondateurs, dirigeants de PME et équipes de croissance qui veulent passer d’une intuition à une entreprise mieux structurée.",
+  },
+} as const
 
 export const programExperts = [
   "Directeur de mission, consultant ingénieur industriel et pétrolier",
