@@ -6,7 +6,7 @@ import {
   defaultEventsPageCopy,
   defaultExpertisesPageCopy,
   defaultHomeContentCopy,
-} from "@/builder/blocks"
+} from "@/builder/default-copy"
 
 export const defaultBuilderPageData: BuilderPageData = {
   content: [

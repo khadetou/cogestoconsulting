@@ -17,3 +17,4 @@ test-results
 .vinxi
 __unconfig*
 todos.json
+.env*.local
