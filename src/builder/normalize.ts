@@ -6,6 +6,22 @@ type EditableItem = {
   [key: string]: unknown
 }
 
+const siteFooterBlock: EditableItem = {
+  props: {
+    address:
+      "Immeuble Saliou Ndione, 2ème étage, Fenêtre Mermoz, Route de la Corniche Ouest, Dakar",
+    body:
+      "Un cabinet engagé pour accompagner la croissance, la transformation et la compétitivité des organisations publiques et privées.",
+    copyright: "Copyright 2026. Tous droits réservés.",
+    email: "infos@cogestoconsulting.com",
+    id: "cogesto-site-footer",
+    phone: "+221 33 868 43 11",
+    presence: "Présence au Sénégal, au Maroc et au Canada.",
+    title: "Conseil, finance et management de la performance.",
+  },
+  type: "FooterBlock",
+}
+
 function toSlug(value: string) {
   return value
     .toLowerCase()
@@ -49,6 +65,15 @@ function normalizeContent(content: unknown, zone: string, used: Set<string>) {
     })
 }
 
+function ensureSiteFooter(content: unknown) {
+  const items = Array.isArray(content)
+    ? content.filter((item): item is EditableItem => Boolean(item) && typeof item === "object")
+    : []
+  const hasFooter = items.some((item) => item.type === "FooterBlock")
+
+  return hasFooter ? items : [...items, siteFooterBlock]
+}
+
 export function normalizeBuilderPageData(data: BuilderPageData | null | undefined): BuilderPageData {
   const used = new Set<string>()
   const root = data?.root
@@ -56,7 +81,7 @@ export function normalizeBuilderPageData(data: BuilderPageData | null | undefine
   const zones = data?.zones && typeof data.zones === "object" ? data.zones : {}
 
   return {
-    content: normalizeContent(data?.content, "default-zone", used),
+    content: normalizeContent(ensureSiteFooter(data?.content), "default-zone", used),
     root: {
       ...root,
       props: {

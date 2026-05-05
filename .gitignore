@@ -18,3 +18,7 @@ test-results
 __unconfig*
 todos.json
 .env*.local
+docs/guide-editeur-cogesto-assets/
+docs/guide-editeur-cogesto-consulting.html
+docs/guide-editeur-cogesto-consulting.pdf
+scripts/generate-client-guide.ts

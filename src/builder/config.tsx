@@ -9,6 +9,7 @@ import {
   BuilderCtaBlock,
   BuilderEventsPageContentBlock,
   BuilderExpertisesPageContentBlock,
+  BuilderFooterBlock,
   BuilderHeroBlock,
   BuilderHomeContentBlock,
   BuilderIconCardsBlock,
@@ -22,7 +23,6 @@ import {
 } from "@/builder/blocks"
 import { EditorNavigationBridge } from "@/builder/inline-editing"
 import { PageLayout } from "@/components/layout"
-import { SiteFooter } from "@/components/site-footer"
 
 export const builderConfig: Config = {
   components: {
@@ -126,6 +126,23 @@ export const builderConfig: Config = {
       permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
       render: (props) => <BuilderHeroBlock {...(props as unknown as ComponentProps<typeof BuilderHeroBlock>)} />,
     },
+    FooterBlock: {
+      defaultProps: {
+        address:
+          "Immeuble Saliou Ndione, 2ème étage, Fenêtre Mermoz, Route de la Corniche Ouest, Dakar",
+        body:
+          "Un cabinet engagé pour accompagner la croissance, la transformation et la compétitivité des organisations publiques et privées.",
+        copyright: "Copyright 2026. Tous droits réservés.",
+        email: "infos@cogestoconsulting.com",
+        phone: "+221 33 868 43 11",
+        presence: "Présence au Sénégal, au Maroc et au Canada.",
+        title: "Conseil, finance et management de la performance.",
+      },
+      fields: {},
+      label: "Footer Cogesto",
+      permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
+      render: (props) => <BuilderFooterBlock {...props} />,
+    },
     HomeContentBlock: {
       defaultProps: {
         copy: defaultHomeContentCopy,
@@ -199,10 +216,9 @@ export const builderConfig: Config = {
         <main className="overflow-x-hidden bg-background text-foreground">
           <EditorNavigationBridge />
           {children}
-          <SiteFooter />
         </main>
       ) : (
-        <PageLayout editorNavigation={Boolean(puck?.isEditing)}>
+        <PageLayout editorNavigation={Boolean(puck?.isEditing)} showFooter={false}>
           <main className="overflow-x-hidden bg-background text-foreground">
             <EditorNavigationBridge />
             {children}
