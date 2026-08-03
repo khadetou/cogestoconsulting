@@ -5,7 +5,6 @@ import { getDefaultBuilderPageData } from "@/builder/default-page-data"
 import { LiveBuilderPage } from "@/builder/live-page"
 import {
   AboutHomeSection,
-  EventsPreview,
   ExpertisePreview,
   MethodSection,
   PartnersSection,
@@ -14,23 +13,23 @@ import {
 } from "@/components/common-sections"
 import { Hero } from "@/components/hero"
 import { SiteFooter } from "@/components/site-footer"
+import { buildBreadcrumbSchema, buildSeoHead, buildServiceSchema, resolveSeoDescription, resolveSeoTitle, seoPages } from "@/lib/seo"
 import { getPublishedBuilderPage } from "@/server/payload/pages"
 
 export const Route = createFileRoute("/")({
   head: ({ loaderData }) => {
     const page = loaderData
+    const seo = seoPages.home
 
-    return {
-      meta: [
-        { title: page?.metaTitle || "Cogesto Consulting | Conseil, finance et management de la performance" },
-        {
-          name: "description",
-          content:
-            page?.metaDescription ||
-            "Cabinet de conseil et de formation au service de la performance des organisations : stratégie, finance, accompagnement organisationnel et renforcement de capacités.",
-        },
+    return buildSeoHead({
+      ...seo,
+      title: resolveSeoTitle(page?.metaTitle, seo.title),
+      description: resolveSeoDescription(page?.metaDescription, seo.description),
+      jsonLd: [
+        buildServiceSchema(seo, "Conseil, finance, formation et management de la performance"),
+        buildBreadcrumbSchema([{ name: "Accueil", path: "/" }]),
       ],
-    }
+    })
   },
   loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "accueil" } }),
   component: HomePage,
@@ -40,7 +39,7 @@ function HomePage() {
   const page = Route.useLoaderData() as unknown as BuilderPage | undefined
   const data = page?.puckData ?? getDefaultBuilderPageData("accueil")
 
-  if (!page || page.source === "fallback") {
+  if (!page) {
     return <HomeBasePage />
   }
 
@@ -56,7 +55,6 @@ function HomeBasePage() {
       <ExpertisePreview />
       <MethodSection />
       <ShowcaseSection />
-      <EventsPreview />
       <TeamSection />
       <SiteFooter />
     </main>

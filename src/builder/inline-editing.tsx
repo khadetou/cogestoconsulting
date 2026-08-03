@@ -523,7 +523,7 @@ export function InlineText({
   )
 }
 
-function InlineRichTextEditor({
+export function InlineRichTextEditor({
   as: EditingComponent,
   blockId,
   className,

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cogestoconsulting.vercel.app/sitemap.xml
+Sitemap: https://www.cogestoconsulting.com/sitemap.xml

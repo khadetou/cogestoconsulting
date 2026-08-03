@@ -26,13 +26,22 @@ const esbuildBinary = candidates.find((candidate) => {
   return result.status === 0
 })
 
-const child = spawn(command, args, {
+const commandPath = existsSync(join(process.cwd(), "node_modules/.bin", command))
+  ? join(process.cwd(), "node_modules/.bin", command)
+  : command
+
+const child = spawn(commandPath, args, {
   env: {
     ...process.env,
     ...(esbuildBinary ? { ESBUILD_BINARY_PATH: esbuildBinary } : {}),
   },
   shell: process.platform === "win32",
   stdio: "inherit",
+})
+
+child.on("error", (error) => {
+  console.error(`Failed to start ${command}: ${error.message}`)
+  process.exit(1)
 })
 
 child.on("exit", (code, signal) => {

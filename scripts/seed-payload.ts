@@ -16,39 +16,39 @@ const payload = await getPayloadClient()
 const editablePageMeta: Record<string, { metaDescription: string; metaTitle: string; title: string }> = {
   accueil: {
     metaDescription:
-      "Page éditable Cogesto Consulting, alimentée par Payload CMS et rendue par TanStack Start.",
-    metaTitle: "Page éditable | Cogesto Consulting",
-    title: "Accueil éditable",
+      "Cogesto Consulting accompagne les entreprises, PME, institutions et startups en stratégie, finance, organisation, formation et management de la performance en Afrique francophone.",
+    metaTitle: "Cogesto Consulting | Conseil, finance et management de la performance",
+    title: "Accueil",
   },
   about: {
     metaDescription:
-      "Mission, valeurs, proposition de valeur, équipe dirigeante et engagements de Cogesto Consulting.",
-    metaTitle: "À propos éditable | Cogesto Consulting",
-    title: "À propos éditable",
+      "Découvrez Cogesto Consulting, cabinet de conseil basé à Dakar : mission, valeurs, gouvernance, équipe dirigeante et engagements pour la performance durable des organisations.",
+    metaTitle: "À propos de Cogesto Consulting | Mission, valeurs et équipe",
+    title: "À propos",
   },
   expertises: {
     metaDescription:
-      "Expertises fonctionnelles et sectorielles éditables de Cogesto Consulting.",
-    metaTitle: "Expertises éditables | Cogesto Consulting",
-    title: "Expertises éditables",
+      "Explorez les expertises de Cogesto Consulting : stratégie d’entreprise, capital humain, gouvernance, performance, transformation, digitalisation, normes qualité, formation et ingénierie financière.",
+    metaTitle: "Expertises conseil, finance, organisation et digitalisation | Cogesto",
+    title: "Expertises",
   },
   "business-linkage-program": {
     metaDescription:
-      "Business Linkage Program éditable : accompagnement des PME sénégalaises pour le secteur Oil & Gas.",
-    metaTitle: "Business Linkage Program éditable | Cogesto Consulting",
-    title: "Business Linkage Program éditable",
+      "Le Business Linkage Program accompagne les PME sénégalaises dans le secteur Oil & Gas : diagnostics, renforcement de capacités, accès marché, financement et contenu local.",
+    metaTitle: "Business Linkage Program Sénégal | PME, Oil & Gas et contenu local",
+    title: "Business Linkage Program",
   },
   events: {
     metaDescription:
-      "Évènements éditables de Cogesto Consulting : cérémonies, formations et sessions de coaching.",
-    metaTitle: "Évènements éditables | Cogesto Consulting",
-    title: "Évènements éditables",
+      "Retrouvez les évènements, formations, séminaires, coaching de dirigeants et galeries d’activités organisés ou animés par Cogesto Consulting.",
+    metaTitle: "Évènements et formations | Cogesto Consulting",
+    title: "Évènements",
   },
   contact: {
     metaDescription:
-      "Contact éditable Cogesto Consulting : adresse, email, téléphone et coordonnées.",
-    metaTitle: "Contact éditable | Cogesto Consulting",
-    title: "Contact éditable",
+      "Contactez Cogesto Consulting à Dakar pour vos besoins en stratégie, organisation, finance, performance, formation, digitalisation et accompagnement PME.",
+    metaTitle: "Contact Cogesto Consulting | Conseil et formation à Dakar",
+    title: "Contact",
   },
 }
 

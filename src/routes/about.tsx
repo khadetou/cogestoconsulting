@@ -12,19 +12,28 @@ import {
   aboutExecutiveCommittee,
   aboutPresidentMessage,
   commitments,
-  leaders,
   socialCommitments,
-  values,
+  valueCards,
 } from "@/lib/site-data"
+import { buildBreadcrumbSchema, seoPages } from "@/lib/seo"
 import { getPublishedBuilderPage } from "@/server/payload/pages"
 
 const aboutMeta = {
-  description: "Mission, valeurs, proposition de valeur, équipe dirigeante et engagements de Cogesto Consulting.",
-  title: "À propos | Cogesto Consulting",
+  description: seoPages.about.description,
+  title: seoPages.about.title,
 }
 
 export const Route = createFileRoute("/about")({
-  head: ({ loaderData }) => getPublicPayloadPageHead(loaderData, aboutMeta.title, aboutMeta.description),
+  head: ({ loaderData }) =>
+    getPublicPayloadPageHead(loaderData, aboutMeta.title, aboutMeta.description, {
+      ...seoPages.about,
+      jsonLd: [
+        buildBreadcrumbSchema([
+          { name: "Accueil", path: "/" },
+          { name: "À propos", path: "/about" },
+        ]),
+      ],
+    }),
   loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "about" } }),
   component: AboutPage,
 })
@@ -42,7 +51,7 @@ function AboutBasePage() {
         <div className="site-container py-20 sm:py-28">
           <p className="eyebrow text-white/70 before:bg-white/20">À propos</p>
           <h1 className="mt-5 max-w-4xl font-heading text-4xl font-semibold leading-tight tracking-tight text-white sm:text-6xl">
-            Mission, valeurs, équipe et engagements.
+            Vision, mission, valeurs et engagements.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-white/72">
             Cogesto Consulting contribue au développement de l’Afrique à travers la consultance et la formation, avec la conviction que la performance durable passe par l’émergence d’entreprises championnes, créatrices de valeur et capables de grandir dans leur écosystème.
@@ -76,35 +85,48 @@ function AboutBasePage() {
         </div>
       </section>
 
-      <section id="mission" className="py-16 sm:py-20">
+      <section id="mission" className="bg-white py-16 sm:py-20">
         <div className="page-shell">
-          <div className="grid gap-6 lg:grid-cols-2">
-            <article className="rounded-[30px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-              <span className="eyebrow before:hidden">Notre mission</span>
-              <h2 className="section-title mt-5 max-w-[14ch]">Mettre l’expertise au service de la performance.</h2>
-              <p className="section-copy mt-5">
-                Mettre notre expertise au service de la performance des organisations en favorisant le développement de leur capital humain et la création de valeur.
-              </p>
-              <p className="section-copy mt-4">
-                Cogesto Consulting aide les clients à résoudre des problèmes importants afin d’assurer le développement durable de leur entreprise. Créer de la valeur en apportant aux entreprises un savoir-faire éprouvé est notre credo.
-              </p>
-              <p className="section-copy mt-4">
-                C’est pourquoi, Cogesto Consulting a mobilisé des experts capables d’apporter leur expertise sectorielle et fonctionnelle aux clients publics et privés, afin de leur permettre de répondre aux enjeux stratégiques et opérationnels spécifiques à leurs besoins et réalités.
-              </p>
-              <p className="section-copy mt-4">
-                Les méthodes et approches utilisées favorisent le renforcement des compétences des collaborateurs des clients, à travers un mécanisme de partage du retour d’expérience d’experts seniors.
-              </p>
+          <div className="grid gap-12 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+            <article>
+              <span className="eyebrow before:hidden !text-[#978360]">Notre mission</span>
+              <h2 className="mt-5 max-w-[12ch] font-heading text-[2rem] leading-[1.05] tracking-tight text-[#152036] md:text-[2.8rem]">
+                Mettre l’expertise au service de la performance.
+              </h2>
+              <div className="mt-7 space-y-5">
+                <p className="text-[1.02rem] leading-8 text-[#4f5f76]">
+                  Nous mettons notre expertise au service de la croissance et de la compétitivité des startups et entreprises d’Afrique francophone actives dans des secteurs stratégiques tels que l’agro-industrie et le numérique.
+                </p>
+                <p className="text-[1.02rem] leading-8 text-[#4f5f76]">
+                  Nous accompagnons leur transformation structurelle, organisationnelle, opérationnelle, stratégique et digitale, en leur offrant des solutions innovantes, durables et adaptées à leurs besoins, pour renforcer leurs capacités, faciliter leur accès aux marchés et aux financements.
+                </p>
+                <p className="text-[1.02rem] leading-8 text-[#4f5f76]">
+                  Notre intervention vise à renforcer leur performance et leur résilience, tout en soutenant la création de valeur durable.
+                </p>
+              </div>
             </article>
 
-            <article id="valeurs" className="rounded-[30px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
+            <article id="valeurs" className="rounded-[30px] border border-[#d8e6f4] bg-[#f4f8fb] p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
               <span className="eyebrow before:hidden">Nos valeurs</span>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {values.map((value) => (
-                  <div key={value} className="flex items-center gap-3 rounded-[22px] border border-slate-200 bg-slate-50 px-4 py-4 text-slate-800">
-                    <span className="inline-flex size-9 items-center justify-center rounded-full bg-white text-primary shadow-[0_8px_18px_rgba(15,23,42,0.06)]">
-                      <Check className="size-4" />
+              <p className="mt-3 text-[1rem] leading-7 text-slate-600">Notre approche est principalement basée sur :</p>
+              <div className="mt-6 overflow-hidden rounded-[28px] border border-[#d8e6f4] bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                {valueCards.map((value) => (
+                  <div key={value.title} className="grid gap-4 border-t border-[#d8e6f4] px-5 py-5 text-center first:border-t-0 sm:grid-cols-[7.5rem_1fr_2.25rem] sm:items-center sm:text-left">
+                    <div className="mx-auto flex size-28 items-center justify-center rounded-[24px] bg-[#f8fbff] sm:mx-0">
+                      <img src={value.image} alt={value.title} className="size-full scale-[1.15] object-contain" loading="lazy" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-center gap-2 sm:justify-start">
+                        <span className="text-base font-semibold text-[#172238]">{value.title}</span>
+                        <span className="inline-flex size-6 items-center justify-center rounded-full bg-[#152036] text-white sm:hidden">
+                          <Check className="size-3" />
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{value.summary}</p>
+                    </div>
+                    <span className="hidden size-8 items-center justify-center rounded-full bg-[#152036] text-white sm:inline-flex">
+                      <Check className="size-3.5" />
                     </span>
-                    <span className="font-semibold">{value}</span>
                   </div>
                 ))}
               </div>
@@ -121,6 +143,9 @@ function AboutBasePage() {
               <h2 className="section-title mt-6 max-w-[12ch]">
                 Une approche <span className="accent-text">ancrée dans l’analyse et l’action.</span>
               </h2>
+              <p className="section-copy mt-5 max-w-[42ch]">
+                Notre approche est principalement basée sur des méthodes concrètes, un diagnostic ciblé et un accompagnement interactif.
+              </p>
             </div>
             <div className="grid gap-4">
               {aboutApproach.map((item) => (
@@ -138,20 +163,25 @@ function AboutBasePage() {
           <div className="mx-auto max-w-3xl text-center">
             <span className="eyebrow justify-center before:hidden">Notre équipe</span>
             <h2 className="section-title mt-6">
-              Une équipe de direction <span className="accent-text">à forte expérience.</span>
+              Une gouvernance et un comité de direction <span className="accent-text">à forte expérience.</span>
             </h2>
+            <p className="section-copy mt-5">
+              Le conseil d’administration et le comité exécutif réunissent des profils expérimentés en conseil, finance, droit, organisation, ressources humaines et politiques publiques.
+            </p>
           </div>
 
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {leaders.map((leader) => (
-              <ProfileCard key={leader.name} {...leader} />
-            ))}
-          </div>
+          <ProfileGrid
+            eyebrow="Le Conseil d’Administration"
+            intro="Le conseil d’administration de Cogesto Consulting est composé d’administrateurs expérimentés ayant une expérience avérée en tant que consultants et managers."
+            people={aboutBoardMembers}
+          />
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
-            <PeopleList eyebrow="Conseil d’administration" people={aboutBoardMembers} />
-            <PeopleList eyebrow="Comité exécutif" people={aboutExecutiveCommittee} />
-          </div>
+          <ProfileGrid
+            className="mt-14"
+            eyebrow="Notre comité exécutif"
+            intro="Un comité de direction réunissant des profils seniors aux expériences complémentaires en conseil, entreprise et institutions internationales."
+            people={aboutExecutiveCommittee}
+          />
         </div>
       </section>
 
@@ -221,18 +251,20 @@ function AboutBasePage() {
 
 function ProfileCard({
   image,
+  imageScale,
   name,
   role,
   summary,
 }: {
   image: string
+  imageScale?: number
   name: string
   role: string
   summary: string
 }) {
   return (
     <article className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]">
-      <TeamPortrait src={image} alt={name} />
+      <TeamPortrait src={image} alt={name} imageScale={imageScale} />
       <div className="p-5">
         <h3 className="font-heading text-[1.45rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{name}</h3>
         <p className="mt-1 text-sm font-semibold text-primary">{role}</p>
@@ -242,25 +274,28 @@ function ProfileCard({
   )
 }
 
-function PeopleList({
+function ProfileGrid({
+  className = "mt-12",
   eyebrow,
+  intro,
   people,
 }: {
+  className?: string
   eyebrow: string
-  people: Array<{ name: string; role: string; summary: string }>
+  intro: string
+  people: Array<{ image: string; imageScale?: number; name: string; role: string; summary: string }>
 }) {
   return (
-    <article className="rounded-[30px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-      <span className="eyebrow before:hidden">{eyebrow}</span>
-      <div className="mt-5 grid gap-4">
-        {people.map((member) => (
-          <div key={`${member.name}-${member.role}`} className="rounded-[22px] border border-slate-200 bg-slate-50 px-5 py-4">
-            <h3 className="font-heading text-[1.25rem] leading-[1.1] tracking-[-0.03em] text-slate-950">{member.name}</h3>
-            <p className="mt-2 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">{member.role}</p>
-            <p className="mt-3 text-[0.98rem] leading-6 text-slate-600">{member.summary}</p>
-          </div>
+    <div className={className}>
+      <div className="mb-6 max-w-3xl">
+        <span className="eyebrow before:hidden">{eyebrow}</span>
+        <p className="mt-3 text-[1rem] leading-7 text-slate-600">{intro}</p>
+      </div>
+      <div className={`grid gap-5 md:grid-cols-2 ${people.length === 4 ? "xl:grid-cols-4" : "xl:grid-cols-3"}`}>
+        {people.map((person) => (
+          <ProfileCard key={`${eyebrow}-${person.name}`} {...person} />
         ))}
       </div>
-    </article>
+    </div>
   )
 }
