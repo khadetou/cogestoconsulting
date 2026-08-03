@@ -7,7 +7,6 @@ import { getDefaultBuilderPageData } from "@/builder/default-page-data"
 import { normalizeBuilderPageData } from "@/builder/normalize"
 import type { SiteNavItem, SiteNavLink } from "@/lib/site-data"
 import { siteMenuItems } from "@/lib/site-data"
-import { getPayloadClient } from "@/server/payload/client"
 
 const editorTokenCookie = "cogesto-editor-token"
 const navigationSettingsKey = "site-navigation"
@@ -21,8 +20,12 @@ const formationNavItem: SiteNavItem = {
   href: "/expertises#formation",
   label: "Formation",
 }
+const hasPayloadConfiguration = Boolean(
+  (process.env.DATABASE_URL ?? process.env.PAYLOAD_DATABASE_URL) && process.env.PAYLOAD_SECRET,
+)
 const usePayloadPublicPages =
-  process.env.NODE_ENV === "production" || process.env.COGESTO_USE_PAYLOAD_PUBLIC === "true"
+  hasPayloadConfiguration &&
+  (process.env.NODE_ENV === "production" || process.env.COGESTO_USE_PAYLOAD_PUBLIC === "true")
 
 type LoginInput = {
   data?: {
@@ -53,6 +56,12 @@ function normalizeSlug(slug: string) {
     .trim()
     .replace(/^\/+|\/+$/g, "")
     .toLowerCase()
+}
+
+async function getPayloadClientForRequest() {
+  const payloadClient = await import("@/server/payload/client")
+
+  return payloadClient.getPayloadClient()
 }
 
 function fallbackPage(slug: string): BuilderPage {
@@ -209,7 +218,7 @@ function toBuilderPage(doc: Record<string, unknown>): BuilderPage {
 }
 
 async function findPageBySlug(slug: string, draft: boolean) {
-  const payload = await getPayloadClient()
+  const payload = await getPayloadClientForRequest()
 
   const result = await payload.find({
     collection: "pages",
@@ -235,7 +244,7 @@ async function requireEditor() {
     throw new Error("Authentification requise")
   }
 
-  const payload = await getPayloadClient()
+  const payload = await getPayloadClientForRequest()
   const auth = await payload.auth({
     headers: new Headers({
       authorization: `JWT ${token}`,
@@ -276,7 +285,7 @@ export const saveBuilderPage = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireEditor()
 
-    const payload = await getPayloadClient()
+    const payload = await getPayloadClientForRequest()
     const slug = normalizeSlug(data.slug)
     const existing = await findPageBySlug(slug, true)
     const pageData = {
@@ -315,7 +324,7 @@ export const loginEditor = createServerFn({ method: "POST" })
     return data
   })
   .handler(async ({ data }) => {
-    const payload = await getPayloadClient()
+    const payload = await getPayloadClientForRequest()
     const credentials = normalizeLoginInput(data)
 
     const result = await payload.login({
@@ -354,7 +363,7 @@ export const getSiteNavigationSettings = createServerFn({ method: "GET" }).handl
     return { items: siteMenuItems }
   }
 
-  const payload = await getPayloadClient()
+  const payload = await getPayloadClientForRequest()
   const result = await payload.find({
     collection: "site-settings",
     depth: 0,
@@ -386,7 +395,7 @@ export const saveSiteNavigationSettings = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireEditor()
 
-    const payload = await getPayloadClient()
+    const payload = await getPayloadClientForRequest()
     const items = sanitizeNavigationItems(data?.items)
     const existing = await payload.find({
       collection: "site-settings",
