@@ -10,16 +10,25 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { contact } from "@/lib/site-data"
+import { buildBreadcrumbSchema, seoPages } from "@/lib/seo"
 import { getPublishedBuilderPage } from "@/server/payload/pages"
 
 const contactMeta = {
-  description: "Contactez Cogesto Consulting : adresse, email, téléphone et coordonnées.",
-  title: "Contact | Cogesto Consulting",
+  description: seoPages.contact.description,
+  title: seoPages.contact.title,
 }
 
 export const Route = createFileRoute("/contact")({
   head: ({ loaderData }) =>
-    getPublicPayloadPageHead(loaderData, contactMeta.title, contactMeta.description),
+    getPublicPayloadPageHead(loaderData, contactMeta.title, contactMeta.description, {
+      ...seoPages.contact,
+      jsonLd: [
+        buildBreadcrumbSchema([
+          { name: "Accueil", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ]),
+      ],
+    }),
   loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "contact" } }),
   component: ContactPage,
 })
@@ -93,10 +102,7 @@ function ContactBasePage() {
       <section className="partners-section py-16 sm:py-20">
         <div className="page-shell">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="eyebrow justify-center before:hidden">Faites comme nos partenaires</span>
-            <h2 className="section-title mt-6">
-              Rejoignez <span className="accent-text">l’aventure.</span>
-            </h2>
+            <h2 className="section-title">Faites comme nos partenaires, rejoignez l’aventure !</h2>
           </div>
 
           <PartnerLogoCarousel />

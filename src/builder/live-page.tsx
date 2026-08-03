@@ -50,6 +50,8 @@ export function LiveBuilderPage({
   }, [getPage, slug])
 
   useEffect(() => {
+    if (!shouldUseBuilderLiveSync()) return
+
     return subscribeToBuilderPageUpdates((event) => {
       if (event.slug !== slug || event.status !== "published") return
       void refreshPublishedPage()
@@ -57,12 +59,22 @@ export function LiveBuilderPage({
   }, [refreshPublishedPage, slug])
 
   useEffect(() => {
+    if (!shouldUseBuilderLiveSync()) return
+
     const interval = window.setInterval(() => {
       if (document.visibilityState === "visible") void refreshPublishedPage()
-    }, 1000)
+    }, 2500)
 
     return () => window.clearInterval(interval)
   }, [refreshPublishedPage])
 
   return <BuilderPageRenderer data={renderData} />
+}
+
+function shouldUseBuilderLiveSync() {
+  if (typeof window === "undefined") return false
+  if (import.meta.env.DEV) return true
+  if (window.parent !== window) return true
+
+  return new URLSearchParams(window.location.search).has("builder-live")
 }

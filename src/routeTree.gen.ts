@@ -9,18 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WpArchiveProxyRouteImport } from './routes/wp-archive-proxy'
+import { Route as RapportStudioRouteImport } from './routes/rapport-studio'
+import { Route as PortalRouteImport } from './routes/portal'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ExpertisesRouteImport } from './routes/expertises'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessLinkageProgramRouteImport } from './routes/business-linkage-program'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WpArchiveProxySplatRouteImport } from './routes/wp-archive-proxy.$'
 import { Route as PagesSlugRouteImport } from './routes/pages.$slug'
+import { Route as EventSlugRouteImport } from './routes/event.$slug'
 import { Route as BusinessLinkageProgramParcoursEntrepreneurRouteImport } from './routes/business-linkage-program_.parcours-entrepreneur'
 import { Route as BusinessLinkageProgramFinanceVerteDurableRouteImport } from './routes/business-linkage-program_.finance-verte-durable'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminBuilderSlugRouteImport } from './routes/admin.builder.$slug'
 
+const WpArchiveProxyRoute = WpArchiveProxyRouteImport.update({
+  id: '/wp-archive-proxy',
+  path: '/wp-archive-proxy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RapportStudioRoute = RapportStudioRouteImport.update({
+  id: '/rapport-studio',
+  path: '/rapport-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExpertisesRoute = ExpertisesRouteImport.update({
   id: '/expertises',
   path: '/expertises',
@@ -51,9 +77,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WpArchiveProxySplatRoute = WpArchiveProxySplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => WpArchiveProxyRoute,
+} as any)
 const PagesSlugRoute = PagesSlugRouteImport.update({
   id: '/pages/$slug',
   path: '/pages/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventSlugRoute = EventSlugRouteImport.update({
+  id: '/event/$slug',
+  path: '/event/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessLinkageProgramParcoursEntrepreneurRoute =
@@ -86,10 +122,16 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
+  '/rapport-studio': typeof RapportStudioRoute
+  '/wp-archive-proxy': typeof WpArchiveProxyRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/business-linkage-program/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
   '/business-linkage-program/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  '/event/$slug': typeof EventSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
+  '/wp-archive-proxy/$': typeof WpArchiveProxySplatRoute
   '/admin/builder/$slug': typeof AdminBuilderSlugRoute
 }
 export interface FileRoutesByTo {
@@ -99,10 +141,16 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
+  '/rapport-studio': typeof RapportStudioRoute
+  '/wp-archive-proxy': typeof WpArchiveProxyRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/business-linkage-program/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
   '/business-linkage-program/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  '/event/$slug': typeof EventSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
+  '/wp-archive-proxy/$': typeof WpArchiveProxySplatRoute
   '/admin/builder/$slug': typeof AdminBuilderSlugRoute
 }
 export interface FileRoutesById {
@@ -113,10 +161,16 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
+  '/rapport-studio': typeof RapportStudioRoute
+  '/wp-archive-proxy': typeof WpArchiveProxyRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/business-linkage-program_/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
   '/business-linkage-program_/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  '/event/$slug': typeof EventSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
+  '/wp-archive-proxy/$': typeof WpArchiveProxySplatRoute
   '/admin/builder/$slug': typeof AdminBuilderSlugRoute
 }
 export interface FileRouteTypes {
@@ -128,10 +182,16 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/login'
+    | '/portal'
+    | '/rapport-studio'
+    | '/wp-archive-proxy'
     | '/admin/login'
     | '/business-linkage-program/finance-verte-durable'
     | '/business-linkage-program/parcours-entrepreneur'
+    | '/event/$slug'
     | '/pages/$slug'
+    | '/wp-archive-proxy/$'
     | '/admin/builder/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -141,10 +201,16 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/login'
+    | '/portal'
+    | '/rapport-studio'
+    | '/wp-archive-proxy'
     | '/admin/login'
     | '/business-linkage-program/finance-verte-durable'
     | '/business-linkage-program/parcours-entrepreneur'
+    | '/event/$slug'
     | '/pages/$slug'
+    | '/wp-archive-proxy/$'
     | '/admin/builder/$slug'
   id:
     | '__root__'
@@ -154,10 +220,16 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/login'
+    | '/portal'
+    | '/rapport-studio'
+    | '/wp-archive-proxy'
     | '/admin/login'
     | '/business-linkage-program_/finance-verte-durable'
     | '/business-linkage-program_/parcours-entrepreneur'
+    | '/event/$slug'
     | '/pages/$slug'
+    | '/wp-archive-proxy/$'
     | '/admin/builder/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -168,15 +240,48 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   ExpertisesRoute: typeof ExpertisesRoute
+  LoginRoute: typeof LoginRoute
+  PortalRoute: typeof PortalRoute
+  RapportStudioRoute: typeof RapportStudioRoute
+  WpArchiveProxyRoute: typeof WpArchiveProxyRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   BusinessLinkageProgramFinanceVerteDurableRoute: typeof BusinessLinkageProgramFinanceVerteDurableRoute
   BusinessLinkageProgramParcoursEntrepreneurRoute: typeof BusinessLinkageProgramParcoursEntrepreneurRoute
+  EventSlugRoute: typeof EventSlugRoute
   PagesSlugRoute: typeof PagesSlugRoute
   AdminBuilderSlugRoute: typeof AdminBuilderSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wp-archive-proxy': {
+      id: '/wp-archive-proxy'
+      path: '/wp-archive-proxy'
+      fullPath: '/wp-archive-proxy'
+      preLoaderRoute: typeof WpArchiveProxyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rapport-studio': {
+      id: '/rapport-studio'
+      path: '/rapport-studio'
+      fullPath: '/rapport-studio'
+      preLoaderRoute: typeof RapportStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/expertises': {
       id: '/expertises'
       path: '/expertises'
@@ -219,11 +324,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wp-archive-proxy/$': {
+      id: '/wp-archive-proxy/$'
+      path: '/$'
+      fullPath: '/wp-archive-proxy/$'
+      preLoaderRoute: typeof WpArchiveProxySplatRouteImport
+      parentRoute: typeof WpArchiveProxyRoute
+    }
     '/pages/$slug': {
       id: '/pages/$slug'
       path: '/pages/$slug'
       fullPath: '/pages/$slug'
       preLoaderRoute: typeof PagesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/event/$slug': {
+      id: '/event/$slug'
+      path: '/event/$slug'
+      fullPath: '/event/$slug'
+      preLoaderRoute: typeof EventSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business-linkage-program_/parcours-entrepreneur': {
@@ -257,6 +376,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface WpArchiveProxyRouteChildren {
+  WpArchiveProxySplatRoute: typeof WpArchiveProxySplatRoute
+}
+
+const WpArchiveProxyRouteChildren: WpArchiveProxyRouteChildren = {
+  WpArchiveProxySplatRoute: WpArchiveProxySplatRoute,
+}
+
+const WpArchiveProxyRouteWithChildren = WpArchiveProxyRoute._addFileChildren(
+  WpArchiveProxyRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -264,11 +395,16 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   ExpertisesRoute: ExpertisesRoute,
+  LoginRoute: LoginRoute,
+  PortalRoute: PortalRoute,
+  RapportStudioRoute: RapportStudioRoute,
+  WpArchiveProxyRoute: WpArchiveProxyRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   BusinessLinkageProgramFinanceVerteDurableRoute:
     BusinessLinkageProgramFinanceVerteDurableRoute,
   BusinessLinkageProgramParcoursEntrepreneurRoute:
     BusinessLinkageProgramParcoursEntrepreneurRoute,
+  EventSlugRoute: EventSlugRoute,
   PagesSlugRoute: PagesSlugRoute,
   AdminBuilderSlugRoute: AdminBuilderSlugRoute,
 }

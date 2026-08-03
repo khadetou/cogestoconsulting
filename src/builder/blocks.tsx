@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   BriefcaseBusiness,
   Check,
+  ChevronDown,
   CirclePlay,
   Handshake,
   Leaf,
@@ -11,7 +12,7 @@ import {
   MapPin,
   MoveRight,
   Phone,
-  RouteIcon,
+  Search,
   ShieldCheck,
   Sparkles,
   Target,
@@ -19,28 +20,27 @@ import {
   Users,
 } from "lucide-react"
 import type { ReactNode } from "react"
+import { useEffect, useState } from "react"
 
-import type { InlineRichTextMap, InlineTextStyleMap } from "@/builder/inline-editing"
+import type { InlineRichTextMap, InlineTextStyleMap } from "@/builder/inline-editing-public"
 import type { AnimationPreset } from "@/builder/types"
 import { AnimatedBlock } from "@/builder/animation"
-import { InlineText, TextStyleProvider, handleBuilderLinkClick } from "@/builder/inline-editing"
+import { InlineText, TextStyleProvider, handleBuilderLinkClick } from "@/builder/inline-editing-public"
 import { PartnerLogoCarousel } from "@/components/common-sections"
+import { ProgramExpertCard } from "@/components/program-expert-card"
 import { SiteHeader } from "@/components/site-header"
 import { TeamPortrait } from "@/components/team-portrait"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import {
   aboutApproach,
   aboutBoardMembers,
   aboutExecutiveCommittee,
   aboutPresidentMessage,
-  businessLinkageOffers,
   commitments,
   contact,
   detailedFunctionalExpertise,
-  eventGalleries,
   events,
   footerLinks,
   homeProcessSteps,
@@ -48,14 +48,17 @@ import {
   leaders,
   programConsultants,
   programContextHighlights,
-  programEventGallery,
   programExpertRoster,
+  programEvents,
+  programEventGallery,
+  programKeyFigures,
   programObjectives,
   programPartners,
   programResults,
   sectorExpertise,
   socialCommitments,
   socialLinks,
+  valueCards,
   values,
 } from "@/lib/site-data"
 import { cn } from "@/lib/utils"
@@ -135,19 +138,25 @@ export type HomeContentCopy = {
   }
 }
 
+const aboutMissionParagraphs = [
+  "Nous mettons notre expertise au service de la croissance et de la compétitivité des startups et entreprises d’Afrique francophone actives dans des secteurs stratégiques tels que l’agro-industrie et le numérique.",
+  "Nous accompagnons leur transformation structurelle, organisationnelle, opérationnelle, stratégique et digitale, en leur offrant des solutions innovantes, durables et adaptées à leurs besoins, pour renforcer leurs capacités, faciliter leur accès aux marchés et aux financements.",
+  "Notre intervention vise à renforcer leur performance et leur résilience, tout en soutenant la création de valeur durable.",
+]
+
 export const defaultHomeContentCopy: HomeContentCopy = {
   about: {
     badge: "Une équipe composée de professionnels hautement qualifiés et expérimentés.",
-    body: "Cogesto Consulting aide les clients à résoudre des problèmes importants afin d’assurer le développement durable de leur entreprise. Son approche combine expertise sectorielle, expertise fonctionnelle et transfert de compétences.",
+    body: "Cogesto Consulting aide ses clients à bâtir une organisation performante et durable. Notre méthode, éprouvée par des expériences et expertises sectorielles diverses, favorise le transfert de compétences et renforce la performance collective des équipes.",
     buttonLabel: "Découvrir le cabinet",
     eyebrow: "À propos",
     missionBody:
-      "Une démarche orientée diagnostic, outils pratiques, accompagnement personnalisé et résultats durables.",
+      "Nous mettons notre expertise au service de la croissance et de la compétitivité des startups et entreprises d’Afrique francophone actives dans des secteurs stratégiques tels que l’agro-industrie et le numérique.",
     missionEyebrow: "Mission",
     missionTitle:
-      "Mettre l’expertise au service de la performance, du capital humain et de la création de valeur.",
-    titleAccent: "performance des organisations.",
-    titleLead: "Un cabinet engagé pour la",
+      "Mettre l’expertise au service de la performance des organisations et des équipes.",
+    titleAccent: "faisons.",
+    titleLead: "Ce que nous",
   },
   events: {
     body: "Cogesto Consulting déploie des programmes, des formations et des sessions de coaching pour renforcer la préparation des entreprises face à leurs nouveaux marchés.",
@@ -170,8 +179,8 @@ export const defaultHomeContentCopy: HomeContentCopy = {
       tag: service.tag,
       title: service.title,
     })),
-    titleAccent: "créer de la valeur et renforcer la compétitivité.",
-    titleLead: "Des expertises conçues pour",
+    titleAccent: "segments d’expertises !",
+    titleLead: "Découvrez nos principaux",
   },
   method: {
     buttonLabel: "Notre proposition de valeur",
@@ -179,11 +188,11 @@ export const defaultHomeContentCopy: HomeContentCopy = {
       description: step.description,
       title: step.title,
     })),
-    titleAccent: "clarifiée.",
-    titleLead: "Notre démarche,",
+    titleAccent: "prestations à forte valeur ajoutée !",
+    titleLead: "Un cabinet de conseil avec des",
   },
   partners: {
-    title: "Références et partenaires",
+    title: "Ils nous ont fait confiance !",
   },
   showcase: {
     caption: "Le programme accompagne la croissance des entreprises dans le secteur du pétrole et du gaz.",
@@ -245,6 +254,48 @@ function mergeTextItems(defaultItems: Array<HomeTextItem> = [], customItems: Arr
   }))
 }
 
+function mergeRecords<T extends Record<string, unknown>>(defaultItems: Array<T>, customItems?: Array<Partial<T>>) {
+  const custom = Array.isArray(customItems) ? customItems : []
+  const length = Math.max(defaultItems.length, custom.length)
+
+  return Array.from({ length }, (_, index) => ({
+    ...(defaultItems[index] ?? {}),
+    ...(custom[index] ?? {}),
+  })) as Array<T>
+}
+
+function mergeBlpCopy(copy?: Partial<typeof defaultBlpPageCopy>) {
+  return {
+    ...defaultBlpPageCopy,
+    ...copy,
+    context: copy?.context?.length ? copy.context : defaultBlpPageCopy.context,
+    events: mergeRecords(defaultBlpPageCopy.events, copy?.events),
+    programConsultants: mergeRecords(defaultBlpPageCopy.programConsultants, copy?.programConsultants),
+    programContextHighlights: copy?.programContextHighlights?.length
+      ? copy.programContextHighlights
+      : defaultBlpPageCopy.programContextHighlights,
+    programEventGallery: mergeRecords(defaultBlpPageCopy.programEventGallery, copy?.programEventGallery),
+    programObjectives: copy?.programObjectives?.length ? copy.programObjectives : defaultBlpPageCopy.programObjectives,
+    programPartners: mergeRecords(defaultBlpPageCopy.programPartners, copy?.programPartners),
+    programResults: copy?.programResults?.length ? copy.programResults : defaultBlpPageCopy.programResults,
+  }
+}
+
+function mergeEventsCopy(copy?: Partial<typeof defaultEventsPageCopy>) {
+  return {
+    ...defaultEventsPageCopy,
+    ...copy,
+    events: defaultEventsPageCopy.events,
+  }
+}
+
+function mergeContactCopy(copy?: Partial<typeof defaultContactPageCopy>) {
+  return {
+    ...defaultContactPageCopy,
+    ...copy,
+  }
+}
+
 const expertiseVisuals: Record<string, { icon: string; image: string; kicker: string }> = {
   "Appui aux fonctions supports des entreprises": {
     icon: "mdi:office-building-cog",
@@ -261,6 +312,11 @@ const expertiseVisuals: Record<string, { icon: string; image: string; kicker: st
     image: "/media/cogesto/services/Design-sans-titre-21-3.jpg",
     kicker: "Finance",
   },
+  Digitalisation: {
+    icon: "mdi:monitor-dashboard",
+    image: "/media/cogesto/ai/services/digitalisation-ai.png",
+    kicker: "Digitalisation",
+  },
   "Formation, séminaires et Team building": {
     icon: "mdi:school-outline",
     image: "/media/cogesto/services/Design-sans-titre-26.jpg",
@@ -275,6 +331,11 @@ const expertiseVisuals: Record<string, { icon: string; image: string; kicker: st
     icon: "mdi:chart-line",
     image: "/media/cogesto/services/Design-sans-titre-23.jpg",
     kicker: "Performance",
+  },
+  "Norme et Qualité": {
+    icon: "mdi:clipboard-check-outline",
+    image: "/media/cogesto/ai/services/norme-qualite-ai.png",
+    kicker: "Qualité",
   },
   "Organisation et Capital Humain": {
     icon: "mdi:account-group-outline",
@@ -293,45 +354,76 @@ const expertiseVisuals: Record<string, { icon: string; image: string; kicker: st
   },
 }
 
+const formationExpertiseTitle = "Formation, séminaires et Team building"
+
 const sectorIcons: Record<string, string> = {
   "Agro-alimentaire / Agro business": "mdi:sprout",
+  "Agences publiques": "mdi:office-building-outline",
+  Automobile: "mdi:car",
   "Banques et services financiers": "mdi:bank-outline",
+  "Construction métallique": "mdi:hammer-wrench",
   Distribution: "mdi:storefront-outline",
-  "Énergie et hydrocarbures": "mdi:fire-circle",
-  "Hôtellerie / Tourisme": "mdi:briefcase-variant-outline",
+  "Énergie et électricité": "mdi:transmission-tower",
+  "Éducation": "mdi:school-outline",
+  "Étude, ingénierie et conseil": "mdi:clipboard-search-outline",
+  "Hôtel & restauration": "mdi:silverware-fork-knife",
   "Immobilier / BTP": "mdi:crane",
   Industrie: "mdi:factory",
+  "Mécanique générale": "mdi:cog-outline",
   "Microfinance et SFD": "mdi:hand-coin-outline",
+  "Oil & Gas": "mdi:oil",
+  ONG: "mdi:hand-heart-outline",
+  Organismes: "mdi:domain",
   Santé: "mdi:medical-bag",
-  Services: "mdi:briefcase-check-outline",
-  "TIC, ONG et collectivités locales": "mdi:earth",
+  TIC: "mdi:monitor-cellphone",
   "Transport et logistique": "mdi:truck-delivery-outline",
+  "Transport maritime": "mdi:ferry",
 }
 
 const sectorGroups = [
   {
     description:
-      "Une lecture opérationnelle des chaînes de valeur industrielles, énergétiques et logistiques, avec une attention forte aux exigences de performance et de contenu local.",
+      "Une lecture opérationnelle des chaînes de valeur industrielles, agroalimentaires, énergétiques et d’infrastructures, avec une attention forte aux exigences de performance et de contenu local.",
     icon: "mdi:factory",
     image: "/media/cogesto/extra/expertise-cogesto.jpg",
-    sectors: ["Industrie", "Énergie et hydrocarbures", "Immobilier / BTP", "Transport et logistique"],
+    sectors: [
+      "Industrie",
+      "Agro-alimentaire / Agro business",
+      "Oil & Gas",
+      "Immobilier / BTP",
+      "Construction métallique",
+      "Automobile",
+      "Énergie et électricité",
+      "Mécanique générale",
+    ],
     title: "Industrie & infrastructures",
   },
   {
     description:
-      "Un accompagnement des acteurs de marché dans leurs enjeux de croissance, structuration, pilotage financier, distribution et transformation des services.",
+      "Un accompagnement des organisations de services dans leurs enjeux de croissance, structuration, pilotage financier, distribution, transport et relation client.",
     icon: "mdi:chart-areaspline",
     image: "/media/cogesto/services/Design-sans-titre-23.jpg",
-    sectors: ["Distribution", "Banques et services financiers", "Services", "TIC, ONG et collectivités locales"],
-    title: "Marchés & services",
+    sectors: [
+      "Distribution",
+      "Banques et services financiers",
+      "Santé",
+      "Microfinance et SFD",
+      "Transport et logistique",
+      "Transport maritime",
+      "Hôtel & restauration",
+      "Éducation",
+      "Étude, ingénierie et conseil",
+      "TIC",
+    ],
+    title: "Services",
   },
   {
     description:
-      "Une expertise adaptée aux secteurs fortement liés au développement des territoires, au capital humain, à l’inclusion financière et à la création de valeur locale.",
+      "Un accompagnement des acteurs institutionnels et territoriaux dans leurs projets, leur organisation, leur gouvernance et la création de valeur publique.",
     icon: "mdi:map-marker-radius-outline",
     image: "/media/cogesto/services/Design-sans-titre-25.jpg",
-    sectors: ["Santé", "Agro-alimentaire / Agro business", "Microfinance et SFD", "Hôtellerie / Tourisme"],
-    title: "Impact & territoires",
+    sectors: ["ONG", "Agences publiques", "Organismes"],
+    title: "Administration et territoire",
   },
 ]
 
@@ -343,6 +435,7 @@ export const defaultAboutPageCopy = {
   commitments,
   leaders,
   socialCommitments,
+  valueCards,
   values,
 }
 
@@ -362,40 +455,21 @@ export const defaultExpertisesPageCopy = {
 export const defaultBlpPageCopy = {
   context: [
     "Les découvertes, durant la période 2014-2015, ont permis au Sénégal d’initier deux projets majeurs, gazier et pétrolier, avec une mise en production prévue en 2024.",
-    "Ce secteur pétrolier et gazier naissant présente de nombreux atouts pour le Sénégal et les PME locales. Le Sénégal a créé en 2016 un Comité Stratégique d’Orientation et érigé en 2019 la loi 2019-04 relative au contenu local dans le secteur des hydrocarbures.",
-    "Consciente des enjeux du secteur pétrolier, la Banque Africaine de Développement a mis en place un mécanisme d’assistance technique aux PME locales sur sollicitation d’Invest In Africa et avec l’appui du Fonds d’Assistance au Secteur Privé Africain.",
+    "Le Sénégal dispose désormais d’un réel potentiel économique pétrolier et gazier suite aux découvertes d’importants gisements offshore entre 2014 et 2015.",
+    "Pour créer les conditions d’une industrie profitable aux entreprises nationales, le Sénégal a créé en 2016 un Comité Stratégique d’Orientation et adopté la loi 2019-04 relative au contenu local dans le secteur des hydrocarbures.",
+    "La Banque Africaine de Développement a mis en place un mécanisme d’assistance technique aux PME locales, sur sollicitation d’Invest In Africa et avec l’appui du Fonds d’Assistance au Secteur Privé Africain.",
   ],
-  events,
+  events: programEvents,
   programConsultants,
   programContextHighlights,
   programEventGallery,
-  programExpertRoster,
   programObjectives,
   programPartners,
   programResults,
 }
 
-const blpStory = [
-  "Cogesto Consulting SAS, cabinet de conseil et de formation, a été sélectionné à l’issue d’un appel d’offres pour opérationnaliser l’accompagnement des PME sénégalaises en vue de leur faciliter l’accès aux marchés et aux financements dans le cadre du Business Linkage Program.",
-  "Le BLP est une initiative d’Invest In Africa, financée par la Banque Africaine de Développement et en partenariat avec le Fonds pour les Partenariats Africains, pour apporter une réponse concrète à la problématique de déficit de compétences locales dans le secteur de l’Oil & Gas.",
-  "Ce programme vise en particulier à apporter un appui technique aux PME sénégalaises pour leur intégration dans les chaînes d’approvisionnement des grandes entreprises par le renforcement de leurs capacités, de leurs normes QHSE, de leurs infrastructures et par l’accès au financement.",
-  "Depuis la cérémonie d’information et de lancement officiel organisée le 14 juin 2023 à l’Hôtel King Fahd Place, Cogesto Consulting a mené plusieurs activités dans le cadre du BLP.",
-  "Après des sessions de formation et de sensibilisation sur les opportunités du secteur de l’Oil & Gas, Cogesto Consulting déploie une phase de diagnostic 360° pour les entreprises bénéficiaires de l’accompagnement.",
-  "À travers ces activités, Cogesto Consulting œuvre au quotidien pour permettre aux entreprises sénégalaises de se préparer aux exigences et normes du secteur.",
-  "À côté de ses partenaires et des entreprises accompagnées, Cogesto Consulting est résolument engagé pour le développement et la prospérité des entreprises africaines dans le domaine du Oil & Gas.",
-  "Cogesto Consulting s’est donné pour mission de créer un écosystème plus fort et plus durable dans le secteur du Oil & Gas, offrant non seulement des opportunités de croissance pour les entreprises mais aussi contribuant à l’économie globale du continent africain.",
-]
-
 export const defaultEventsPageCopy = {
-  blpStory,
-  eventGalleries,
   events,
-  sideNote:
-    "À travers ces activités, Cogesto Consulting œuvre au quotidien pour permettre aux entreprises de se préparer aux exigences, normes et opportunités de leurs marchés, en particulier dans le secteur de l’Oil & Gas.",
-  training:
-    "Séminaires organisés par 3FPT dans le cadre du programme « Parcours du Chef d’entreprise », assurés par Cogesto Consulting SAS et animés par Abdoul Wahab Touré et Amy Rose Konaté en octobre 2023 au Novotel Dakar et à l’Hôtel Le Ndiambour.",
-  coaching:
-    "Sessions de coaching de l’équipe dirigeante de la société de bourse FGI, animées par Amy Rose Konaté, pour renforcer les pratiques de pilotage, de gouvernance et de transformation.",
 }
 
 export const defaultContactPageCopy = {
@@ -407,9 +481,9 @@ export const defaultContactPageCopy = {
 }
 
 const heroMetrics = [
-  { icon: Users, label: "Bureaux", value: "3" },
-  { icon: TrendingUp, label: "Heures de formation", value: "+700" },
-  { icon: BriefcaseBusiness, label: "Années d’expérience", value: "30+" },
+  { icon: Users, label: "Bureaux", value: "4" },
+  { icon: TrendingUp, label: "personnes formées", value: "+1840" },
+  { icon: BriefcaseBusiness, label: "Années d’expérience", value: "14+" },
   { icon: Sparkles, label: "Pays de présence", value: "3" },
 ]
 
@@ -433,13 +507,16 @@ export function BuilderHomeContentBlock({
 
   return (
     <TextStyleProvider richText={richText} styles={textStyles}>
-      <section id="partners" className="partners-section scroll-mt-28 py-[4.75rem] sm:py-[5.75rem]">
+      <section id="partners" className="partners-section scroll-mt-28 py-14 sm:py-16">
         <div className="page-shell">
           <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex rounded-full border border-[#978360]/20 bg-white/70 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#978360] shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+              Ils nous font confiance
+            </span>
             <InlineText
               as="p"
               blockId={blockId}
-              className="font-heading text-[2rem] tracking-[-0.06em] text-primary sm:text-[2.45rem]"
+              className="mt-4 font-heading text-[2rem] tracking-[-0.04em] text-[#152036] sm:text-[2.45rem]"
               editing={isEditing}
               field="partners.title"
               path={["copy", "partners", "title"]}
@@ -496,7 +573,7 @@ export function BuilderHomeContentBlock({
               <div className="mt-10">
                 <a
                   href="/about"
-                  className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.16)] transition-transform duration-200 hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-3 rounded-full bg-[#f8f6f1] px-5 py-3 text-sm font-bold text-[#152036] shadow-[0_18px_35px_rgba(21,32,54,0.16)] ring-1 ring-[#978360]/18 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white"
                   onClick={(event) => handleBuilderLinkClick(event, "/about", isEditing)}
                 >
                   <InlineText
@@ -506,7 +583,7 @@ export function BuilderHomeContentBlock({
                     path={["copy", "about", "buttonLabel"]}
                     value={content.about?.buttonLabel}
                   />
-                  <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/18 bg-white/12 text-white">
+                  <span className="inline-flex size-8 items-center justify-center rounded-full border border-[#152036] bg-[#152036] text-white">
                     <MoveRight className="size-4" />
                   </span>
                 </a>
@@ -525,7 +602,7 @@ export function BuilderHomeContentBlock({
                 <InlineText
                   as="p"
                   blockId={blockId}
-                  className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary"
+                  className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#978360]"
                   editing={isEditing}
                   field="about.missionEyebrow"
                   path={["copy", "about", "missionEyebrow"]}
@@ -580,23 +657,7 @@ export function BuilderHomeContentBlock({
                 value={content.expertises?.eyebrow}
               />
               <h2 className="section-title mt-6 max-w-[22ch]">
-                <InlineText
-                  as="span"
-                  blockId={blockId}
-                  editing={isEditing}
-                  field="expertises.titleLead"
-                  path={["copy", "expertises", "titleLead"]}
-                  value={content.expertises?.titleLead}
-                />{" "}
-                <InlineText
-                  as="span"
-                  blockId={blockId}
-                  className="accent-text"
-                  editing={isEditing}
-                  field="expertises.titleAccent"
-                  path={["copy", "expertises", "titleAccent"]}
-                  value={content.expertises?.titleAccent}
-                />
+                Découvrez nos principaux <span className="accent-text">segments d’expertises !</span>
               </h2>
             </div>
             <InlineText
@@ -699,7 +760,7 @@ export function BuilderHomeContentBlock({
           <div className="mt-8 flex justify-center">
             <a
               href="/expertises"
-              className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)]"
+              className="inline-flex items-center gap-3 rounded-full bg-[#152036] px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)] transition-colors hover:bg-[#1d2a42]"
               onClick={(event) => handleBuilderLinkClick(event, "/expertises", isEditing)}
             >
               <InlineText
@@ -741,7 +802,7 @@ export function BuilderHomeContentBlock({
             </h2>
             <a
               href="/about"
-              className="inline-flex items-center gap-3 self-start rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)] lg:self-auto"
+              className="inline-flex items-center gap-3 self-start rounded-full bg-[#f8f6f1] px-5 py-3 text-sm font-bold text-[#152036] shadow-[0_18px_35px_rgba(21,32,54,0.12)] ring-1 ring-[#978360]/18 transition-colors hover:bg-white lg:self-auto"
               onClick={(event) => handleBuilderLinkClick(event, "/about", isEditing)}
             >
               <InlineText
@@ -751,7 +812,7 @@ export function BuilderHomeContentBlock({
                 path={["copy", "method", "buttonLabel"]}
                 value={content.method?.buttonLabel}
               />
-              <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
+              <span className="inline-flex size-8 items-center justify-center rounded-full border border-[#152036] bg-[#152036] text-white">
                 <ArrowRight className="size-4" />
               </span>
             </a>
@@ -768,8 +829,8 @@ export function BuilderHomeContentBlock({
                     className={cn(
                       "flex items-center justify-between gap-4 px-0 py-5 sm:px-1",
                       step.active
-                        ? "rounded-[28px] bg-primary text-white shadow-[0_24px_55px_rgba(21,32,54,0.18)]"
-                        : "border-b border-slate-200 text-slate-900",
+                        ? "rounded-[28px] border border-[#e6e0d4] bg-[#f8f6f1] text-[#152036] shadow-[0_24px_55px_rgba(21,32,54,0.18)]"
+                        : "border-b border-[#dce8f4] text-[#31425c]",
                     )}
                   >
                     <div className={cn("flex-1", step.active && "px-6 py-6")}>
@@ -787,7 +848,7 @@ export function BuilderHomeContentBlock({
                         <InlineText
                           as="p"
                           blockId={blockId}
-                          className="mt-4 max-w-[46ch] text-sm leading-6 text-white/64"
+                          className="mt-4 max-w-[46ch] text-sm leading-6 text-[#526076]"
                           editing={isEditing}
                           field="method.stepDescription"
                           multiline
@@ -799,7 +860,9 @@ export function BuilderHomeContentBlock({
                     <span
                       className={cn(
                         "inline-flex size-10 shrink-0 items-center justify-center rounded-full border",
-                        step.active ? "mr-6 border-white/14 bg-white/10 text-white" : "border-slate-200 bg-white text-slate-500",
+                        step.active
+                          ? "mr-6 border-[#152036] bg-[#152036] text-white"
+                          : "border-[#d6e4f2] bg-[#f7fbff] text-[#152036] shadow-[0_8px_22px_rgba(21,32,54,0.08)]",
                       )}
                     >
                       <ArrowRight className="size-4" />
@@ -849,121 +912,6 @@ export function BuilderHomeContentBlock({
               path={["copy", "showcase", "caption"]}
               value={content.showcase?.caption}
             />
-          </div>
-        </div>
-      </section>
-
-      <section id="insights" className="scroll-mt-28 py-16 sm:py-20 lg:py-24">
-        <div className="page-shell">
-          <div className="mx-auto max-w-3xl text-center">
-            <InlineText
-              as="span"
-              blockId={blockId}
-              className="eyebrow justify-center before:hidden"
-              editing={isEditing}
-              field="events.eyebrow"
-              path={["copy", "events", "eyebrow"]}
-              value={content.events?.eyebrow}
-            />
-            <h2 className="section-title mt-6">
-              <InlineText
-                as="span"
-                blockId={blockId}
-                editing={isEditing}
-                field="events.titleLead"
-                path={["copy", "events", "titleLead"]}
-                value={content.events?.titleLead}
-              />{" "}
-              <InlineText
-                as="span"
-                blockId={blockId}
-                className="accent-text"
-                editing={isEditing}
-                field="events.titleAccent"
-                path={["copy", "events", "titleAccent"]}
-                value={content.events?.titleAccent}
-              />
-            </h2>
-            <InlineText
-              as="p"
-              blockId={blockId}
-              className="section-copy mx-auto mt-5 max-w-2xl"
-              editing={isEditing}
-              field="events.body"
-              multiline
-              path={["copy", "events", "body"]}
-              value={content.events?.body}
-            />
-          </div>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {events.map((event, index) => {
-              const text = content.events?.items?.[index] ?? defaultHomeContentCopy.events?.items?.[index]
-
-              return (
-                <article key={event.title} className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.05)] transition-transform duration-300 hover:-translate-y-1">
-                  <div className="relative h-[220px] overflow-hidden bg-slate-100">
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] [filter:saturate(0.9)_contrast(1.08)_brightness(1.05)]"
-                    />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(255,255,255,0.2),transparent_26%)]" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                    <InlineText
-                      as="p"
-                      blockId={blockId}
-                      className="absolute left-4 top-4 rounded-full border border-white/18 bg-white/14 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm"
-                      editing={isEditing}
-                      field="events.itemDate"
-                      path={["copy", "events", "items", index, "date"]}
-                      value={text?.date}
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <InlineText
-                      as="h3"
-                      blockId={blockId}
-                      className="font-heading text-[1.42rem] leading-[1.15] tracking-[-0.04em] text-slate-950"
-                      editing={isEditing}
-                      field="events.itemTitle"
-                      multiline
-                      path={["copy", "events", "items", index, "title"]}
-                      value={text?.title}
-                    />
-                    <InlineText
-                      as="p"
-                      blockId={blockId}
-                      className="mt-3 text-[0.98rem] leading-6 text-slate-600"
-                      editing={isEditing}
-                      field="events.itemSummary"
-                      multiline
-                      path={["copy", "events", "items", index, "summary"]}
-                      value={text?.summary}
-                    />
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-
-          <div className="mt-10 flex justify-center">
-            <a
-              href="/events"
-              className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)]"
-              onClick={(event) => handleBuilderLinkClick(event, "/events", isEditing)}
-            >
-              <InlineText
-                blockId={blockId}
-                editing={isEditing}
-                field="events.buttonLabel"
-                path={["copy", "events", "buttonLabel"]}
-                value={content.events?.buttonLabel}
-              />
-              <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
-                <ArrowRight className="size-4" />
-              </span>
-            </a>
           </div>
         </div>
       </section>
@@ -1020,7 +968,7 @@ export function BuilderHomeContentBlock({
                   key={leader.name}
                   className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]"
                 >
-                  <TeamPortrait src={leader.image} alt={leader.name} />
+                  <TeamPortrait src={leader.image} alt={leader.name} imageScale={leader.imageScale} />
                   <div className="p-5">
                     <InlineText
                       as="h3"
@@ -1034,7 +982,7 @@ export function BuilderHomeContentBlock({
                     <InlineText
                       as="p"
                       blockId={blockId}
-                      className="mt-1 text-sm font-semibold text-primary"
+                      className="mt-1 text-sm font-semibold text-[#978360]"
                       editing={isEditing}
                       field="team.leaderRole"
                       path={["copy", "team", "leaders", index, "role"]}
@@ -1062,15 +1010,22 @@ export function BuilderHomeContentBlock({
 }
 
 export function BuilderAboutPageContentBlock({
+  copy,
   id,
   puck,
   richText,
   textStyles,
 }: EditableBlockProps & {
-  copy?: typeof defaultAboutPageCopy
+  copy?: typeof defaultAboutPageCopy & {
+    mission?: {
+      paragraphs?: Array<string>
+    }
+  }
 }) {
   const isEditing = Boolean(puck?.isEditing)
   const blockId = id
+  const missionParagraphs = copy?.mission?.paragraphs?.length ? copy.mission.paragraphs : aboutMissionParagraphs
+  const valueItems = copy?.values?.length ? copy.values : values
 
   return (
     <TextStyleProvider richText={richText} styles={textStyles}>
@@ -1097,31 +1052,40 @@ export function BuilderAboutPageContentBlock({
         </div>
       </section>
 
-      <section id="mission" className="py-16 sm:py-20">
+      <section id="mission" className="bg-white py-16 sm:py-20">
         <div className="page-shell">
-          <div className="grid gap-6 lg:grid-cols-2">
-            <article className="rounded-[30px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-              <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={isEditing} field="mission.eyebrow" path={["copy", "mission", "eyebrow"]} value="Notre mission" />
-              <InlineText as="h2" blockId={blockId} className="section-title mt-5 max-w-[14ch]" editing={isEditing} field="mission.title" path={["copy", "mission", "title"]} value="Mettre l’expertise au service de la performance." />
-              {[
-                "Mettre notre expertise au service de la performance des organisations en favorisant le développement de leur capital humain et la création de valeur.",
-                "Cogesto Consulting aide les clients à résoudre des problèmes importants afin d’assurer le développement durable de leur entreprise. Créer de la valeur en apportant aux entreprises un savoir-faire éprouvé est notre credo.",
-                "C’est pourquoi, Cogesto Consulting a mobilisé des experts capables d’apporter leur expertise sectorielle et fonctionnelle aux clients publics et privés, afin de leur permettre de répondre aux enjeux stratégiques et opérationnels spécifiques à leurs besoins et réalités.",
-                "Les méthodes et approches utilisées favorisent le renforcement des compétences des collaborateurs des clients, à travers un mécanisme de partage du retour d’expérience d’experts seniors.",
-              ].map((paragraph, index) => (
-                <InlineText key={index} as="p" blockId={blockId} className="section-copy mt-4 first:mt-5" editing={isEditing} field="mission.paragraph" multiline path={["copy", "mission", "paragraphs", index]} value={paragraph} />
-              ))}
+          <div className="grid gap-12 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+            <article>
+              <InlineText as="span" blockId={blockId} className="eyebrow before:hidden !text-[#978360]" editing={isEditing} field="mission.eyebrow" path={["copy", "mission", "eyebrow"]} value="Notre mission" />
+              <InlineText as="h2" blockId={blockId} className="mt-5 max-w-[12ch] font-heading text-[2rem] leading-[1.05] tracking-tight text-[#152036] md:text-[2.8rem]" editing={isEditing} field="mission.title" path={["copy", "mission", "title"]} value="Mettre l’expertise au service de la performance." />
+              <div className="mt-7 space-y-5">
+                {missionParagraphs.map((paragraph, index) => (
+                  <InlineText key={index} as="p" blockId={blockId} className="text-[1.02rem] leading-8 text-[#4f5f76]" editing={isEditing} field="mission.paragraph" multiline path={["copy", "mission", "paragraphs", index]} value={paragraph} />
+                ))}
+              </div>
             </article>
 
-            <article id="valeurs" className="rounded-[30px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
+            <article id="valeurs" className="rounded-[30px] border border-[#d8e6f4] bg-[#f4f8fb] p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
               <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={isEditing} field="values.eyebrow" path={["copy", "values", "eyebrow"]} value="Nos valeurs" />
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {values.map((value, index) => (
-                  <div key={value} className="flex items-center gap-3 rounded-[22px] border border-slate-200 bg-slate-50 px-4 py-4 text-slate-800">
-                    <span className="inline-flex size-9 items-center justify-center rounded-full bg-white text-primary shadow-[0_8px_18px_rgba(15,23,42,0.06)]">
-                      <Check className="size-4" />
+              <p className="mt-3 text-[1rem] leading-7 text-slate-600">Notre approche est principalement basée sur :</p>
+              <div className="mt-6 overflow-hidden rounded-[28px] border border-[#d8e6f4] bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                {valueCards.map((value, index) => (
+                  <div key={value.title} className="grid gap-4 border-t border-[#d8e6f4] px-5 py-5 text-center first:border-t-0 sm:grid-cols-[7.5rem_1fr_2.25rem] sm:items-center sm:text-left">
+                    <div className="mx-auto flex size-28 items-center justify-center rounded-[24px] bg-[#f8fbff] sm:mx-0">
+                      <img src={value.image} alt={value.title} className="size-full scale-[1.15] object-contain" loading="lazy" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-center gap-2 sm:justify-start">
+                        <InlineText as="span" blockId={blockId} className="text-base font-semibold text-[#172238]" editing={isEditing} field="values.item" path={["copy", "values", index]} value={valueItems[index] ?? value.title} />
+                        <span className="inline-flex size-6 items-center justify-center rounded-full bg-[#152036] text-white sm:hidden">
+                          <Check className="size-3" />
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{value.summary}</p>
+                    </div>
+                    <span className="hidden size-8 items-center justify-center rounded-full bg-[#152036] text-white sm:inline-flex">
+                      <Check className="size-3.5" />
                     </span>
-                    <InlineText as="span" blockId={blockId} className="font-semibold" editing={isEditing} field="values.item" path={["copy", "values", index]} value={value} />
                   </div>
                 ))}
               </div>
@@ -1139,6 +1103,7 @@ export function BuilderAboutPageContentBlock({
                 <InlineText as="span" blockId={blockId} editing={isEditing} field="approach.titleLead" path={["copy", "approach", "titleLead"]} value="Une approche" />{" "}
                 <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="approach.titleAccent" path={["copy", "approach", "titleAccent"]} value="ancrée dans l’analyse et l’action." />
               </h2>
+              <InlineText as="p" blockId={blockId} className="section-copy mt-5 max-w-[42ch]" editing={isEditing} field="approach.intro" multiline path={["copy", "approach", "intro"]} value="Notre approche est principalement basée sur des méthodes concrètes, un diagnostic ciblé et un accompagnement interactif." />
             </div>
             <div className="grid gap-4">
               {aboutApproach.map((item, index) => (
@@ -1156,21 +1121,30 @@ export function BuilderAboutPageContentBlock({
           <div className="mx-auto max-w-3xl text-center">
             <InlineText as="span" blockId={blockId} className="eyebrow justify-center before:hidden" editing={isEditing} field="team.eyebrow" path={["copy", "team", "eyebrow"]} value="Notre équipe" />
             <h2 className="section-title mt-6">
-              <InlineText as="span" blockId={blockId} editing={isEditing} field="team.titleLead" path={["copy", "team", "titleLead"]} value="Une équipe de direction" />{" "}
+              <InlineText as="span" blockId={blockId} editing={isEditing} field="team.titleLead" path={["copy", "team", "titleLead"]} value="Une gouvernance et un comité de direction" />{" "}
               <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="team.titleAccent" path={["copy", "team", "titleAccent"]} value="à forte expérience." />
             </h2>
+            <InlineText as="p" blockId={blockId} className="section-copy mt-5" editing={isEditing} field="team.intro" multiline path={["copy", "team", "intro"]} value="Le conseil d’administration et le comité exécutif réunissent des profils expérimentés en conseil, finance, droit, organisation, ressources humaines et politiques publiques." />
           </div>
 
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {leaders.map((leader, index) => (
-              <ProfileCardEditable key={leader.name} blockId={blockId} editing={isEditing} pathRoot={["copy", "leaders", index]} person={leader} />
-            ))}
-          </div>
+          <ProfileGridEditable
+            blockId={blockId}
+            editing={isEditing}
+            eyebrow="Le Conseil d’Administration"
+            intro="Le conseil d’administration de Cogesto Consulting est composé d’administrateurs expérimentés ayant une expérience avérée en tant que consultants et managers."
+            pathRoot={["copy", "aboutBoardMembers"]}
+            people={aboutBoardMembers}
+          />
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
-            <PeopleListEditable blockId={blockId} editing={isEditing} eyebrow="Conseil d’administration" pathRoot={["copy", "aboutBoardMembers"]} people={aboutBoardMembers} />
-            <PeopleListEditable blockId={blockId} editing={isEditing} eyebrow="Comité exécutif" pathRoot={["copy", "aboutExecutiveCommittee"]} people={aboutExecutiveCommittee} />
-          </div>
+          <ProfileGridEditable
+            blockId={blockId}
+            className="mt-14"
+            editing={isEditing}
+            eyebrow="Notre comité exécutif"
+            intro="Un comité de direction réunissant des profils seniors aux expériences complémentaires en conseil, entreprise et institutions internationales."
+            pathRoot={["copy", "aboutExecutiveCommittee"]}
+            people={aboutExecutiveCommittee}
+          />
         </div>
       </section>
 
@@ -1212,7 +1186,7 @@ export function BuilderAboutPageContentBlock({
                   </div>
                 ))}
               </div>
-              <a href="/contact" className="mt-6 inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white" onClick={(event) => handleBuilderLinkClick(event, "/contact", isEditing)}>
+              <a href="/contact" className="mt-6 inline-flex items-center gap-3 rounded-full bg-[#152036] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#1d2a42]" onClick={(event) => handleBuilderLinkClick(event, "/contact", isEditing)}>
                 Nous contacter
                 <ArrowRight className="size-4" />
               </a>
@@ -1232,11 +1206,59 @@ export function BuilderExpertisesPageContentBlock({
 }: EditableBlockProps) {
   const isEditing = Boolean(puck?.isEditing)
   const blockId = id
-  const firstExpertise = detailedFunctionalExpertise[0]?.title ?? ""
+  const [activeExpertise, setActiveExpertise] = useState(detailedFunctionalExpertise[0]?.title ?? "")
+  const [activeSectorGroup, setActiveSectorGroup] = useState(sectorGroups[0]?.title ?? "")
+  const activeExpertiseIndex = Math.max(
+    0,
+    detailedFunctionalExpertise.findIndex((item) => item.title === activeExpertise),
+  )
+  const activeSectorGroupIndex = Math.max(
+    0,
+    sectorGroups.findIndex((group) => group.title === activeSectorGroup),
+  )
+  const activeExpertiseItem = detailedFunctionalExpertise[activeExpertiseIndex]
+  const activeSectorGroupItem = sectorGroups[activeSectorGroupIndex]
+  const selectExpertise = (title: string, scrollToPanel = false) => {
+    setActiveExpertise(title)
+
+    if (!scrollToPanel || typeof window === "undefined" || !window.matchMedia("(max-width: 1023px)").matches) {
+      return
+    }
+
+    window.requestAnimationFrame(() => {
+      window.setTimeout(() => {
+        document.getElementById("builder-functional-mobile-panel")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        })
+      }, 0)
+    })
+  }
+
+  useEffect(() => {
+    if (typeof window === "undefined" || isEditing) return
+
+    function selectFormationFromHash() {
+      if (window.location.hash !== "#formation") return
+
+      setActiveExpertise(formationExpertiseTitle)
+      window.requestAnimationFrame(() => {
+        document.getElementById("fonctionnelles")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        })
+      })
+    }
+
+    selectFormationFromHash()
+    window.addEventListener("hashchange", selectFormationFromHash)
+
+    return () => window.removeEventListener("hashchange", selectFormationFromHash)
+  }, [isEditing])
 
   return (
     <TextStyleProvider richText={richText} styles={textStyles}>
-      <section id="fonctionnelles" className="py-16 sm:py-20">
+      <section id="fonctionnelles" className="scroll-mt-28 py-16 sm:py-20">
         <div className="page-shell">
           <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
             <div>
@@ -1253,31 +1275,84 @@ export function BuilderExpertisesPageContentBlock({
             </div>
           </div>
 
-          <Tabs defaultValue={firstExpertise} className="mt-10">
-            <TabsList className="grid !h-auto w-full grid-cols-1 items-stretch gap-2 rounded-[28px] border border-slate-200/80 bg-white p-2 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 rounded-[28px] border border-slate-200/90 bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:hidden">
+            <div className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-3">
+            {detailedFunctionalExpertise.map((item, index) => {
+              const visual = expertiseVisuals[item.title]
+              const isActive = activeExpertise === item.title
+
+              return (
+                  <button
+                    key={item.title}
+                    type="button"
+                    aria-expanded={isActive}
+                    className={[
+                      "group/tab flex min-h-[58px] w-[250px] shrink-0 snap-start items-center gap-3 rounded-[20px] border px-3 py-2.5 text-left transition-all duration-200 sm:w-[280px]",
+                      isActive
+                        ? "border-[#152036] bg-[#152036] text-white shadow-[0_18px_35px_rgba(21,32,54,0.2)]"
+                        : "border-slate-200 bg-[#f8fafc] text-slate-800 hover:border-[#9fb8d4] hover:bg-[#eef6fd] hover:text-slate-950",
+                    ].join(" ")}
+                    onClick={() => selectExpertise(item.title, true)}
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className={["inline-flex size-11 shrink-0 items-center justify-center rounded-2xl transition-colors", isActive ? "bg-white/12 text-white" : "bg-[#dff2ff] text-[#0f4f86]"].join(" ")}>
+                        <Icon icon={visual.icon} className="size-5" />
+                      </span>
+                      <span className="min-w-0">
+                        <InlineText as="span" blockId={blockId} className={["block text-[0.68rem] font-semibold uppercase tracking-[0.16em]", isActive ? "text-white/68" : "text-[#5f7792]"].join(" ")} editing={isEditing} field="functional.kicker" path={["copy", "detailedFunctionalExpertise", index, "kicker"]} value={visual.kicker} />
+                        <InlineText as="span" blockId={blockId} className={["mt-1 block whitespace-normal font-heading text-[1.05rem] leading-tight tracking-[-0.03em]", isActive ? "text-white" : "text-[#1f334d]"].join(" ")} editing={isEditing} field="functional.title" multiline path={["copy", "detailedFunctionalExpertise", index, "title"]} value={item.title} />
+                      </span>
+                    </span>
+                  </button>
+              )
+            })}
+            </div>
+
+            {activeExpertiseItem ? (
+              <div id="builder-functional-mobile-panel" className="scroll-mt-24">
+                <FunctionalPanelEditable blockId={blockId} editing={isEditing} item={activeExpertiseItem} itemIndex={activeExpertiseIndex} />
+              </div>
+            ) : null}
+          </div>
+
+          <div className="mt-10 hidden items-start gap-4 lg:grid lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[320px_minmax(0,1fr)]">
+            <div className="grid content-start gap-1.5 rounded-[26px] border border-slate-200/90 bg-white p-2.5 shadow-[0_20px_50px_rgba(15,23,42,0.06)] lg:sticky lg:top-28 lg:max-h-[calc(100vh-20rem)] lg:overflow-y-auto lg:pr-2">
               {detailedFunctionalExpertise.map((item, index) => {
                 const visual = expertiseVisuals[item.title]
+                const isActive = activeExpertise === item.title
 
                 return (
-                  <TabsTrigger key={item.title} value={item.title} className="group/tab !h-auto min-h-[84px] justify-start rounded-[22px] px-4 py-4 text-left text-slate-600 hover:bg-slate-50 hover:text-slate-950 data-[state=active]:!bg-primary data-[state=active]:!text-white">
-                    <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary group-data-[state=active]/tab:bg-white/12 group-data-[state=active]/tab:text-white">
-                      <Icon icon={visual.icon} className="size-5" />
+                  <button
+                    key={item.title}
+                    type="button"
+                    aria-expanded={isActive}
+                    className={[
+                      "flex min-h-[48px] items-center justify-between gap-2.5 rounded-[16px] border px-3 py-2 text-left transition-all duration-200",
+                      isActive
+                        ? "border-[#152036] bg-[#152036] text-white shadow-[0_16px_30px_rgba(21,32,54,0.18)]"
+                        : "border-slate-200 bg-[#f8fafc] text-[#1f334d] hover:border-[#9fb8d4] hover:bg-[#eef6fd]",
+                    ].join(" ")}
+                    onClick={() => selectExpertise(item.title)}
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className={["inline-flex size-8 shrink-0 items-center justify-center rounded-xl", isActive ? "bg-white/12 text-white" : "bg-[#dff2ff] text-[#0f4f86]"].join(" ")}>
+                        <Icon icon={visual.icon} className="size-4" />
+                      </span>
+                      <span className="min-w-0">
+                        <InlineText as="span" blockId={blockId} className="hidden" editing={isEditing} field="functional.kicker" path={["copy", "detailedFunctionalExpertise", index, "kicker"]} value={visual.kicker} />
+                        <InlineText as="span" blockId={blockId} className={["block font-heading text-[0.82rem] leading-tight tracking-[-0.02em]", isActive ? "text-white" : "text-[#1f334d]"].join(" ")} editing={isEditing} field="functional.title" multiline path={["copy", "detailedFunctionalExpertise", index, "title"]} value={item.title} />
+                      </span>
                     </span>
-                    <span className="min-w-0">
-                      <InlineText as="span" blockId={blockId} className="block text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-slate-400 group-data-[state=active]/tab:text-white/62" editing={isEditing} field="functional.kicker" path={["copy", "detailedFunctionalExpertise", index, "kicker"]} value={visual.kicker} />
-                      <InlineText as="span" blockId={blockId} className="mt-1 block whitespace-normal font-heading text-[1.05rem] leading-tight tracking-[-0.03em] text-slate-700 group-data-[state=active]/tab:text-white" editing={isEditing} field="functional.title" multiline path={["copy", "detailedFunctionalExpertise", index, "title"]} value={item.title} />
-                    </span>
-                  </TabsTrigger>
+                    <ArrowRight className={["size-4 shrink-0", isActive ? "text-white/70" : "text-[#5f7792]"].join(" ")} />
+                  </button>
                 )
               })}
-            </TabsList>
+            </div>
 
-            {detailedFunctionalExpertise.map((item, index) => (
-              <TabsContent key={item.title} value={item.title} className="mt-8">
-                <FunctionalPanelEditable blockId={blockId} editing={isEditing} item={item} itemIndex={index} />
-              </TabsContent>
-            ))}
-          </Tabs>
+            {activeExpertiseItem ? (
+              <FunctionalPanelEditable blockId={blockId} editing={isEditing} item={activeExpertiseItem} itemIndex={activeExpertiseIndex} />
+            ) : null}
+          </div>
         </div>
       </section>
 
@@ -1298,31 +1373,83 @@ export function BuilderExpertisesPageContentBlock({
             </div>
           </div>
 
-          <Tabs defaultValue={sectorGroups[0].title} className="mt-10">
-            <TabsList className="grid !h-auto w-full grid-cols-1 items-stretch gap-2 rounded-[28px] border border-slate-200/80 bg-white p-2 shadow-[0_18px_45px_rgba(15,23,42,0.05)] lg:grid-cols-3">
-              {sectorGroups.map((group, index) => (
-                <TabsTrigger key={group.title} value={group.title} className="group/tab !h-auto min-h-[76px] justify-start rounded-[22px] px-4 py-4 text-left text-slate-600 hover:bg-slate-50 hover:text-slate-950 data-[state=active]:!bg-primary data-[state=active]:!text-white">
-                  <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary group-data-[state=active]/tab:bg-white/12 group-data-[state=active]/tab:text-white">
-                    <Icon icon={group.icon} className="size-5" />
-                  </span>
-                  <InlineText as="span" blockId={blockId} className="block whitespace-normal font-heading text-[1.08rem] leading-tight tracking-[-0.03em] text-slate-700 group-data-[state=active]/tab:text-white" editing={isEditing} field="sector.groupTitle" multiline path={["copy", "sectorGroups", index, "title"]} value={group.title} />
-                </TabsTrigger>
-              ))}
-            </TabsList>
+          <div className="mt-10 grid items-start gap-3 rounded-[28px] border border-slate-200/90 bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:hidden">
+            {sectorGroups.map((group, index) => {
+              const isActive = activeSectorGroup === group.title
 
-            {sectorGroups.map((group, index) => (
-              <TabsContent key={group.title} value={group.title} className="mt-8">
-                <SectorPanelEditable blockId={blockId} editing={isEditing} group={group} groupIndex={index} />
-              </TabsContent>
-            ))}
-          </Tabs>
+              return (
+                <div key={group.title} className="contents">
+                  <button
+                    type="button"
+                    aria-expanded={isActive}
+                    className={[
+                      "flex min-h-[78px] items-center justify-between gap-4 rounded-[22px] border px-4 py-4 text-left transition-all duration-200",
+                      isActive
+                        ? "border-[#152036] bg-[#152036] text-white shadow-[0_18px_35px_rgba(21,32,54,0.2)]"
+                        : "border-slate-200 bg-[#f8fafc] text-[#1f334d] hover:border-[#9fb8d4] hover:bg-[#eef6fd]",
+                    ].join(" ")}
+                    onClick={() => setActiveSectorGroup(group.title)}
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className={["inline-flex size-11 shrink-0 items-center justify-center rounded-2xl", isActive ? "bg-white/12 text-white" : "bg-[#dff2ff] text-[#0f4f86]"].join(" ")}>
+                        <Icon icon={group.icon} className="size-5" />
+                      </span>
+                      <InlineText as="span" blockId={blockId} className={["block whitespace-normal font-heading text-[1.08rem] leading-tight tracking-[-0.03em]", isActive ? "text-white" : "text-[#1f334d]"].join(" ")} editing={isEditing} field="sector.groupTitle" multiline path={["copy", "sectorGroups", index, "title"]} value={group.title} />
+                    </span>
+                    <ChevronDown className={["size-4 shrink-0 transition-transform duration-200", isActive ? "rotate-180 text-white/70" : "text-[#5f7792]"].join(" ")} />
+                  </button>
 
-          <div className="mt-10 flex flex-col items-start justify-between gap-5 rounded-[30px] bg-primary p-6 text-white shadow-[0_24px_60px_rgba(21,32,54,0.16)] sm:flex-row sm:items-center">
+                  {isActive ? (
+                    <div className="col-span-full">
+                      <SectorPanelEditable blockId={blockId} editing={isEditing} group={group} groupIndex={index} />
+                    </div>
+                  ) : null}
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="mt-10 hidden items-start gap-4 lg:grid lg:grid-cols-[340px_minmax(0,1fr)]">
+            <div className="grid content-start gap-2 rounded-[30px] border border-slate-200/90 bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+              {sectorGroups.map((group, index) => {
+                const isActive = activeSectorGroup === group.title
+
+                return (
+                  <button
+                    key={group.title}
+                    type="button"
+                    aria-expanded={isActive}
+                    className={[
+                      "flex min-h-[76px] items-center justify-between gap-3 rounded-[20px] border px-4 py-3 text-left transition-all duration-200",
+                      isActive
+                        ? "border-[#152036] bg-[#152036] text-white shadow-[0_16px_30px_rgba(21,32,54,0.18)]"
+                        : "border-slate-200 bg-[#f8fafc] text-[#1f334d] hover:border-[#9fb8d4] hover:bg-[#eef6fd]",
+                    ].join(" ")}
+                    onClick={() => setActiveSectorGroup(group.title)}
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className={["inline-flex size-10 shrink-0 items-center justify-center rounded-2xl", isActive ? "bg-white/12 text-white" : "bg-[#dff2ff] text-[#0f4f86]"].join(" ")}>
+                        <Icon icon={group.icon} className="size-5" />
+                      </span>
+                      <InlineText as="span" blockId={blockId} className={["block font-heading text-[1rem] leading-tight tracking-[-0.02em]", isActive ? "text-white" : "text-[#1f334d]"].join(" ")} editing={isEditing} field="sector.groupTitle" multiline path={["copy", "sectorGroups", index, "title"]} value={group.title} />
+                    </span>
+                    <ArrowRight className={["size-4 shrink-0", isActive ? "text-white/70" : "text-[#5f7792]"].join(" ")} />
+                  </button>
+                )
+              })}
+            </div>
+
+            {activeSectorGroupItem ? (
+              <SectorPanelEditable blockId={blockId} editing={isEditing} group={activeSectorGroupItem} groupIndex={activeSectorGroupIndex} />
+            ) : null}
+          </div>
+
+          <div className="mt-10 flex flex-col items-start justify-between gap-5 rounded-[30px] bg-[#152036] p-6 text-white shadow-[0_24px_60px_rgba(21,32,54,0.16)] sm:flex-row sm:items-center">
             <div>
               <InlineText as="p" blockId={blockId} className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/58" editing={isEditing} field="coverage.eyebrow" path={["copy", "coverage", "eyebrow"]} value="Couverture sectorielle" />
               <InlineText as="p" blockId={blockId} className="mt-2 max-w-3xl text-[1rem] leading-7 text-white/72" editing={isEditing} field="coverage.body" multiline path={["copy", "coverage", "body"]} value={`${sectorExpertise.length} secteurs d’intervention structurés pour aider les organisations à arbitrer, financer, organiser et piloter leurs priorités.`} />
             </div>
-            <a href="/contact" onClick={(event) => handleBuilderLinkClick(event, "/contact", isEditing)} className="inline-flex shrink-0 items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-bold text-primary">
+            <a href="/contact" onClick={(event) => handleBuilderLinkClick(event, "/contact", isEditing)} className="inline-flex shrink-0 items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#152036]">
               Contactez-nous
               <ArrowRight className="size-4" />
             </a>
@@ -1334,13 +1461,17 @@ export function BuilderExpertisesPageContentBlock({
 }
 
 export function BuilderBlpPageContentBlock({
+  copy = defaultBlpPageCopy,
   id,
   puck,
   richText,
   textStyles,
-}: EditableBlockProps) {
+}: EditableBlockProps & {
+  copy?: Partial<typeof defaultBlpPageCopy>
+}) {
   const isEditing = Boolean(puck?.isEditing)
   const blockId = id
+  const content = mergeBlpCopy(copy)
 
   return (
     <TextStyleProvider richText={richText} styles={textStyles}>
@@ -1353,17 +1484,28 @@ export function BuilderBlpPageContentBlock({
                 <InlineText as="span" blockId={blockId} editing={isEditing} field="context.titleLead" path={["copy", "context", "titleLead"]} value="Accompagner la croissance des entreprises dans" />{" "}
                 <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="context.titleAccent" path={["copy", "context", "titleAccent"]} value="l’Oil & Gas." />
               </h2>
-              {defaultBlpPageCopy.context.map((paragraph, index) => (
+              {content.context.map((paragraph, index) => (
                 <InlineText key={index} as="p" blockId={blockId} className="section-copy mt-4 first:mt-6" editing={isEditing} field="context.paragraph" multiline path={["copy", "context", "paragraphs", index]} value={paragraph} />
               ))}
-              <div className="mt-8 grid gap-3">
-                {programContextHighlights.map((item, index) => (
-                  <InlineText key={index} as="div" blockId={blockId} className="rounded-[20px] border border-slate-200 bg-slate-50 px-4 py-4 text-[0.98rem] leading-6 text-slate-700" editing={isEditing} field="context.highlight" multiline path={["copy", "programContextHighlights", index]} value={item} />
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                {content.programContextHighlights.map((item, index) => (
+                  <InlineText key={index} as="div" blockId={blockId} className="rounded-[20px] border border-slate-200 bg-slate-50 px-4 py-4 text-[0.92rem] leading-6 text-slate-700" editing={isEditing} field="context.highlight" multiline path={["copy", "programContextHighlights", index]} value={item} />
                 ))}
               </div>
             </div>
-            <div className="overflow-hidden rounded-[32px] border border-slate-200/80 bg-white shadow-[0_22px_60px_rgba(15,23,42,0.06)]">
-              <img src="/media/cogesto/tof8105.jpg" alt="Participants au programme illustrant le cadre du programme" className="h-full w-full object-cover" />
+            <div className="space-y-4">
+              <div className="overflow-hidden rounded-[32px] border border-slate-200/80 bg-white shadow-[0_22px_60px_rgba(15,23,42,0.06)]">
+                <img src="/media/cogesto/blp/tof2870-1200x801.jpg" alt="Session de travail du Business Linkage Program" className="aspect-[4/3] h-full w-full object-cover" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {programKeyFigures.map((figure) => (
+                  <div key={figure.label} className="rounded-[22px] border border-[#d7e6f4] bg-[#f8fbfe] p-4">
+                    <p className="font-heading text-[2rem] leading-none tracking-[-0.06em] text-[#152036]">{figure.value}</p>
+                    <p className="mt-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#5f86ad]">{figure.label}</p>
+                    <p className="mt-2 text-sm leading-5 text-slate-600">{figure.detail}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -1379,9 +1521,11 @@ export function BuilderBlpPageContentBlock({
             </h2>
           </div>
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {programPartners.map((partner, index) => (
+            {content.programPartners.map((partner, index) => (
               <article key={partner.name} className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_16px_40px_rgba(15,23,42,0.05)]">
-                <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-secondary text-primary"><Handshake className="size-5" /></span>
+                <div className="flex min-h-28 items-center justify-center rounded-[22px] border border-slate-200 bg-slate-50 p-5">
+                  {"logo" in partner && partner.logo ? <img src={partner.logo as string} alt={partner.name} className="max-h-20 w-full object-contain" loading="lazy" /> : <Handshake className="size-10 text-primary" />}
+                </div>
                 <InlineText as="h3" blockId={blockId} className="mt-5 font-heading text-[1.45rem] tracking-[-0.04em] text-slate-950" editing={isEditing} field="partner.name" path={["copy", "programPartners", index, "name"]} value={partner.name} />
                 <InlineText as="p" blockId={blockId} className="mt-3 text-[0.98rem] leading-6 text-slate-600" editing={isEditing} field="partner.description" multiline path={["copy", "programPartners", index, "description"]} value={partner.description} />
               </article>
@@ -1390,178 +1534,91 @@ export function BuilderBlpPageContentBlock({
         </div>
       </section>
 
-      <section id="offres" className="py-16 sm:py-20">
-        <div className="page-shell">
-          <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
-            <div>
-              <InlineText as="span" blockId={blockId} className="eyebrow" editing={isEditing} field="offers.eyebrow" path={["copy", "offers", "eyebrow"]} value="Offres BLP" />
-              <h2 className="section-title mt-6 max-w-[13ch]">
-                <InlineText as="span" blockId={blockId} editing={isEditing} field="offers.titleLead" path={["copy", "offers", "titleLead"]} value="Deux parcours pour" />{" "}
-                <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="offers.titleAccent" path={["copy", "offers", "titleAccent"]} value="accélérer les entrepreneurs." />
-              </h2>
-            </div>
-            <InlineText
-              as="p"
-              blockId={blockId}
-              className="section-copy max-w-[56ch] lg:justify-self-end"
-              editing={isEditing}
-              field="offers.intro"
-              multiline
-              path={["copy", "offers", "intro"]}
-              value="Le Business Linkage Program se prolonge avec des dispositifs ciblés pour structurer les projets durables et renforcer la trajectoire des dirigeants d’entreprise."
-            />
-          </div>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-2">
-            {businessLinkageOffers.map((offer, index) => {
-              const OfferIcon = index === 0 ? Leaf : RouteIcon
-
-              return (
-                <article key={offer.href} className="group overflow-hidden rounded-[30px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]">
-                  <div className="aspect-[16/10] overflow-hidden bg-slate-950">
-                    <img alt={offer.label} className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.035]" loading="lazy" src={offer.image} />
-                  </div>
-                  <div className="p-6">
-                    <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-secondary text-primary">
-                      <OfferIcon className="size-5" />
-                    </span>
-                    <InlineText as="h3" blockId={blockId} className="mt-5 font-heading text-[1.75rem] leading-[1.08] tracking-[-0.05em] text-slate-950" editing={isEditing} field="offer.label" path={["copy", "businessLinkageOffers", index, "label"]} value={offer.label} />
-                    <InlineText as="p" blockId={blockId} className="mt-3 text-[1rem] leading-7 text-slate-600" editing={isEditing} field="offer.description" multiline path={["copy", "businessLinkageOffers", index, "description"]} value={offer.description} />
-                    <a className="mt-6 inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white" href={offer.href}>
-                      Découvrir
-                      <ArrowRight className="size-4" />
-                    </a>
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
       <section id="objectifs" className="py-16 sm:py-20">
         <div className="page-shell">
+          <div className="mb-10 max-w-4xl">
+            <InlineText as="span" blockId={blockId} className="eyebrow" editing={isEditing} field="objectives.eyebrow" path={["copy", "objectives", "eyebrow"]} value="Objectifs et résultats" />
+            <h2 className="section-title mt-6">
+              <InlineText as="span" blockId={blockId} editing={isEditing} field="objectives.titleLead" path={["copy", "objectives", "titleLead"]} value="Apporter une assistance technique concrète aux" />{" "}
+              <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="objectives.titleAccent" path={["copy", "objectives", "titleAccent"]} value="PME à forts potentiels." />
+            </h2>
+            <InlineText as="p" blockId={blockId} className="section-copy mt-5" editing={isEditing} field="objectives.intro" multiline path={["copy", "objectives", "intro"]} value="Le programme vise à permettre aux PME ciblées d’accéder aux marchés et aux financements, tout en améliorant leur intégration dans la chaîne de valeur de l’industrie pétrolière et gazière et la génération d’emplois décents au Sénégal." />
+          </div>
           <div className="grid gap-8 lg:grid-cols-2">
-            <ProgramListEditable blockId={blockId} editing={isEditing} icon="target" items={programObjectives} pathRoot={["copy", "programObjectives"]} title="Objectifs du programme." />
-            <ProgramListEditable blockId={blockId} editing={isEditing} icon="trend" items={programResults} pathRoot={["copy", "programResults"]} title="Résultats attendus." />
+            <ProgramListEditable blockId={blockId} editing={isEditing} icon="target" items={content.programObjectives} pathRoot={["copy", "programObjectives"]} title="Objectifs du programme." />
+            <ProgramListEditable blockId={blockId} editing={isEditing} icon="trend" items={content.programResults} pathRoot={["copy", "programResults"]} title="Résultats attendus." />
           </div>
         </div>
       </section>
 
-      <section id="consultants" className="py-16 sm:py-20">
+      <section id="consultants" className="bg-[#eaf3fb] py-16 sm:py-20">
         <div className="page-shell">
           <div className="mx-auto max-w-3xl text-center">
-            <InlineText as="span" blockId={blockId} className="eyebrow justify-center before:hidden" editing={isEditing} field="consultants.eyebrow" path={["copy", "consultants", "eyebrow"]} value="Consultants du BLP" />
-            <h2 className="section-title mt-6">
-              <InlineText as="span" blockId={blockId} editing={isEditing} field="consultants.titleLead" path={["copy", "consultants", "titleLead"]} value="Des experts mobilisés" />{" "}
-              <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="consultants.titleAccent" path={["copy", "consultants", "titleAccent"]} value="pour la croissance des entreprises." />
+            <InlineText as="span" blockId={blockId} className="eyebrow justify-center before:hidden !text-[#8b7655]" editing={isEditing} field="consultants.eyebrow" path={["copy", "consultants", "eyebrow"]} value="Nos consultants BLP" />
+            <h2 className="section-title mt-6 !text-[#152036]">
+              <InlineText as="span" blockId={blockId} className="!text-[#152036]" editing={isEditing} field="consultants.titleLead" path={["copy", "consultants", "titleLead"]} value="Une équipe d’experts de très haut niveau" />{" "}
+              <InlineText as="span" blockId={blockId} className="!text-[#978360]" editing={isEditing} field="consultants.titleAccent" path={["copy", "consultants", "titleAccent"]} value="mobilisée pour les PME." />
             </h2>
+            <InlineText as="p" blockId={blockId} className="section-copy mt-5 !text-[#3d526c]" editing={isEditing} field="consultants.intro" multiline path={["copy", "consultants", "intro"]} value="Les profils mobilisés couvrent l’Oil & Gas, la stratégie, l’organisation, le capital humain, la finance, la restructuration, la pédagogie, la supply chain, la QHSE, le droit, la fiscalité et la structuration de financement." />
           </div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {programConsultants.map((consultant, index) => (
-              <ProfileCardEditable key={consultant.name} blockId={blockId} editing={isEditing} pathRoot={["copy", "programConsultants", index]} person={consultant} />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {programExpertRoster.map((expert) => (
+              <ProgramExpertCard key={expert.name} expert={expert} />
             ))}
-          </div>
-          <div className="mt-12 rounded-[32px] border border-slate-200/80 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.05)]">
-            <div className="max-w-3xl">
-              <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={isEditing} field="roster.eyebrow" path={["copy", "roster", "eyebrow"]} value="Équipe élargie" />
-              <InlineText as="h3" blockId={blockId} className="mt-5 font-heading text-[2rem] leading-[1.04] tracking-[-0.05em] text-slate-950" editing={isEditing} field="roster.title" multiline path={["copy", "roster", "title"]} value="Un pool de consultants mobilisés selon les besoins du programme." />
-              <InlineText as="p" blockId={blockId} className="mt-4 text-[1rem] leading-7 text-slate-600" editing={isEditing} field="roster.intro" multiline path={["copy", "roster", "intro"]} value="Une équipe d’experts de très haut niveau est mobilisée pour accompagner la croissance des entreprises dans le secteur de l’Oil & Gaz." />
-            </div>
-            <div className="mt-8 grid gap-4 lg:grid-cols-3">
-              {programExpertRoster.map((expert, index) => (
-                <article key={expert.title} className="overflow-hidden rounded-[24px] border border-slate-200 bg-slate-50">
-                  {"image" in expert && expert.image ? <TeamPortrait src={expert.image} alt={expert.title} /> : null}
-                  <div className="p-5">
-                    <InlineText as="h3" blockId={blockId} className="font-heading text-[1.2rem] leading-[1.12] tracking-[-0.03em] text-slate-950" editing={isEditing} field="expert.title" multiline path={["copy", "programExpertRoster", index, "title"]} value={expert.title} />
-                    <ul className="mt-4 space-y-2.5">
-                      {expert.highlights.map((highlight, highlightIndex) => (
-                        <li key={highlightIndex}>
-                          <InlineText as="span" blockId={blockId} className="text-[0.95rem] leading-6 text-slate-600" editing={isEditing} field="expert.highlight" multiline path={["copy", "programExpertRoster", index, "highlights", highlightIndex]} value={highlight} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
-              ))}
-            </div>
           </div>
         </div>
       </section>
-
-      <BlpEventsEditable blockId={blockId} editing={isEditing} />
     </TextStyleProvider>
   )
 }
 
 export function BuilderEventsPageContentBlock({
+  copy = defaultEventsPageCopy,
   id,
   puck,
   richText,
   textStyles,
-}: EditableBlockProps) {
+}: EditableBlockProps & {
+  copy?: Partial<typeof defaultEventsPageCopy>
+}) {
   const isEditing = Boolean(puck?.isEditing)
   const blockId = id
+  const content = mergeEventsCopy(copy)
 
   return (
     <TextStyleProvider richText={richText} styles={textStyles}>
-      <section className="py-16 sm:py-20">
-        <div className="page-shell">
-          <div className="grid gap-5 lg:grid-cols-3">
-            {events.map((event, index) => (
-              <EventCardEditable key={event.title} blockId={blockId} editing={isEditing} event={event} pathRoot={["copy", "events", index]} />
-            ))}
-          </div>
-
-          <div className="mt-12 grid gap-6 rounded-[32px] border border-slate-200/80 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.05)] lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-            <div>
-              <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={isEditing} field="story.eyebrow" path={["copy", "story", "eyebrow"]} value="Cérémonie lancement BLP" />
-              <h2 className="section-title mt-5 max-w-[13ch]">
-                <InlineText as="span" blockId={blockId} editing={isEditing} field="story.titleLead" path={["copy", "story", "titleLead"]} value="Une expertise locale pour accélérer la croissance dans" />{" "}
-                <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="story.titleAccent" path={["copy", "story", "titleAccent"]} value="l’Oil & Gas." />
-              </h2>
-              <div className="mt-6 space-y-4">
-                {blpStory.map((paragraph, index) => (
-                  <InlineText key={index} as="p" blockId={blockId} className="section-copy" editing={isEditing} field="story.paragraph" multiline path={["copy", "blpStory", index]} value={paragraph} />
-                ))}
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-6 lg:px-8">
+          <div className="rounded-[2px] border border-slate-200 bg-white">
+            <div className="grid gap-4 p-4 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div className="flex items-center gap-3 text-slate-500">
+                <Search className="size-5" />
+                <span className="text-sm">Rechercher évènements</span>
               </div>
-            </div>
-            <div>
-              <img src="/media/cogesto/tof8053.jpg" alt="Cérémonie de lancement du BLP" className="rounded-[28px] border border-slate-200/80 object-cover shadow-[0_18px_45px_rgba(15,23,42,0.08)]" />
-              <div className="mt-5 rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-                <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={isEditing} field="side.eyebrow" path={["copy", "side", "eyebrow"]} value="Sur le terrain" />
-                <InlineText as="p" blockId={blockId} className="mt-4 text-[1rem] leading-7 text-slate-600" editing={isEditing} field="side.note" multiline path={["copy", "sideNote"]} value={defaultEventsPageCopy.sideNote} />
-                <a href="/contact" onClick={(event) => handleBuilderLinkClick(event, "/contact", isEditing)} className="mt-5 inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white">
-                  Organiser un échange
-                  <ArrowRight className="size-4" />
-                </a>
+              <div className="flex items-center gap-6 text-sm font-semibold">
+                <span className="rounded-[4px] bg-[#3347ff] px-6 py-3 text-white">Chercher</span>
+                <span className="border-b-2 border-slate-950 pb-3 text-slate-950">Liste</span>
+                <span className="pb-3 text-slate-600">Mois</span>
+                <span className="pb-3 text-slate-600">Jour</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            <article className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-              <InlineText as="p" blockId={blockId} className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary" editing={isEditing} field="training.eyebrow" path={["copy", "training", "eyebrow"]} value="Séminaires de formation organisé par 3FPT" />
-              <InlineText as="h3" blockId={blockId} className="mt-3 font-heading text-[1.55rem] leading-[1.1] tracking-[-0.04em] text-slate-950" editing={isEditing} field="training.title" multiline path={["copy", "training", "title"]} value="Marketing & Communication pour 30 dirigeants d’entreprise." />
-              <InlineText as="p" blockId={blockId} className="mt-4 text-[1rem] leading-7 text-slate-600" editing={isEditing} field="training.body" multiline path={["copy", "training", "body"]} value={defaultEventsPageCopy.training} />
-            </article>
-            <article className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-              <InlineText as="p" blockId={blockId} className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary" editing={isEditing} field="coaching.eyebrow" path={["copy", "coaching", "eyebrow"]} value="Sessions de coaching" />
-              <InlineText as="h3" blockId={blockId} className="mt-3 font-heading text-[1.55rem] leading-[1.1] tracking-[-0.04em] text-slate-950" editing={isEditing} field="coaching.title" multiline path={["copy", "coaching", "title"]} value="Accompagnement de l’équipe dirigeante de FGI." />
-              <InlineText as="p" blockId={blockId} className="mt-4 text-[1rem] leading-7 text-slate-600" editing={isEditing} field="coaching.body" multiline path={["copy", "coaching", "body"]} value={defaultEventsPageCopy.coaching} />
-            </article>
+          <div className="mt-8 flex items-center gap-5 text-slate-700">
+            <span className="text-2xl leading-none">‹</span>
+            <span className="text-2xl leading-none">›</span>
+            <span className="rounded-[4px] border border-slate-200 px-4 py-2 text-sm text-slate-500">Aujourd’hui</span>
           </div>
 
-          <div className="mt-12 grid gap-6">
-            {eventGalleries.map((gallery, index) => (
-              <section key={gallery.title} className="rounded-[32px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-                <InlineText as="h3" blockId={blockId} className="font-heading text-[1.55rem] leading-[1.1] tracking-[-0.04em] text-slate-950" editing={isEditing} field="gallery.title" multiline path={["copy", "eventGalleries", index, "title"]} value={gallery.title} />
-                <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  {gallery.images.map((src) => (
-                    <img key={src} src={src} alt={gallery.title} className="aspect-[3/2] w-full rounded-[20px] border border-slate-200/80 object-cover" loading="lazy" />
-                  ))}
-                </div>
-              </section>
+          <div className="mt-8 rounded-[4px] bg-slate-100 px-5 py-5 text-center text-sm font-medium text-slate-700">
+            <InlineText as="span" blockId={blockId} editing={isEditing} field="empty.title" path={["copy", "empty", "title"]} value="Il n’y a pas d’évènements à venir." />
+          </div>
+
+          <InlineText as="h1" blockId={blockId} className="mt-10 font-heading text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-slate-950 sm:text-[2.4rem]" editing={isEditing} field="past.title" path={["copy", "past", "title"]} value="Derniers Évènements passés" />
+
+          <div className="mt-10 grid gap-12">
+            {content.events.map((event, index) => (
+              <EventTimelineItemEditable key={event.title} blockId={blockId} editing={isEditing} event={event} pathRoot={["copy", "events", index]} />
             ))}
           </div>
         </div>
@@ -1571,29 +1628,33 @@ export function BuilderEventsPageContentBlock({
 }
 
 export function BuilderContactPageContentBlock({
+  copy = defaultContactPageCopy,
   id,
   puck,
   richText,
   textStyles,
-}: EditableBlockProps) {
+}: EditableBlockProps & {
+  copy?: Partial<typeof defaultContactPageCopy>
+}) {
   const isEditing = Boolean(puck?.isEditing)
   const blockId = id
+  const content = mergeContactCopy(copy)
 
   return (
     <TextStyleProvider richText={richText} styles={textStyles}>
       <section className="py-16 sm:py-20">
         <div className="page-shell">
           <div className="grid gap-5 lg:grid-cols-3">
-            <ContactCardEditable blockId={blockId} editing={isEditing} href={contact.mapLink} icon={<MapPin className="size-5" />} pathRoot={["copy", "contactCards", 0]} title="Adresse" value={defaultContactPageCopy.addressValue} />
-            <ContactCardEditable blockId={blockId} editing={isEditing} href={`mailto:${contact.email}`} icon={<Mail className="size-5" />} pathRoot={["copy", "contactCards", 1]} title="Nous écrire par mail" value={contact.email} />
-            <ContactCardEditable blockId={blockId} editing={isEditing} href={`tel:${contact.phone.replace(/\s+/g, "")}`} icon={<Phone className="size-5" />} pathRoot={["copy", "contactCards", 2]} title="Où nous appeler ?" value={contact.phone} />
+            <ContactCardEditable blockId={blockId} editing={isEditing} href={contact.mapLink} icon={<MapPin className="size-5" />} pathRoot={["copy", "contactCards", 0]} title="Adresse" value={content.addressValue} />
+            <ContactCardEditable blockId={blockId} editing={isEditing} href={`mailto:${content.email}`} icon={<Mail className="size-5" />} pathRoot={["copy", "contactCards", 1]} title="Nous écrire par mail" value={content.email} />
+            <ContactCardEditable blockId={blockId} editing={isEditing} href={`tel:${content.phone.replace(/\s+/g, "")}`} icon={<Phone className="size-5" />} pathRoot={["copy", "contactCards", 2]} title="Où nous appeler ?" value={content.phone} />
           </div>
 
           <div className="mt-12 grid gap-8 rounded-[32px] border border-slate-200/80 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.05)] lg:grid-cols-[0.85fr_1fr]">
             <div>
               <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={isEditing} field="form.eyebrow" path={["copy", "form", "eyebrow"]} value="Soyez libre de nous contacter" />
               <InlineText as="h2" blockId={blockId} className="section-title mt-5 max-w-[13ch]" editing={isEditing} field="form.title" multiline path={["copy", "form", "title"]} value="Veuillez remplir le formulaire ci-dessous." />
-              <InlineText as="p" blockId={blockId} className="section-copy mt-5" editing={isEditing} field="form.body" multiline path={["copy", "formBody"]} value={defaultContactPageCopy.formBody} />
+              <InlineText as="p" blockId={blockId} className="section-copy mt-5" editing={isEditing} field="form.body" multiline path={["copy", "formBody"]} value={content.formBody} />
             </div>
             <form className="rounded-[2rem] border border-slate-200 bg-slate-50 p-5 sm:p-8">
               <div className="grid gap-4 sm:grid-cols-2">
@@ -1601,7 +1662,7 @@ export function BuilderContactPageContentBlock({
                 <Input className="h-12 bg-white" placeholder="Email" type="email" />
               </div>
               <Textarea className="mt-4 min-h-40 bg-white" placeholder="Message" />
-              <Button className="mt-5 h-12 w-full rounded-full bg-primary px-6 text-white hover:bg-primary/90 sm:w-auto">Envoyer</Button>
+              <Button className="mt-5 h-12 w-full rounded-full bg-[#152036] px-6 text-white hover:bg-[#1d2a42] sm:w-auto">Envoyer</Button>
             </form>
           </div>
         </div>
@@ -1610,11 +1671,7 @@ export function BuilderContactPageContentBlock({
       <section className="partners-section py-16 sm:py-20">
         <div className="page-shell">
           <div className="mx-auto max-w-3xl text-center">
-            <InlineText as="span" blockId={blockId} className="eyebrow justify-center before:hidden" editing={isEditing} field="partners.eyebrow" path={["copy", "partners", "eyebrow"]} value="Faites comme nos partenaires" />
-            <h2 className="section-title mt-6">
-              <InlineText as="span" blockId={blockId} editing={isEditing} field="partners.titleLead" path={["copy", "partners", "titleLead"]} value="Rejoignez" />{" "}
-              <InlineText as="span" blockId={blockId} className="accent-text" editing={isEditing} field="partners.titleAccent" path={["copy", "partners", "titleAccent"]} value="l’aventure." />
-            </h2>
+            <InlineText as="h2" blockId={blockId} className="section-title" editing={isEditing} field="partners.title" multiline path={["copy", "partners", "title"]} value="Faites comme nos partenaires, rejoignez l’aventure !" />
           </div>
           <PartnerLogoCarousel />
         </div>
@@ -1655,6 +1712,13 @@ export function BuilderHeroBlock({
   variant?: "home" | "image" | "navy" | "program"
 }) {
   const isEditing = Boolean(puck?.isEditing)
+  const isBusinessLinkageHero = variant === "program"
+  const effectiveTitle = isBusinessLinkageHero
+    ? "Accompagner la croissance des entreprises dans le secteur du pétrole et du gaz."
+    : title
+  const effectiveBody = isBusinessLinkageHero
+    ? "Un programme de partenariat d’affaires conçu pour renforcer les compétences de gestion, les capacités de production, l’accès aux marchés et l’accès au financement des PME sénégalaises."
+    : body
 
   if (variant === "home") {
     const [fallbackFirstLine, fallbackSecondLine] = splitHomeHeroTitle(title)
@@ -1820,7 +1884,7 @@ export function BuilderHeroBlock({
           <div
             className={cn(
               "site-container py-20 sm:py-28",
-              variant === "program" && "grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center",
+              variant === "program" && "grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center xl:gap-14",
             )}
           >
             <div>
@@ -1837,26 +1901,26 @@ export function BuilderHeroBlock({
                 blockId={id}
                 className="mt-5 max-w-4xl font-heading text-4xl font-semibold leading-tight tracking-tight text-white sm:text-6xl"
                 editing={isEditing}
-                field="title"
-                value={title}
-              />
+	                field="title"
+	                value={effectiveTitle}
+	              />
               <InlineText
                 as="p"
                 blockId={id}
                 className={cn("mt-6 text-lg leading-8 text-white/72", variant === "program" ? "max-w-2xl" : "max-w-3xl")}
                 editing={isEditing}
-                field="body"
-                multiline
-                value={body}
-              />
+	                field="body"
+	                multiline
+	                value={effectiveBody}
+	              />
             </div>
 
             {variant === "program" ? (
-              <div className="rounded-[2rem] border border-white/10 bg-white p-6 shadow-2xl">
+              <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white shadow-2xl">
                 <img
-                  src={image || "/media/cogesto/blp/business-linkage-program-logo.png"}
-                  alt="Business Linkage Program"
-                  className="mx-auto max-h-[280px] w-full object-contain"
+                  src={image || "/media/cogesto/ai/business-linkage/business-linkage-hero-african-professionals.png"}
+                  alt="Professionnels africains en réunion dans le cadre du Business Linkage Program"
+                  className="aspect-[1.57] h-full max-h-[500px] w-full object-cover"
                 />
               </div>
             ) : null}
@@ -2036,12 +2100,12 @@ export function BuilderCtaBlock({
     <TextStyleProvider richText={richText} styles={textStyles}>
       <AnimatedBlock disabled={isEditing} preset={animation} className="py-16 sm:py-20">
       <section className="page-shell">
-        <div
+          <div
           className={cn(
             "rounded-[30px] border p-8 shadow-[0_30px_80px_rgba(21,32,54,0.14)] sm:p-12 lg:p-16",
             variant === "navy"
-              ? "border-white/10 bg-primary text-white"
-              : "border-slate-200/80 bg-white text-slate-950",
+              ? "border-[#e6e0d4] bg-[#f8f6f1] text-[#152036]"
+              : "border-[#e6e0d4] bg-[#f8f6f1] text-[#152036]",
           )}
         >
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
@@ -2049,7 +2113,10 @@ export function BuilderCtaBlock({
               <InlineText
                 as="h2"
                 blockId={id}
-                className="font-heading text-3xl font-semibold leading-tight tracking-[-0.06em] sm:text-5xl"
+                className={cn(
+                  "font-heading text-3xl font-semibold leading-tight tracking-[-0.06em] sm:text-5xl",
+                  variant === "light" || variant === "navy" ? "!text-[#152036]" : "",
+                )}
                 editing={isEditing}
                 field="title"
                 value={title}
@@ -2057,7 +2124,7 @@ export function BuilderCtaBlock({
               <InlineText
                 as="p"
                 blockId={id}
-                className={cn("mt-5 max-w-2xl text-base leading-8", variant === "navy" ? "text-white/70" : "text-slate-600")}
+                className={cn("mt-5 max-w-2xl text-base leading-8", variant === "navy" ? "!text-[#526076]" : "!text-[#526076]")}
                 editing={isEditing}
                 field="body"
                 multiline
@@ -2070,7 +2137,7 @@ export function BuilderCtaBlock({
               field="label"
               href={href}
               label={label}
-              variant={variant === "navy" ? "light" : "solid"}
+              variant="solid"
             />
           </div>
         </div>
@@ -2171,15 +2238,15 @@ export function BuilderFooterBlock({
     <TextStyleProvider richText={richText} styles={textStyles}>
       <footer className="bg-background pb-8 pt-12">
         <div className="page-shell">
-          <div className="grid gap-5 rounded-[32px] border border-slate-200/80 bg-white px-5 py-6 shadow-[0_20px_55px_rgba(15,23,42,0.05)] lg:grid-cols-[1.1fr_0.9fr] lg:px-7">
+          <div className="grid gap-5 rounded-[32px] border border-[#29456a] bg-[#142a46] px-5 py-6 shadow-[0_24px_60px_rgba(5,8,18,0.24)] lg:grid-cols-[1.1fr_0.9fr] lg:px-7">
             <div>
-              <span className="inline-flex h-16 w-[178px] items-center justify-center overflow-hidden rounded-[18px] border border-slate-200 bg-white px-2.5 py-2 shadow-[0_12px_30px_rgba(21,32,54,0.08)]">
-                <img src="/brand/cogesto-logo-official.svg" alt="Cogesto Consulting" className="h-full w-full object-contain" decoding="async" />
+              <span className="inline-flex h-16 w-[178px] items-center justify-center px-1">
+                <img src="/brand/cogesto-logo-official.svg" alt="Cogesto Consulting" className="h-full w-full object-contain brightness-0 invert drop-shadow-[0_10px_22px_rgba(5,8,18,0.28)]" decoding="async" />
               </span>
               <InlineText
                 as="h2"
                 blockId={id}
-                className="mt-3 font-heading text-[1.85rem] leading-[1.05] tracking-[-0.05em] text-slate-950 sm:text-[2.4rem]"
+                className="mt-3 font-heading text-[1.85rem] leading-[1.05] tracking-[-0.05em] text-white sm:text-[2.4rem]"
                 editing={isEditing}
                 field="title"
                 multiline
@@ -2188,20 +2255,20 @@ export function BuilderFooterBlock({
               <InlineText
                 as="p"
                 blockId={id}
-                className="mt-4 max-w-[54ch] text-[1rem] leading-7 text-slate-600"
+                className="mt-4 max-w-[54ch] text-[1rem] leading-7 text-[#d9e8f6]"
                 editing={isEditing}
                 field="body"
                 multiline
                 value={body}
               />
 
-              <nav className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-slate-600">
+              <nav className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-[#d6e7f8]">
                 {footerLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={(event) => handleBuilderLinkClick(event, link.href, isEditing)}
-                    className="transition-colors hover:text-slate-950"
+                    className="transition-colors hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -2209,50 +2276,51 @@ export function BuilderFooterBlock({
               </nav>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <a
-                href={contact.mapLink}
-                onClick={(event) => handleBuilderLinkClick(event, contact.mapLink, isEditing)}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-[24px] border border-slate-200 bg-slate-50 px-4 py-4 text-slate-700 transition-colors hover:border-slate-300 hover:bg-white"
-              >
-                <span className="inline-flex size-10 items-center justify-center rounded-full bg-white text-primary shadow-[0_8px_20px_rgba(15,23,42,0.06)]">
-                  <MapPin className="size-4" />
-                </span>
-                <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-slate-400">Adresse</p>
-                <InlineText as="p" blockId={id} className="mt-2 text-sm leading-6" editing={isEditing} field="address" multiline value={address} />
-              </a>
+            <div className="rounded-[24px] border border-white/18 bg-[#142a46] px-4 py-4 text-white shadow-[0_12px_30px_rgba(5,8,18,0.14)]">
+              <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <a
+                  href={contact.mapLink}
+                  onClick={(event) => handleBuilderLinkClick(event, contact.mapLink, isEditing)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block rounded-[18px] transition-colors hover:text-white"
+                >
+                  <span className="inline-flex size-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-white shadow-[0_8px_20px_rgba(5,8,18,0.12)]">
+                    <MapPin className="size-4" />
+                  </span>
+                  <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/62">Adresse</p>
+                  <InlineText as="p" blockId={id} className="mt-2 text-sm leading-6 text-white/86" editing={isEditing} field="address" multiline value={address} />
+                </a>
 
-              <a
-                href={`mailto:${email}`}
-                onClick={(event) => handleBuilderLinkClick(event, `mailto:${email}`, isEditing)}
-                className="rounded-[24px] border border-slate-200 bg-slate-50 px-4 py-4 text-slate-700 transition-colors hover:border-slate-300 hover:bg-white"
-              >
-                <span className="inline-flex size-10 items-center justify-center rounded-full bg-white text-primary shadow-[0_8px_20px_rgba(15,23,42,0.06)]">
-                  <Mail className="size-4" />
-                </span>
-                <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-slate-400">Email</p>
-                <InlineText as="p" blockId={id} className="mt-2 text-sm leading-6" editing={isEditing} field="email" value={email} />
-              </a>
+                <a
+                  href={`mailto:${email}`}
+                  onClick={(event) => handleBuilderLinkClick(event, `mailto:${email}`, isEditing)}
+                  className="block rounded-[18px] transition-colors hover:text-white"
+                >
+                  <span className="inline-flex size-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-white shadow-[0_8px_20px_rgba(5,8,18,0.12)]">
+                    <Mail className="size-4" />
+                  </span>
+                  <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/62">Email</p>
+                  <InlineText as="p" blockId={id} className="mt-2 text-sm leading-6 text-white/86" editing={isEditing} field="email" value={email} />
+                </a>
 
-              <div className="rounded-[24px] border border-slate-200 bg-slate-50 px-4 py-4 text-slate-700 transition-colors hover:border-slate-300 hover:bg-white sm:col-span-2">
-                <div className="flex items-center justify-between gap-4">
-                  <a
-                    href={`tel:${phone.replace(/\s+/g, "")}`}
-                    onClick={(event) => handleBuilderLinkClick(event, `tel:${phone.replace(/\s+/g, "")}`, isEditing)}
-                    className="block"
-                  >
-                    <span className="inline-flex size-10 items-center justify-center rounded-full bg-white text-primary shadow-[0_8px_20px_rgba(15,23,42,0.06)]">
+                <div className="sm:col-span-2">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <a
+                      href={`tel:${phone.replace(/\s+/g, "")}`}
+                      onClick={(event) => handleBuilderLinkClick(event, `tel:${phone.replace(/\s+/g, "")}`, isEditing)}
+                      className="block rounded-[18px] transition-colors hover:text-white"
+                    >
+                    <span className="inline-flex size-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-white shadow-[0_8px_20px_rgba(5,8,18,0.12)]">
                       <Phone className="size-4" />
                     </span>
-                    <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/62">
                       Téléphone
                     </p>
-                    <InlineText as="p" blockId={id} className="mt-2 text-sm leading-6" editing={isEditing} field="phone" value={phone} />
+                    <InlineText as="p" blockId={id} className="mt-2 text-sm leading-6 text-white/86 sm:whitespace-nowrap" editing={isEditing} field="phone" value={phone} />
                   </a>
 
-                  <div className="flex flex-wrap items-center justify-end gap-2">
+                  <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                     {socialLinks.map((social) => (
                       <a
                         key={social.label}
@@ -2261,7 +2329,7 @@ export function BuilderFooterBlock({
                         target="_blank"
                         rel="noreferrer"
                         aria-label={social.label}
-                        className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-950"
+                        className="inline-flex size-10 items-center justify-center rounded-full border border-white/18 bg-white/10 text-white transition-colors hover:border-white/34 hover:bg-white/16"
                       >
                         <Icon icon={social.icon} className="size-4" />
                       </a>
@@ -2271,14 +2339,15 @@ export function BuilderFooterBlock({
               </div>
             </div>
           </div>
+        </div>
 
           <div className="mt-8 overflow-hidden border-b border-slate-200 pb-6">
-            <p className="font-heading text-[3rem] leading-[0.92] tracking-[-0.08em] text-slate-900 min-[440px]:text-[3.6rem] sm:whitespace-nowrap sm:text-[6.5rem] sm:tracking-[-0.1em] lg:text-[9.5rem]">
-              Cogesto <span className="text-slate-300">Consulting</span>
+            <p className="font-heading text-[3rem] leading-[0.92] tracking-[-0.08em] text-[#233451] min-[440px]:text-[3.6rem] sm:whitespace-nowrap sm:text-[6.5rem] sm:tracking-[-0.1em] lg:text-[9.5rem]">
+              Cogesto <span className="text-[#d8e0ea]">Consulting</span>
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 pt-5 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 pt-5 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
             <InlineText as="span" blockId={id} editing={isEditing} field="copyright" value={copyright} />
             <InlineText as="span" blockId={id} editing={isEditing} field="presence" value={presence} />
           </div>
@@ -2297,48 +2366,51 @@ function ProfileCardEditable({
   blockId?: string
   editing: boolean
   pathRoot: Array<string | number>
-  person: { image: string; name?: string; role: string; summary: string; title?: string }
+  person: { image: string; imageScale?: number; name?: string; role: string; summary: string; title?: string }
 }) {
   const name = person.name ?? person.title ?? ""
 
   return (
     <article className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]">
-      <TeamPortrait src={person.image} alt={name} />
+      <TeamPortrait src={person.image} alt={name} imageScale={person.imageScale} />
       <div className="p-5">
         <InlineText as="h3" blockId={blockId} className="font-heading text-[1.45rem] leading-[1.1] tracking-[-0.04em] text-slate-950" editing={editing} field="profile.name" path={[...pathRoot, person.name ? "name" : "title"]} value={name} />
-        <InlineText as="p" blockId={blockId} className="mt-1 text-sm font-semibold text-primary" editing={editing} field="profile.role" path={[...pathRoot, "role"]} value={person.role} />
+        <InlineText as="p" blockId={blockId} className="mt-1 text-sm font-semibold text-[#978360]" editing={editing} field="profile.role" path={[...pathRoot, "role"]} value={person.role} />
         <InlineText as="p" blockId={blockId} className="mt-3 text-sm leading-6 text-slate-600" editing={editing} field="profile.summary" multiline path={[...pathRoot, "summary"]} value={person.summary} />
       </div>
     </article>
   )
 }
 
-function PeopleListEditable({
+function ProfileGridEditable({
   blockId,
+  className = "mt-12",
   editing,
   eyebrow,
+  intro,
   pathRoot,
   people,
 }: {
   blockId?: string
+  className?: string
   editing: boolean
   eyebrow: string
+  intro: string
   pathRoot: Array<string | number>
-  people: Array<{ name: string; role: string; summary: string }>
+  people: Array<{ image: string; imageScale?: number; name: string; role: string; summary: string }>
 }) {
   return (
-    <article className="rounded-[30px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-      <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={editing} field="people.eyebrow" path={[...pathRoot, "eyebrow"]} value={eyebrow} />
-      <div className="mt-5 grid gap-4">
-        {people.map((member, index) => (
-          <div key={`${member.name}-${member.role}`} className="rounded-[22px] border border-slate-200 bg-slate-50 px-5 py-4">
-            <InlineText as="h3" blockId={blockId} className="font-heading text-[1.25rem] leading-[1.1] tracking-[-0.03em] text-slate-950" editing={editing} field="people.name" path={[...pathRoot, index, "name"]} value={member.name} />
-            <InlineText as="p" blockId={blockId} className="mt-2 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary" editing={editing} field="people.role" path={[...pathRoot, index, "role"]} value={member.role} />
-            <InlineText as="p" blockId={blockId} className="mt-3 text-[0.98rem] leading-6 text-slate-600" editing={editing} field="people.summary" multiline path={[...pathRoot, index, "summary"]} value={member.summary} />
-          </div>
+    <div className={className}>
+      <div className="mb-6 max-w-3xl">
+        <InlineText as="span" blockId={blockId} className="eyebrow before:hidden" editing={editing} field="people.eyebrow" path={[...pathRoot, "eyebrow"]} value={eyebrow} />
+        <InlineText as="p" blockId={blockId} className="mt-3 text-[1rem] leading-7 text-slate-600" editing={editing} field="people.intro" multiline path={[...pathRoot, "intro"]} value={intro} />
+      </div>
+      <div className={`grid gap-5 md:grid-cols-2 ${people.length === 4 ? "xl:grid-cols-4" : "xl:grid-cols-3"}`}>
+        {people.map((person, index) => (
+          <ProfileCardEditable key={`${eyebrow}-${person.name}`} blockId={blockId} editing={editing} pathRoot={[...pathRoot, index]} person={person} />
         ))}
       </div>
-    </article>
+    </div>
   )
 }
 
@@ -2356,23 +2428,29 @@ function FunctionalPanelEditable({
   const visual = expertiseVisuals[item.title]
 
   return (
-    <article className="overflow-hidden rounded-[32px] border border-slate-200/80 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
-      <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative min-h-[360px] overflow-hidden bg-primary text-white">
+    <article className="self-start overflow-hidden rounded-[28px] border border-[#b8def7]/80 bg-white shadow-[0_22px_55px_rgba(15,76,129,0.1)] lg:sticky lg:top-28">
+      <div className="grid gap-0">
+        <div className="relative min-h-[230px] overflow-hidden bg-[#152036] text-white lg:min-h-[250px]">
           <img src={visual.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover opacity-74" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/35 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6">
-            <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-white/12 text-white backdrop-blur-sm">
-              <Icon icon={visual.icon} className="size-6" />
-            </span>
-            <InlineText as="p" blockId={blockId} className="mt-5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/62" editing={editing} field="functional.kicker" path={["copy", "detailedFunctionalExpertise", itemIndex, "kicker"]} value={visual.kicker} />
-            <InlineText as="h3" blockId={blockId} className="mt-2 font-heading text-[2rem] leading-[1.04] tracking-[-0.05em] text-white" editing={editing} field="functional.title" multiline path={["copy", "detailedFunctionalExpertise", itemIndex, "title"]} value={item.title} />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,8,18,0.06),rgba(5,8,18,0.74)),linear-gradient(90deg,rgba(21,32,54,0.78),rgba(21,32,54,0.2))]" />
+          <div className="relative z-10 flex min-h-[230px] flex-col justify-end p-6 text-white sm:p-7 lg:min-h-[250px]">
+            <div className="flex items-end gap-4">
+              <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/12 text-white backdrop-blur-sm">
+                <Icon icon={visual.icon} className="size-6" />
+              </span>
+              <div>
+                <InlineText as="p" blockId={blockId} className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/62" editing={editing} field="functional.kicker" path={["copy", "detailedFunctionalExpertise", itemIndex, "kicker"]} value={visual.kicker} />
+                <InlineText as="h3" blockId={blockId} className="mt-2 max-w-[18ch] font-heading text-[1.9rem] leading-[1.02] tracking-[-0.05em] text-white sm:text-[2.35rem]" editing={editing} field="functional.title" multiline path={["copy", "detailedFunctionalExpertise", itemIndex, "title"]} value={item.title} />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="grid gap-5 p-6 lg:grid-cols-3">
-          <ExpertiseListEditable blockId={blockId} editing={editing} items={item.enjeux} pathRoot={["copy", "detailedFunctionalExpertise", itemIndex, "enjeux"]} title="Vos enjeux" />
-          <ExpertiseListEditable blockId={blockId} editing={editing} items={item.savoirFaire} pathRoot={["copy", "detailedFunctionalExpertise", itemIndex, "savoirFaire"]} title="Notre savoir-faire" />
-          <ExpertiseListEditable blockId={blockId} editing={editing} items={item.atouts} pathRoot={["copy", "detailedFunctionalExpertise", itemIndex, "atouts"]} title="Nos atouts" />
+        <div className="grid gap-4 p-4 sm:p-5 xl:grid-cols-[0.82fr_1.18fr]">
+          <div className="grid content-start gap-4">
+            <ExpertiseListEditable blockId={blockId} editing={editing} items={item.enjeux} pathRoot={["copy", "detailedFunctionalExpertise", itemIndex, "enjeux"]} title="Vos enjeux" />
+            <ExpertiseListEditable blockId={blockId} editing={editing} items={item.atouts} pathRoot={["copy", "detailedFunctionalExpertise", itemIndex, "atouts"]} title="Nos atouts" />
+          </div>
+          <ExpertiseListEditable blockId={blockId} editing={editing} items={item.savoirFaire} pathRoot={["copy", "detailedFunctionalExpertise", itemIndex, "savoirFaire"]} title="Notre savoir-faire" wide />
         </div>
       </div>
     </article>
@@ -2385,20 +2463,22 @@ function ExpertiseListEditable({
   items,
   pathRoot,
   title,
+  wide = false,
 }: {
   blockId?: string
   editing: boolean
   items: Array<string>
   pathRoot: Array<string | number>
   title: string
+  wide?: boolean
 }) {
   return (
-    <div>
+    <div className="rounded-[22px] border border-[#d7e6f4] bg-[#f8fbfe] p-4 sm:p-5">
       <InlineText as="h3" blockId={blockId} className="font-heading text-[1.18rem] tracking-[-0.03em] text-slate-950" editing={editing} field="list.title" path={[...pathRoot, "title"]} value={title} />
-      <div className="mt-4 grid gap-3">
+      <div className={["mt-4 grid gap-2.5", wide ? "lg:grid-cols-2" : ""].join(" ")}>
         {items.map((item, index) => (
-          <div key={index} className="flex gap-3 text-[0.94rem] leading-6 text-slate-600">
-            <Check className="mt-1 size-4 shrink-0 text-primary" />
+          <div key={index} className="flex gap-3 text-[0.9rem] leading-6 text-[#465a73]">
+            <Check className="mt-1 size-4 shrink-0 text-[#0f4f86]" />
             <InlineText as="p" blockId={blockId} editing={editing} field="list.item" multiline path={[...pathRoot, index]} value={item} />
           </div>
         ))}
@@ -2419,7 +2499,7 @@ function SectorPanelEditable({
   groupIndex: number
 }) {
   return (
-    <article className="grid overflow-hidden rounded-[32px] border border-slate-200/80 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:grid-cols-[0.92fr_1.08fr]">
+    <article className="grid self-start overflow-hidden rounded-[28px] border border-[#b8def7]/80 bg-white shadow-[0_22px_55px_rgba(15,76,129,0.1)] lg:sticky lg:top-28 lg:grid-cols-[0.92fr_1.08fr]">
       <div className="relative min-h-[320px] overflow-hidden">
         <img src={group.image} alt={group.title} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/72 via-primary/16 to-transparent" />
@@ -2432,8 +2512,8 @@ function SectorPanelEditable({
         <InlineText as="p" blockId={blockId} className="mt-4 text-[1rem] leading-7 text-slate-600" editing={editing} field="sector.groupDescription" multiline path={["copy", "sectorGroups", groupIndex, "description"]} value={group.description} />
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           {group.sectors.map((sector, index) => (
-            <div key={sector} className="flex items-center gap-3 rounded-[20px] border border-slate-200 bg-slate-50 px-4 py-4">
-              <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-primary shadow-[0_8px_18px_rgba(15,23,42,0.06)]">
+            <div key={sector} className="flex items-center gap-3 rounded-[20px] border border-[#d7e6f4] bg-[#f8fbfe] px-4 py-4">
+              <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e5f5ff] text-[#0f4f86] shadow-[0_8px_18px_rgba(15,76,129,0.08)]">
                 <Icon icon={sectorIcons[sector] ?? "mdi:briefcase-outline"} className="size-4" />
               </span>
               <InlineText as="span" blockId={blockId} className="text-[0.98rem] font-semibold text-slate-800" editing={editing} field="sector.item" path={["copy", "sectorGroups", groupIndex, "sectors", index]} value={sector} />
@@ -2467,7 +2547,7 @@ function ProgramListEditable({
       <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-slate-950 text-white">
         <IconComponent className="size-5" />
       </span>
-      <InlineText as="h2" blockId={blockId} className="section-title mt-5 max-w-[12ch]" editing={editing} field="programList.title" path={[...pathRoot, "title"]} value={title} />
+      <InlineText as="h2" blockId={blockId} className="mt-5 max-w-[12ch] font-heading text-[2.15rem] leading-[1.02] tracking-[-0.055em] text-[#152036] sm:text-[2.8rem]" editing={editing} field="programList.title" path={[...pathRoot, "title"]} value={title} />
       <div className="mt-6 grid gap-3">
         {items.map((item, index) => (
           <InlineText key={index} as="div" blockId={blockId} className="rounded-[20px] border border-slate-200 bg-slate-50 px-4 py-4 text-[0.98rem] leading-6 text-slate-700" editing={editing} field="programList.item" multiline path={[...pathRoot, index]} value={item} />
@@ -2477,39 +2557,7 @@ function ProgramListEditable({
   )
 }
 
-function BlpEventsEditable({ blockId, editing }: { blockId?: string; editing: boolean }) {
-  return (
-    <section id="evenements" className="py-16 sm:py-20">
-      <div className="page-shell">
-        <div className="mx-auto max-w-3xl text-center">
-          <InlineText as="span" blockId={blockId} className="eyebrow justify-center before:hidden" editing={editing} field="blpEvents.eyebrow" path={["copy", "blpEvents", "eyebrow"]} value="Évènements du BLP" />
-          <h2 className="section-title mt-6">
-            <InlineText as="span" blockId={blockId} editing={editing} field="blpEvents.titleLead" path={["copy", "blpEvents", "titleLead"]} value="Cérémonies, séminaires et" />{" "}
-            <InlineText as="span" blockId={blockId} className="accent-text" editing={editing} field="blpEvents.titleAccent" path={["copy", "blpEvents", "titleAccent"]} value="actions de terrain." />
-          </h2>
-        </div>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {events.map((event, index) => (
-            <EventCardEditable key={event.title} blockId={blockId} editing={editing} event={event} pathRoot={["copy", "events", index]} />
-          ))}
-        </div>
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {programEventGallery.map((image) => (
-            <img key={image.src} src={image.src} alt={image.alt} className="aspect-[3/2] w-full rounded-[22px] border border-slate-200/80 object-cover shadow-[0_12px_30px_rgba(15,23,42,0.06)]" loading="lazy" />
-          ))}
-        </div>
-        <div className="mt-10 flex justify-center">
-          <a href="/contact" onClick={(event) => handleBuilderLinkClick(event, "/contact", editing)} className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white">
-            Rejoindre le programme
-            <ArrowRight className="size-4" />
-          </a>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function EventCardEditable({
+function EventTimelineItemEditable({
   blockId,
   editing,
   event,
@@ -2521,16 +2569,33 @@ function EventCardEditable({
   pathRoot: Array<string | number>
 }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.05)] transition-transform duration-300 hover:-translate-y-1">
-      <div className="relative h-[220px] overflow-hidden bg-slate-100">
-        <img src={event.image} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-        <InlineText as="p" blockId={blockId} className="absolute left-4 top-4 rounded-full border border-white/18 bg-white/14 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm" editing={editing} field="event.date" path={[...pathRoot, "date"]} value={event.date} />
+    <article className="grid gap-6 lg:grid-cols-[72px_1fr_380px] lg:gap-8">
+      <div className="flex justify-start lg:justify-center lg:pt-2">
+        <div className="flex size-20 shrink-0 flex-col items-center justify-center rounded-[24px] bg-[#152036] text-white shadow-[0_14px_30px_rgba(21,32,54,0.18)]">
+          <InlineText as="p" blockId={blockId} className="text-[0.68rem] font-semibold uppercase leading-none tracking-[0.14em] text-white/62" editing={editing} field="event.month" path={[...pathRoot, "month"]} value={event.month} />
+          <InlineText as="p" blockId={blockId} className={event.year ? "font-heading text-[2rem] font-semibold leading-none tracking-[-0.04em]" : "mt-1 font-heading text-[1.72rem] font-semibold leading-none tracking-[-0.035em]"} editing={editing} field="event.day" path={[...pathRoot, "day"]} value={event.day} />
+          {event.year ? <InlineText as="p" blockId={blockId} className="text-[0.72rem] font-semibold leading-none text-white/62" editing={editing} field="event.year" path={[...pathRoot, "year"]} value={event.year} /> : null}
+        </div>
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <InlineText as="h3" blockId={blockId} className="font-heading text-[1.42rem] leading-[1.15] tracking-[-0.04em] text-slate-950" editing={editing} field="event.title" multiline path={[...pathRoot, "title"]} value={event.title} />
-        <InlineText as="p" blockId={blockId} className="mt-3 text-[0.98rem] leading-6 text-slate-600" editing={editing} field="event.summary" multiline path={[...pathRoot, "summary"]} value={event.summary} />
+
+      <div className="border-l-4 border-[#3347ff] pl-6">
+        <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
+          <span className="font-semibold text-[#3347ff]">Mis en avant</span>
+          <span>-</span>
+          <InlineText as="span" blockId={blockId} editing={editing} field="event.date" path={[...pathRoot, "date"]} value={`${event.date} @ ${event.time}`} />
+        </div>
+        <a href={event.href} onClick={(clickEvent) => handleBuilderLinkClick(clickEvent, event.href, editing)} className="mt-4 block font-heading text-[1.7rem] font-semibold leading-tight tracking-[-0.04em] text-slate-950 transition-colors hover:text-[#3347ff]">
+          <InlineText as="span" blockId={blockId} editing={editing} field="event.title" multiline path={[...pathRoot, "title"]} value={event.title} />
+        </a>
+        {"location" in event && event.location ? (
+          <InlineText as="p" blockId={blockId} className="mt-5 text-[0.98rem] leading-6 text-slate-500" editing={editing} field="event.location" multiline path={[...pathRoot, "location"]} value={event.location} />
+        ) : null}
+        <InlineText as="p" blockId={blockId} className="mt-5 max-w-2xl text-[0.98rem] leading-7 text-slate-700" editing={editing} field="event.summary" multiline path={[...pathRoot, "summary"]} value={event.summary} />
       </div>
+
+      <a href={event.href} onClick={(clickEvent) => handleBuilderLinkClick(clickEvent, event.href, editing)} className="block overflow-hidden rounded-[2px] bg-slate-100">
+        <img src={event.image} alt={event.title} className="aspect-[1.32] h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]" loading="lazy" decoding="async" />
+      </a>
     </article>
   )
 }
@@ -2586,8 +2651,8 @@ function BuilderButton({
       className={cn(
         "h-12 rounded-full px-5 font-bold",
         variant === "ghost" && "border border-white/15 bg-white/8 text-white hover:bg-white/14",
-        variant === "light" && "bg-white text-primary hover:bg-white/90",
-        variant === "solid" && "bg-primary text-white hover:bg-primary/90",
+        variant === "light" && "bg-white text-[#152036] hover:bg-white/90",
+        variant === "solid" && "bg-[#152036] text-white hover:bg-[#1d2a42]",
         className,
       )}
     >
@@ -2623,7 +2688,7 @@ function ContactItem({
 }) {
   return (
     <article className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-      <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-white text-primary shadow-[0_10px_24px_rgba(21,32,54,0.08)]">
+      <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-white text-[#152036] shadow-[0_10px_24px_rgba(21,32,54,0.08)]">
         {icon}
       </span>
       <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">{label}</p>

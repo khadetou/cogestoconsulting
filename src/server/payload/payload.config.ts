@@ -5,9 +5,30 @@ import type { CollectionConfig } from "payload"
 
 const projectRoot = process.cwd()
 const isVercel = Boolean(process.env.VERCEL)
-const configuredDatabaseUrl = process.env.DATABASE_URL ?? process.env.PAYLOAD_DATABASE_URL
-const databaseUrl = configuredDatabaseUrl ?? "postgres://localhost:5432/cogesto_consulting_builder"
+const localDatabaseUrl =
+  process.env.COGESTO_LOCAL_DATABASE_URL ??
+  `postgres://${encodeURIComponent(process.env.USER ?? "postgres")}@localhost:5432/cogesto_consulting_builder`
+const configuredDatabaseUrl =
+  process.env.COGESTO_USE_LOCAL_PAYLOAD_DB === "true"
+    ? localDatabaseUrl
+    : (process.env.DATABASE_URL ?? process.env.PAYLOAD_DATABASE_URL)
+const databaseUrl = normalizeDatabaseUrl(configuredDatabaseUrl ?? "postgres://localhost:5432/cogesto_consulting_builder")
 const payloadSecret = process.env.PAYLOAD_SECRET
+
+function normalizeDatabaseUrl(value: string) {
+  try {
+    const url = new URL(value)
+    const sslMode = url.searchParams.get("sslmode")
+
+    if (sslMode && ["prefer", "require", "verify-ca"].includes(sslMode)) {
+      url.searchParams.set("sslmode", "verify-full")
+    }
+
+    return url.toString()
+  } catch {
+    return value
+  }
+}
 
 if (isVercel && !configuredDatabaseUrl) {
   throw new Error("DATABASE_URL or PAYLOAD_DATABASE_URL is required for Payload on Vercel.")
@@ -90,8 +111,33 @@ const Pages: CollectionConfig = {
   },
 }
 
+const SiteSettings: CollectionConfig = {
+  slug: "site-settings",
+  access: {
+    read: () => true,
+  },
+  admin: {
+    defaultColumns: ["key", "updatedAt"],
+    useAsTitle: "key",
+  },
+  fields: [
+    {
+      name: "key",
+      index: true,
+      required: true,
+      type: "text",
+      unique: true,
+    },
+    {
+      name: "value",
+      required: true,
+      type: "json",
+    },
+  ],
+}
+
 export default buildConfig({
-  collections: [Users, Pages, Media],
+  collections: [Users, Pages, Media, SiteSettings],
   db: postgresAdapter({
     pool: {
       connectionString: databaseUrl,

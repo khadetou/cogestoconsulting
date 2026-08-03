@@ -21,10 +21,64 @@ import {
   defaultExpertisesPageCopy,
   defaultHomeContentCopy,
 } from "@/builder/blocks"
-import { EditorNavigationBridge } from "@/builder/inline-editing"
+import { EditorNavigationBridge } from "@/builder/inline-editing-public"
 import { PageLayout } from "@/components/layout"
 
+const animationField = {
+  label: "Animation",
+  options: [
+    { label: "Aucune", value: "none" },
+    { label: "Montée douce", value: "fade-up" },
+    { label: "Fondu", value: "fade-in" },
+    { label: "Zoom doux", value: "scale-soft" },
+  ],
+  type: "select",
+} as const
+
+const textField = (label: string, placeholder?: string) =>
+  ({
+    label,
+    placeholder,
+    type: "text",
+  }) as const
+
+const textareaField = (label: string, placeholder?: string) =>
+  ({
+    label,
+    placeholder,
+    type: "textarea",
+  }) as const
+
+const hrefField = textField("Lien", "/contact")
+
+const buttonFields = {
+  href: hrefField,
+  label: textField("Libellé du bouton"),
+}
+
 export const builderConfig: Config = {
+  categories: {
+    essential: {
+      components: ["HeroBlock", "TextImageBlock", "IconCardsBlock", "CtaBlock", "ContactBlock"],
+      defaultExpanded: true,
+      title: "Sections Cogesto",
+    },
+    pageTemplates: {
+      components: [
+        "HomeContentBlock",
+        "AboutPageContentBlock",
+        "ExpertisesPageContentBlock",
+        "BlpPageContentBlock",
+        "EventsPageContentBlock",
+        "ContactPageContentBlock",
+      ],
+      title: "Pages complètes",
+    },
+    structure: {
+      components: ["FooterBlock"],
+      title: "Structure",
+    },
+  },
   components: {
     AboutPageContentBlock: {
       defaultProps: {
@@ -53,9 +107,15 @@ export const builderConfig: Config = {
         phone: "+221 33 868 43 11",
         title: "Parlons de vos enjeux.",
       },
-      fields: {},
+      fields: {
+        address: textareaField("Adresse"),
+        animation: animationField,
+        email: textField("Email"),
+        phone: textField("Téléphone"),
+        title: textField("Titre"),
+      },
       label: "Contact",
-      permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
+      permissions: { delete: true, drag: true, duplicate: true, edit: true, insert: true },
       render: (props) => <BuilderContactBlock {...(props as unknown as ComponentProps<typeof BuilderContactBlock>)} />,
     },
     CtaBlock: {
@@ -67,9 +127,23 @@ export const builderConfig: Config = {
         title: "Renforcez votre compétitivité",
         variant: "navy",
       },
-      fields: {},
+      fields: {
+        animation: animationField,
+        body: textareaField("Texte"),
+        href: hrefField,
+        label: textField("Libellé du bouton"),
+        title: textField("Titre"),
+        variant: {
+          label: "Style",
+          options: [
+            { label: "Clair", value: "light" },
+            { label: "Navy", value: "navy" },
+          ],
+          type: "select",
+        },
+      },
       label: "CTA",
-      permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
+      permissions: { delete: true, drag: true, duplicate: true, edit: true, insert: true },
       render: (props) => <BuilderCtaBlock {...(props as unknown as ComponentProps<typeof BuilderCtaBlock>)} />,
     },
     ContactPageContentBlock: {
@@ -102,28 +176,60 @@ export const builderConfig: Config = {
     HeroBlock: {
       defaultProps: {
         animation: "fade-up",
-        body: "Cogesto Consulting accompagne les organisations publiques et privées dans leurs enjeux de stratégie, finance, organisation, performance et transformation.",
-        eyebrow: "Conseil, finance et management de la performance",
+        body: "Cogesto Consulting met au service des entreprises et startups une expertise pointue et des solutions innovantes pour améliorer durablement leur croissance et leur compétitivité.",
+        eyebrow: "Conseil strategique et management",
         image: "/media/cogesto/hero-candidates/black-professionals-strategy-session.png",
         metrics: [
-          { label: "Bureaux", value: "3" },
-          { label: "Heures de formation", value: "+700" },
-          { label: "Années d’expérience", value: "30+" },
+          { label: "Bureaux", value: "4" },
+          { label: "personnes formées", value: "+1840" },
+          { label: "Années d’expérience", value: "14+" },
           { label: "Pays de présence", value: "3" },
         ],
         primaryHref: "/expertises",
         primaryLabel: "Nos expertises",
         secondaryHref: "",
         secondaryLabel:
-          "Un retour d’expérience d’experts seniors, des méthodes éprouvées et des solutions adaptées aux réalités de chaque mission.",
+          "Nous mobilisons l'expertise de consultants de haut niveau investis dans la recherche de solutions innovantes et adaptées aux réalités de nos clients.",
         title: "Bâtir des organisations fortes. Piloter la performance.",
-        titleLine1: "Bâtir des organisations fortes.",
-        titleLine2: "Piloter la performance.",
+        titleLine1: "Accompagner la transformation des entreprises",
+        titleLine2: "pour accélérer leur croissance.",
         variant: "home",
       },
-      fields: {},
+      fields: {
+        animation: animationField,
+        body: textareaField("Texte principal"),
+        eyebrow: textField("Surtitre"),
+        image: textField("Image", "/media/cogesto/..."),
+        metrics: {
+          arrayFields: {
+            label: textField("Libellé"),
+            value: textField("Valeur"),
+          },
+          defaultItemProps: { label: "Indicateur", value: "0" },
+          getItemSummary: (item) => item.label || "Indicateur",
+          label: "Indicateurs",
+          max: 4,
+          type: "array",
+        },
+        primaryHref: hrefField,
+        primaryLabel: textField("Bouton principal"),
+        secondaryLabel: textareaField("Texte secondaire"),
+        title: textField("Titre"),
+        titleLine1: textField("Titre ligne 1"),
+        titleLine2: textField("Titre ligne 2"),
+        variant: {
+          label: "Style",
+          options: [
+            { label: "Accueil", value: "home" },
+            { label: "Image", value: "image" },
+            { label: "Bleu nuit", value: "navy" },
+            { label: "Programmes", value: "program" },
+          ],
+          type: "select",
+        },
+      },
       label: "Hero",
-      permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
+      permissions: { delete: true, drag: true, duplicate: true, edit: true, insert: true },
       render: (props) => <BuilderHeroBlock {...(props as unknown as ComponentProps<typeof BuilderHeroBlock>)} />,
     },
     FooterBlock: {
@@ -138,9 +244,17 @@ export const builderConfig: Config = {
         presence: "Présence au Sénégal, au Maroc et au Canada.",
         title: "Conseil, finance et management de la performance.",
       },
-      fields: {},
+      fields: {
+        address: textareaField("Adresse"),
+        body: textareaField("Texte"),
+        copyright: textField("Copyright"),
+        email: textField("Email"),
+        phone: textField("Téléphone"),
+        presence: textField("Présence"),
+        title: textField("Titre"),
+      },
       label: "Footer Cogesto",
-      permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
+      permissions: { delete: false, drag: true, duplicate: false, edit: true, insert: true },
       render: (props) => <BuilderFooterBlock {...props} />,
     },
     HomeContentBlock: {
@@ -175,9 +289,29 @@ export const builderConfig: Config = {
         eyebrow: "Expertises",
         title: "Des blocs éditables, mais une qualité de design contrôlée.",
       },
-      fields: {},
+      fields: {
+        animation: animationField,
+        cards: {
+          arrayFields: {
+            body: textareaField("Texte"),
+            icon: textField("Icône Iconify", "mdi:target-variant"),
+            title: textField("Titre"),
+          },
+          defaultItemProps: {
+            body: "Décrivez ce point clé.",
+            icon: "mdi:checkbox-marked-circle-outline",
+            title: "Nouvelle carte",
+          },
+          getItemSummary: (item) => item.title || "Carte",
+          label: "Cartes",
+          max: 8,
+          type: "array",
+        },
+        eyebrow: textField("Surtitre"),
+        title: textField("Titre"),
+      },
       label: "Cartes avec icônes",
-      permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
+      permissions: { delete: true, drag: true, duplicate: true, edit: true, insert: true },
       render: (props) => <BuilderIconCardsBlock {...(props as unknown as ComponentProps<typeof BuilderIconCardsBlock>)} />,
     },
     TextImageBlock: {
@@ -191,9 +325,25 @@ export const builderConfig: Config = {
         linkLabel: "Découvrir le cabinet",
         title: "Un accompagnement exigeant, du diagnostic à l’exécution.",
       },
-      fields: {},
+      fields: {
+        animation: animationField,
+        body: textareaField("Texte"),
+        eyebrow: textField("Surtitre"),
+        image: textField("Image"),
+        imageSide: {
+          label: "Position image",
+          options: [
+            { label: "Droite", value: "right" },
+            { label: "Gauche", value: "left" },
+          ],
+          type: "select",
+        },
+        linkHref: buttonFields.href,
+        linkLabel: buttonFields.label,
+        title: textField("Titre"),
+      },
       label: "Texte + image",
-      permissions: { delete: false, drag: false, duplicate: false, edit: true, insert: false },
+      permissions: { delete: true, drag: true, duplicate: true, edit: true, insert: true },
       render: (props) => <BuilderTextImageBlock {...(props as unknown as ComponentProps<typeof BuilderTextImageBlock>)} />,
     },
   },
@@ -202,7 +352,17 @@ export const builderConfig: Config = {
       layout: "standard",
       title: "Page Cogesto Consulting",
     },
-    fields: {},
+    fields: {
+      layout: {
+        label: "Layout",
+        options: [
+          { label: "Standard", value: "standard" },
+          { label: "Accueil plein écran", value: "home" },
+        ],
+        type: "select",
+      },
+      title: textField("Titre interne"),
+    },
     render: ({
       children,
       layout,

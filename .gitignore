@@ -8,6 +8,8 @@ count.txt
 .payload
 .vercel
 playwright-report
+.playwright-cli/
+output/
 public/uploads
 test-results
 .nitro

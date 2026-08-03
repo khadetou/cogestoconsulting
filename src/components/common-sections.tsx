@@ -94,7 +94,7 @@ export function PartnerLogoCarousel() {
   const secondRow = partners.filter((_, index) => index % 2 === 1)
 
   return (
-    <div className="mx-auto mt-10 flex max-w-[1450px] flex-col gap-4">
+    <div className="mx-auto mt-7 flex max-w-[1450px] flex-col gap-4 sm:mt-8">
       <PartnerLogoCarouselRow partners={firstRow} />
       <PartnerLogoCarouselRow partners={secondRow} reverse />
     </div>
@@ -103,10 +103,13 @@ export function PartnerLogoCarousel() {
 
 export function PartnersSection() {
   return (
-    <section id="partners" className="partners-section scroll-mt-28 py-[4.75rem] sm:py-[5.75rem]">
+    <section id="partners" className="partners-section scroll-mt-28 py-14 sm:py-16">
       <div className="page-shell">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="font-heading text-[2rem] tracking-[-0.06em] text-primary sm:text-[2.45rem]">
+          <span className="inline-flex rounded-full border border-[#978360]/20 bg-white/70 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#978360] shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+            Ils nous font confiance
+          </span>
+          <p className="mt-4 font-heading text-[2rem] tracking-[-0.04em] text-[#152036] sm:text-[2.45rem]">
             Références et partenaires
           </p>
         </div>
@@ -128,16 +131,16 @@ export function AboutHomeSection() {
               Un cabinet engagé pour la <span className="accent-text">performance des organisations.</span>
             </h2>
             <p className="section-copy mt-6 max-w-[58ch]">
-              Cogesto Consulting aide les clients à résoudre des problèmes importants afin d’assurer le développement durable de leur entreprise. Son approche combine expertise sectorielle, expertise fonctionnelle et transfert de compétences.
+              Cogesto Consulting aide ses clients à bâtir une organisation performante et durable. Notre méthode, éprouvée par des expériences et expertises sectorielles diverses, favorise le transfert de compétences et renforce la performance collective des équipes.
             </p>
 
             <div className="mt-10">
               <Link
                 to="/about"
-                className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.16)] transition-transform duration-200 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-3 rounded-full bg-[#f8f6f1] px-5 py-3 text-sm font-bold text-[#152036] shadow-[0_18px_35px_rgba(21,32,54,0.16)] ring-1 ring-[#978360]/18 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white"
               >
                 Découvrir le cabinet
-                <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/18 bg-white/12 text-white">
+                <span className="inline-flex size-8 items-center justify-center rounded-full border border-[#152036] bg-[#152036] text-white">
                   <MoveRight className="size-4" />
                 </span>
               </Link>
@@ -153,12 +156,12 @@ export function AboutHomeSection() {
               />
             </div>
             <div className="absolute bottom-0 right-0 w-[13.125rem] rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_24px_50px_rgba(15,23,42,0.12)] sm:w-[250px]">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">Mission</p>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#978360]">Mission</p>
               <h3 className="mt-4 font-heading text-[1.5rem] leading-[1.12] tracking-tighter text-slate-950">
-                Mettre l’expertise au service de la performance, du capital humain et de la création de valeur.
+                Mettre l’expertise au service de la performance des organisations et des équipes.
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-500">
-                Une démarche orientée diagnostic, outils pratiques, accompagnement personnalisé et résultats durables.
+                Nous mettons notre expertise au service de la croissance et de la compétitivité des startups et entreprises d’Afrique francophone actives dans des secteurs stratégiques tels que l’agro-industrie et le numérique.
               </p>
             </div>
             <div className="absolute right-10 top-5 hidden rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-500 shadow-[0_15px_35px_rgba(15,23,42,0.08)] sm:inline-flex">
@@ -179,7 +182,7 @@ export function ExpertisePreview() {
           <div>
             <span className="eyebrow">Nos expertises</span>
             <h2 className="section-title mt-6 max-w-[22ch]">
-              Des expertises conçues pour <span className="accent-text">créer de la valeur et renforcer la compétitivité.</span>
+              Des expertises mobilisées pour <span className="accent-text">créer de la valeur et renforcer la compétitivité des entreprises.</span>
             </h2>
           </div>
           <p className="section-copy max-w-[60ch] lg:justify-self-end">
@@ -204,7 +207,7 @@ export function ExpertisePreview() {
         <div className="mt-8 flex justify-center">
           <Link
             to="/expertises"
-            className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)]"
+            className="inline-flex items-center gap-3 rounded-full bg-[#152036] px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)] transition-colors hover:bg-[#1d2a42]"
           >
             Voir toutes les expertises
             <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
@@ -227,10 +230,10 @@ export function MethodSection() {
           </h2>
           <Link
             to="/about"
-            className="inline-flex items-center gap-3 self-start rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)] lg:self-auto"
+            className="inline-flex items-center gap-3 self-start rounded-full bg-[#f8f6f1] px-5 py-3 text-sm font-bold text-[#152036] shadow-[0_18px_35px_rgba(21,32,54,0.12)] ring-1 ring-[#978360]/18 transition-colors hover:bg-white lg:self-auto"
           >
             Notre proposition de valeur
-            <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
+            <span className="inline-flex size-8 items-center justify-center rounded-full border border-[#152036] bg-[#152036] text-white">
               <ArrowRight className="size-4" />
             </span>
           </Link>
@@ -244,20 +247,22 @@ export function MethodSection() {
                 className={cn(
                   "flex items-center justify-between gap-4 px-0 py-5 sm:px-1",
                   step.active
-                    ? "rounded-[28px] bg-primary text-white shadow-[0_24px_55px_rgba(21,32,54,0.18)]"
-                    : "border-b border-slate-200 text-slate-900",
+                    ? "rounded-[28px] border border-[#e6e0d4] bg-[#f8f6f1] text-[#152036] shadow-[0_24px_55px_rgba(21,32,54,0.18)]"
+                    : "border-b border-[#dce8f4] text-[#31425c]",
                 )}
               >
                 <div className={cn("flex-1", step.active && "px-6 py-6")}>
                   <h3 className="max-w-[36ch] text-[1.02rem] font-medium leading-7">{step.title}</h3>
                   {step.active ? (
-                    <p className="mt-4 max-w-[46ch] text-sm leading-6 text-white/64">{step.description}</p>
+                    <p className="mt-4 max-w-[46ch] text-sm leading-6 text-[#526076]">{step.description}</p>
                   ) : null}
                 </div>
                 <span
                   className={cn(
                     "inline-flex size-10 shrink-0 items-center justify-center rounded-full border",
-                    step.active ? "mr-6 border-white/14 bg-white/10 text-white" : "border-slate-200 bg-white text-slate-500",
+                    step.active
+                      ? "mr-6 border-[#152036] bg-[#152036] text-white"
+                      : "border-[#d6e4f2] bg-[#f7fbff] text-[#152036] shadow-[0_8px_22px_rgba(21,32,54,0.08)]",
                   )}
                 >
                   <ArrowRight className="size-4" />
@@ -357,10 +362,10 @@ export function EventsPreview() {
         <div className="mt-10 flex justify-center">
           <Link
             to="/events"
-            className="inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white shadow-[0_18px_35px_rgba(21,32,54,0.12)]"
+            className="inline-flex items-center gap-3 rounded-full bg-[#f8f6f1] px-5 py-3 text-sm font-bold text-[#152036] shadow-[0_18px_35px_rgba(21,32,54,0.12)] ring-1 ring-[#978360]/18 transition-colors hover:bg-white"
           >
             Voir tous les évènements
-            <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/16 bg-white/12">
+            <span className="inline-flex size-8 items-center justify-center rounded-full border border-[#152036] bg-[#152036] text-white">
               <ArrowRight className="size-4" />
             </span>
           </Link>
@@ -390,10 +395,10 @@ export function TeamSection() {
               key={leader.name}
               className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.06)]"
             >
-              <TeamPortrait src={leader.image} alt={leader.name} />
+              <TeamPortrait src={leader.image} alt={leader.name} imageScale={leader.imageScale} />
               <div className="p-5">
                 <h3 className="font-heading text-[1.45rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{leader.name}</h3>
-                <p className="mt-1 text-sm font-semibold text-primary">{leader.role}</p>
+                <p className="mt-1 text-sm font-semibold text-[#978360]">{leader.role}</p>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{leader.summary}</p>
               </div>
             </article>
@@ -408,7 +413,7 @@ export function CtaSection() {
   return (
     <section className="section-pad bg-white">
       <div className="page-shell">
-        <div className="overflow-hidden rounded-[30px] border border-white/10 bg-primary p-8 text-white shadow-[0_30px_80px_rgba(21,32,54,0.18)] sm:p-12 lg:p-16">
+        <div className="overflow-hidden rounded-[30px] border border-white/10 bg-[#152036] p-8 text-white shadow-[0_30px_80px_rgba(21,32,54,0.18)] sm:p-12 lg:p-16">
           <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <p className="eyebrow text-white/70 before:bg-white/20">Renforcez votre compétitivité</p>
@@ -419,7 +424,7 @@ export function CtaSection() {
                 Conseil, formation, accompagnement organisationnel, stratégie, finance et performance.
               </p>
             </div>
-            <Link to="/contact" className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 font-bold text-primary shadow-[0_16px_34px_rgba(255,255,255,0.16)] transition-transform hover:-translate-y-0.5">
+            <Link to="/contact" className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 font-bold text-[#152036] shadow-[0_16px_34px_rgba(255,255,255,0.16)] transition-transform hover:-translate-y-0.5">
               Contactez-nous
               <ArrowRight className="size-4" />
             </Link>

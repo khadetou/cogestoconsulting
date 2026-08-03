@@ -1,26 +1,21 @@
-import gsap from "gsap"
 import { useEffect, useRef } from "react"
 import type { ReactNode } from "react"
 
 import type { AnimationPreset } from "@/builder/types"
+import { animateNativeElementReveal } from "@/lib/dom-animations"
 import { cn } from "@/lib/utils"
 
-const animationPresets: Record<Exclude<AnimationPreset, "none">, gsap.TweenVars> = {
+const animationPresets: Record<Exclude<AnimationPreset, "none">, { duration: number; scale?: number; y?: number }> = {
   "fade-in": {
-    autoAlpha: 0,
-    duration: 0.65,
-    ease: "power2.out",
+    duration: 650,
+    y: 0,
   },
   "fade-up": {
-    autoAlpha: 0,
-    duration: 0.72,
-    ease: "power3.out",
+    duration: 720,
     y: 18,
   },
   "scale-soft": {
-    autoAlpha: 0,
-    duration: 0.72,
-    ease: "power3.out",
+    duration: 720,
     scale: 0.985,
     y: 10,
   },
@@ -45,28 +40,12 @@ export function AnimatedBlock({
     if (!element) return
 
     if (disabled || preset === "none") {
-      gsap.set(element, { clearProps: "all" })
+      element.style.removeProperty("opacity")
+      element.style.removeProperty("transform")
       return
     }
 
-    const { duration, ease, ...fromVars } = animationPresets[preset]
-    const tween = gsap.fromTo(
-      element,
-      fromVars,
-      {
-        autoAlpha: 1,
-        clearProps: "opacity,visibility,transform",
-        duration,
-        ease,
-        scale: "scale" in fromVars ? 1 : undefined,
-        y: "y" in fromVars ? 0 : undefined,
-      },
-    )
-
-    return () => {
-      tween.kill()
-      gsap.set(element, { clearProps: "opacity,visibility,transform" })
-    }
+    return animateNativeElementReveal(element, animationPresets[preset])
   }, [disabled, preset])
 
   return (

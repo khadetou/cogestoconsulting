@@ -5,12 +5,15 @@ export type NavItem = {
 }
 
 export type SiteNavLink = {
+  children?: Array<SiteNavLink>
   description: string
   href: string
   label: string
 }
 
 export type SiteNavSection = {
+  description?: string
+  href?: string
   links: Array<SiteNavLink>
   title: string
 }
@@ -25,6 +28,7 @@ export type SiteNavCard = {
 
 export type SiteNavItem = NavItem & {
   card?: SiteNavCard
+  menuTitle?: string
   sections?: Array<SiteNavSection>
 }
 
@@ -51,8 +55,18 @@ export const navItems: Array<NavItem> = [
   },
   {
     href: "/business-linkage-program",
-    label: "Business Linkage Program",
+    label: "Programmes",
     description: "Accompagnement PME, Oil & Gas, marché et financement.",
+  },
+  {
+    href: "/business-linkage-program/parcours-entrepreneur",
+    label: "Parcours de l’entrepreneur",
+    description: "Parcours d’accompagnement pour renforcer la posture entrepreneuriale.",
+  },
+  {
+    href: "/expertises#formation",
+    label: "Formation",
+    description: "Formation, séminaires, coaching et renforcement de capacités.",
   },
   { href: "/events", label: "Évènements" },
   { href: "/contact", label: "Contact" },
@@ -131,16 +145,19 @@ export const siteMenuItems: Array<SiteNavItem> = [
   {
     card: {
       cta: "Découvrir le programme",
-      eyebrow: "Program",
+      eyebrow: "Programmes",
       href: "/business-linkage-program",
       text: "Le programme accompagne la croissance des entreprises du pétrole et du gaz grâce à l’assistance technique et à la formation.",
       title: "Contexte, partenaires, objectifs, résultats et experts mobilisés autour du BLP.",
     },
-    description: "Le Business Linkage Program présenté sur une page dédiée.",
+    description: "Programmes d’accompagnement et dispositifs COGESTO.",
     href: "/business-linkage-program",
-    label: "Business Linkage Program",
+    label: "Programmes",
+    menuTitle: "Programmes",
     sections: [
       {
+        description: "Page principale du Business Linkage Program.",
+        href: "/business-linkage-program",
         title: "Business Linkage Program",
         links: [
           {
@@ -159,28 +176,29 @@ export const siteMenuItems: Array<SiteNavItem> = [
             label: "Objectif du BLP",
           },
           {
-            description: "Accompagnement à la structuration de projets verts et durables.",
-            href: "/business-linkage-program/finance-verte-durable",
-            label: "Finance verte ou durable",
-          },
-          {
-            description: "Parcours d’accompagnement pour renforcer la posture entrepreneuriale.",
-            href: "/business-linkage-program/parcours-entrepreneur",
-            label: "Parcours de l’entrepreneur",
-          },
-          {
             description: "Consultants, experts et accompagnateurs mobilisés.",
             href: "/business-linkage-program#consultants",
-            label: "Consultants du BLP",
-          },
-          {
-            description: "Cérémonies, séminaires et actions de terrain du programme.",
-            href: "/business-linkage-program#evenements",
-            label: "Évènements du BLP",
+            label: "Nos consultants BLP",
           },
         ],
       },
+      {
+        description: "Accompagnement à la structuration de projets verts et durables.",
+        href: "/business-linkage-program/finance-verte-durable",
+        links: [],
+        title: "Finance verte ou durable",
+      },
     ],
+  },
+  {
+    description: "Parcours d’accompagnement pour renforcer la posture entrepreneuriale.",
+    href: "/business-linkage-program/parcours-entrepreneur",
+    label: "Parcours de l’entrepreneur",
+  },
+  {
+    description: "Formation, séminaires, coaching et renforcement de capacités.",
+    href: "/expertises#formation",
+    label: "Formation",
   },
   { href: "/events", label: "Évènements" },
   { href: "/contact", label: "Contact" },
@@ -190,7 +208,10 @@ export const footerLinks = [
   { href: "/", label: "Accueil" },
   { href: "/about", label: "A propos" },
   { href: "/expertises", label: "Nos expertises" },
-  { href: "/business-linkage-program", label: "Business Linkage Program" },
+  { href: "/expertises#formation", label: "Formation" },
+  { href: "/business-linkage-program", label: "Programmes" },
+  { href: "/business-linkage-program/finance-verte-durable", label: "Finance verte ou durable" },
+  { href: "/business-linkage-program/parcours-entrepreneur", label: "Parcours de l’entrepreneur" },
   { href: "/events", label: "Évènements" },
   { href: "/contact", label: "Contact" },
 ]
@@ -203,10 +224,10 @@ export const socialLinks = [
 ]
 
 export const metrics = [
-  { icon: "lucide:building-2", label: "Bureaux", value: "3" },
+  { icon: "lucide:building-2", label: "Bureaux", value: "4" },
   { icon: "lucide:globe-2", label: "Pays de présence", value: "3" },
-  { icon: "lucide:graduation-cap", label: "Heures de formation", value: "+700" },
-  { icon: "lucide:briefcase-business", label: "Années d’expérience cumulée", value: "30+" },
+  { icon: "lucide:graduation-cap", label: "personnes formées", value: "+1840" },
+  { icon: "lucide:briefcase-business", label: "Années d’expérience cumulée", value: "14+" },
 ]
 
 export const presence = [
@@ -458,6 +479,46 @@ export const detailedFunctionalExpertise = [
     ],
   },
   {
+    title: "Digitalisation",
+    enjeux: [
+      "La révolution numérique transforme les modèles économiques, les parcours clients et les modes de pilotage des organisations.",
+      "Les entreprises doivent disposer de systèmes d’information cohérents, interconnectés et alignés avec leur stratégie.",
+      "La digitalisation des processus, du reporting et de la relation client devient un levier majeur de productivité, de transparence et de compétitivité.",
+    ],
+    savoirFaire: [
+      "Diagnostic de maturité digitale et des systèmes d’information",
+      "Cartographie et digitalisation des processus métiers",
+      "Définition de feuilles de route digitales",
+      "Accompagnement à la mise en place d’outils de pilotage, CRM et reporting",
+      "Assistance à la maîtrise d’ouvrage de projets digitaux",
+      "Conduite du changement et appropriation des outils numériques",
+    ],
+    atouts: [
+      "Approche pragmatique reliant stratégie, organisation, systèmes d’information et performance opérationnelle.",
+      "Expérience dans l’accompagnement de projets de transformation digitale, de reporting et d’outils de gestion.",
+    ],
+  },
+  {
+    title: "Norme et Qualité",
+    enjeux: [
+      "Les exigences réglementaires, clients, bailleurs et partenaires imposent aux organisations des standards élevés de qualité, sécurité, environnement et conformité.",
+      "La maîtrise des processus et des procédures devient indispensable pour sécuriser les opérations et renforcer la confiance des parties prenantes.",
+      "Les normes qualité et QHSE constituent un levier d’accès aux marchés, de performance durable et d’amélioration continue.",
+    ],
+    savoirFaire: [
+      "Diagnostic qualité, QHSE et conformité",
+      "Mise en place et revue de manuels de procédures",
+      "Cartographie des processus, risques et contrôles associés",
+      "Accompagnement aux référentiels ISO 9001, ISO 14001 et ISO 45001",
+      "Préparation aux audits internes et plans d’amélioration",
+      "Formation et transfert de compétences sur les exigences normatives",
+    ],
+    atouts: [
+      "Expertise en qualité, QHSE, contrôle interne et formalisation de référentiels de gestion.",
+      "Méthode participative favorisant l’appropriation des normes par les équipes et la transformation des exigences en pratiques opérationnelles.",
+    ],
+  },
+  {
     title: "Conseil à l’investissement et à l’entrepreneuriat",
     enjeux: ["Réussir une implantation et sécuriser les décisions d’investissement."],
     savoirFaire: [
@@ -541,17 +602,26 @@ export const extendedFunctionalExpertise = detailedFunctionalExpertise
 
 export const sectorExpertise = [
   "Industrie",
-  "Énergie et hydrocarbures",
-  "Immobilier / BTP",
-  "Distribution",
-  "Santé",
   "Agro-alimentaire / Agro business",
-  "Microfinance et SFD",
-  "Hôtellerie / Tourisme",
+  "Oil & Gas",
+  "Immobilier / BTP",
+  "Construction métallique",
+  "Automobile",
+  "Énergie et électricité",
+  "Mécanique générale",
+  "Distribution",
   "Banques et services financiers",
-  "Services",
+  "Santé",
+  "Microfinance et SFD",
   "Transport et logistique",
-  "TIC, ONG et collectivités locales",
+  "Transport maritime",
+  "Hôtel & restauration",
+  "Éducation",
+  "Étude, ingénierie et conseil",
+  "TIC",
+  "ONG",
+  "Agences publiques",
+  "Organismes",
 ]
 
 export const approach = [
@@ -563,6 +633,34 @@ export const approach = [
 
 export const values = ["Créativité", "Respect", "Engagement", "Éthique", "Responsabilité"]
 
+export const valueCards = [
+  {
+    image: "/media/cogesto/references/values/value-2.png",
+    summary: "Imaginer des réponses utiles, concrètes et adaptées aux réalités de chaque organisation.",
+    title: "Créativité",
+  },
+  {
+    image: "/media/cogesto/references/values/value-3.png",
+    summary: "Construire des relations de confiance, fondées sur l’écoute, la considération et la transparence.",
+    title: "Respect",
+  },
+  {
+    image: "/media/cogesto/references/values/value-4.png",
+    summary: "S’impliquer avec rigueur auprès des clients pour transformer les recommandations en résultats.",
+    title: "Engagement",
+  },
+  {
+    image: "/media/cogesto/references/values/value-5.png",
+    summary: "Agir avec intégrité, confidentialité et responsabilité dans chaque mission confiée.",
+    title: "Éthique",
+  },
+  {
+    image: "/media/cogesto/references/values/value-6.png",
+    summary: "Porter une démarche durable, inclusive et attentive aux impacts économiques, sociaux et environnementaux.",
+    title: "Responsabilité",
+  },
+]
+
 export const commitments = [
   "Préserver les intérêts des clients",
   "Préserver notre intégrité",
@@ -571,27 +669,65 @@ export const commitments = [
   "Favoriser le transfert de compétences",
 ]
 
+const mameNgoneProfileTitle =
+  "Avocate au barreau de l’Ontario (Canada) et Consultante, conseillère juridique senior"
+
+const mameNgoneProfileParagraphs = [
+  "Mame est Avocate au barreau de l’Ontario (Canada) et Consultante, conseillère juridique senior fournissant des services juridiques en Afrique subsaharienne.",
+  "Elle a dirigé une équipe des Services bancaires et financiers dans un cabinet d’avocats au Sénégal pendant 10 ans et 3 mois.",
+  "Apportant des années d'expérience de travail du Canada, des États-Unis et de l’Angleterre dans sa ville natale de Dakar, Mame travaille avec des investisseurs étrangers pour s'assurer qu'ils comprennent les exigences légales et les opportunités dans ce cadre de leurs transactions commerciales et corporatives.",
+  "Elle supervise les diligences juridiques complexes dans le secteur des services financiers et la conformité des transactions aux règlementations communautaires.",
+  "Mame aide ses clients à naviguer à travers les lois sur l'investissement au Sénégal et dans d'autres juridictions membres de l'OHADA. Elle intervient régulièrement dans le cadre de transactions transfrontalières dans ces juridictions.",
+  "Elle a été détachée auprès de grands cabinets d'avocats à Londres, dont Dentons et d’autres grands cabinets d’avocats.",
+  "Mame est une ancienne récipiendaire de la bourse « International Lawyers for Africa (ILFA) », grâce à laquelle elle a été détachée au cabinet Dentons à Londres en 2013.",
+]
+
+const mameNgoneExperience = [
+  "​Chef d'équipe du département des services financiers, Mame a acquis une expérience précieuse dans le conseil sur les questions bancaires et financières, y compris une expérience dans l'industrie aéronautique, les prêts et garanties, les produits dérivés, les bons et les obligations, pour n'en citer que quelques-uns.",
+]
+
 export const leaders = [
   {
     image: "/media/cogesto/team/babacar-sow-4.png",
-    name: "Babacar Sow",
+    name: "M. Babacar Sow",
     role: "Président du Groupe",
     summary:
-      "Plus de 30 ans d’expérience en conseil, finance, développement international et direction générale, avec un parcours incluant PricewaterhouseCoopers.",
+      "Plus de 32 ans d’expérience en conseil, finance, développement international et direction générale, avec un parcours incluant PricewaterhouseCoopers.",
   },
   {
     image: "/media/cogesto/team/mme-codou-sow.png",
     name: "Codou Sow",
     role: "Directrice",
     summary:
-      "CPA à Montréal, expert-comptable inscrit à l’ONECCA du Sénégal, spécialiste audit, IFRS, finance et conseil aux USA, au Canada et en Afrique.",
+      "CPA à Montréal, expert-comptable inscrit à l’ONECCA du Sénégal, avec plus de 27 ans d’expérience en audit, IFRS, finance et conseil aux USA, au Canada et en Afrique.",
   },
   {
     image: "/media/cogesto/team/mame-ngone-sow.png",
     name: "Mame Ngoné Sow",
-    role: "Conseiller juridique senior",
+    role: mameNgoneProfileTitle,
+    summary: mameNgoneProfileParagraphs[0],
+  },
+  {
+    image: "/media/cogesto/blp/consultants/equipe-cogesto-13.png",
+    name: "M. Yankhouba Dianesy",
+    role: "Expert financier et coach certifié",
     summary:
-      "Avocate au Barreau de l’Ontario, juriste corporate avec une vingtaine d’années d’expérience et une expertise en droit international.",
+      "Consultant en finance, formateur et coach certifié, il accompagne les PME et startups sur l’entrepreneuriat, la structuration financière et l’accès au financement.",
+  },
+  {
+    image: "/media/cogesto/blp/consultants/cheikh-ahmadou-bamba-badji.png",
+    name: "M. Cheikh Ahmadou Bamba Badji",
+    role: "Ingénieur pétrolier et expert en organisation",
+    summary:
+      "Ingénieur pétrolier, consultant QHSE et ESG, il coordonne des missions de conseil et d’accompagnement opérationnel, notamment dans l’Oil & Gas et le Business Linkage Program.",
+  },
+  {
+    image: "/media/cogesto/blp/consultants/saodou-amadou-ba.png",
+    imageScale: 1.62,
+    name: "M. Saodou Amadou Ba",
+    role: "Analyste financier et consultant en finance",
+    summary:
+      "Analyste financier, il intervient en ingénierie financière, évaluation d’entreprises, due diligence, plans d’affaires et structuration de dossiers de financement.",
   },
 ]
 
@@ -606,56 +742,96 @@ export const aboutPresidentMessage = [
 
 export const aboutBoardMembers = [
   {
-    name: "Babacar Sow",
-    role: "PDG",
+    image: "/media/cogesto/team/babacar-sow-4.png",
+    name: "M. Babacar Sow",
+    role: "Président Conseil d’Administration",
     summary:
-      "Une trentaine d’années d’expérience, débutées en 1995 chez PricewaterhouseCoopers Maroc, puis prolongées comme Directeur du Développement International, Directeur Financier et Directeur Général.",
+      "Plus de 32 ans d’expérience, débutés en 1995 chez PricewaterhouseCoopers Maroc, puis prolongés comme Directeur du Développement International, Directeur Financier et Directeur Général.",
   },
   {
+    image: "/media/cogesto/team/mme-codou-sow.png",
     name: "Codou Sow",
-    role: "Directrice",
+    role: "Directrice, Certified Public Accountant",
     summary:
-      "Certified Public Accountant (CPA) à Montréal, expert-comptable inscrit à l’ONECCA du Sénégal, avec plus de 25 ans d’expérience avérée dans le conseil et la finance aux USA et au Canada, spécialiste audit et normes IFRS, titulaire d’un MBA en Finance Internationale.",
+      "Certified Public Accountant (CPA) à Montréal, expert-comptable inscrit à l’ONECCA du Sénégal, avec plus de 27 ans d’expérience avérée dans le conseil et la finance aux USA et au Canada, spécialiste audit et normes IFRS, titulaire d’un MBA en Finance Internationale.",
   },
   {
+    image: "/media/cogesto/team/mame-ngone-sow.png",
     name: "Mame Ngoné Sow",
-    role: "Conseiller juridique senior",
+    role: mameNgoneProfileTitle,
+    summary: mameNgoneProfileParagraphs[0],
+  },
+  {
+    image: "/media/cogesto/blp/consultants/equipe-cogesto-13.png",
+    name: "M. Yankhouba Dianesy",
+    role: "Expert financier et coach certifié",
     summary:
-      "Avocate au Barreau de l’Ontario, avec une vingtaine d’années d’expérience, titulaire d’un LLM en droit informatique de l’Université de Montréal, d’un LLM en droit international privé et d’un certificat en droit international public et comparé.",
+      "Consultant en finance, formateur et coach certifié, il accompagne les PME et startups sur l’entrepreneuriat, la structuration financière et l’accès au financement.",
+  },
+  {
+    image: "/media/cogesto/blp/consultants/cheikh-ahmadou-bamba-badji.png",
+    name: "M. Cheikh Ahmadou Bamba Badji",
+    role: "Ingénieur pétrolier et expert en organisation",
+    summary:
+      "Ingénieur pétrolier, consultant QHSE et ESG, il coordonne des missions de conseil et d’accompagnement opérationnel, notamment dans l’Oil & Gas et le Business Linkage Program.",
+  },
+  {
+    image: "/media/cogesto/blp/consultants/saodou-amadou-ba.png",
+    imageScale: 1.62,
+    name: "M. Saodou Amadou Ba",
+    role: "Analyste financier et consultant en finance",
+    summary:
+      "Analyste financier, il intervient en ingénierie financière, évaluation d’entreprises, due diligence, plans d’affaires et structuration de dossiers de financement.",
   },
 ]
 
 export const aboutExecutiveCommittee = [
   {
-    name: "Babacar Sow",
-    role: "PDG",
+    image: "/media/cogesto/team/babacar-sow-4.png",
+    name: "M. Babacar Sow",
+    role: "Président, expert en stratégie et finance",
     summary:
-      "Manager chez PwC puis dirigeant d’entreprises privées, avec une forte expérience en conseil, finance, transformation et direction générale.",
+      "PDG avec plus de 32 ans d’expérience en conseil et en entreprise. Il a été successivement Manager chez PWC, Directeur du Développement International, Directeur Financier et Directeur Général dans des entreprises privées. Il est titulaire d’un Master en Comptabilité, Contrôle et Audit et en Diagnostic Économique des Entreprises.",
   },
   {
+    image: "/media/cogesto/blp/consultants/amy-rose-konate-blp.png",
     name: "Amy Rose Konaté",
-    role: "Vice-Présidente, experte en développement de personnel",
+    role: "Vice-Présidente, experte senior en conduite du changement et organisation",
     summary:
-      "28 ans d’expérience en conseil et en entreprise, spécialiste en conduite du changement, coach certifiée et consultante en organisation.",
+      "Vice-Présidente, experte en développement de personnel et coach certifiée. Elle capitalise 30 ans d’expérience en conseil et en entreprise, avec des missions de conduite du changement auprès d’entreprises privées, publiques et d’institutions sous-régionales.",
   },
   {
+    image: "/media/cogesto/blp/consultants/equipe-cogesto-12.png",
     name: "Coumba Diop Ndiaye",
-    role: "Vice-Présidente, experte RH & organisation",
+    role: "Vice-Présidente, experte en développement du capital humain",
     summary:
-      "24 ans d’expérience en RH et organisation, ancienne DRH de Neurotech, Matforce et Unilever Sénégal, certifiée RSE et audit des processus RH.",
+      "Vice-Présidente, experte en RH et organisation. Elle capitalise 26 ans d’expérience, ancienne DRH de Neurotech, Matforce et Unilever Sénégal, certifiée en Responsabilité Sociétale des Entreprises et audit des processus RH.",
   },
   {
+    image: "/media/cogesto/team/dr-amadou-ba.png",
     name: "Dr. Amadou Ba",
     role: "Vice-Président, expert senior en politiques publiques",
     summary:
-      "Une quarantaine d’années d’expérience en administration, formation, développement, hygiène, qualité et sécurité, avec une forte expertise de terrain.",
+      "Vice-Président, expert senior en politiques publiques et développement. Il capitalise 42 ans d’expérience en administration et formation, avec une expertise en aménagement du territoire, gestion urbaine, environnement, hygiène, qualité et sécurité.",
+  },
+  {
+    image: "/media/cogesto/team/gilles-cloutier-card.png",
+    name: "Dr. Gilles Cloutier",
+    role: "Vice-Président Amérique du Nord",
+    summary:
+      "Diplômé de l’Université d’Oxford (M.A.) et du MIT (PhD), expert international et administrateur de sociétés avec plus de 47 ans d’expérience. Il a conseillé le FMI, la Banque mondiale, la SFI, le PNUD et plusieurs institutions régionales.",
+  },
+  {
+    image: "/media/cogesto/team/aziz-chaib-card.jpeg",
+    name: "Dr. Aziz Chaib",
+    role: "Vice-Président Afrique du Nord - Moyen-Orient",
+    summary:
+      "Consultant en développement des affaires et formateur international, directeur fondateur de l’École Mérieux Oran. Auditeur ISO et Lean manufacturing, il accompagne des projets de formation industrielle, santé-environnement et développement en Afrique et aux Comores.",
   },
 ]
 
 export const aboutApproach = [
   "Une analyse sectorielle pointue fondée sur des benchmarks ciblés afin de répondre de manière appropriée aux problématiques des grandes entreprises et PME.",
-  "Un diagnostic approfondi et ciblé de l’organisme pour une meilleure connaissance de ses problématiques, enjeux et besoins spécifiques.",
-  "Le recours à des outils pratiques et adaptés au contexte de la mission.",
   "Un accompagnement personnalisé et interactif qui fait de notre cabinet une force de propositions et d’innovations.",
 ]
 
@@ -679,7 +855,7 @@ export const socialCommitments = [
 export const programObjectives = [
   "Identifier les PME ciblées à fort potentiel.",
   "Assurer leur formation, renforcer leurs capacités et les accompagner.",
-  "Développer leurs capacités entrepreneuriales et leurs réseaux de partenariat.",
+  "Développer leurs capacités entrepreneuriales et les orienter vers des partenariats et réseaux avec les grandes sociétés.",
   "Faciliter l’accès au financement des PME.",
   "Mettre en place un réseau de PME compétitives dont 40% dirigées par des femmes.",
   "Favoriser une meilleure intégration dans la chaîne de valeur de l’industrie pétrolière et gazière.",
@@ -704,16 +880,26 @@ export const programContextHighlights = [
 export const programPartners = [
   {
     description: "Initiative structurante pour l’intégration des PME locales dans les chaînes de valeur.",
+    logo: "/media/cogesto/blp/design-32.jpg",
     name: "Invest In Africa",
   },
   {
     description: "Appui technique et financement du dispositif pour accélérer la montée en capacité des entreprises.",
+    logo: "/media/cogesto/blp/design-30.jpg",
     name: "Banque Africaine de Développement",
   },
   {
     description: "Soutien au partenariat africain pour renforcer l’impact économique du programme.",
+    logo: "/media/cogesto/blp/design-31.jpg",
     name: "Fonds pour les Partenariats Africains (FAPA)",
   },
+]
+
+export const programKeyFigures = [
+  { label: "barils/jour", value: "+100 000", detail: "production pétrolière estimée en phase de plateau" },
+  { label: "tonnes/an", value: "2,5 M", detail: "production de gaz naturel liquéfié estimée dès 2023" },
+  { label: "milliards m³", value: "450", detail: "réserves de gaz estimées sur Grand Tortue/Ahmeyim" },
+  { label: "PME identifiées", value: "80", detail: "entreprises à fort potentiel ciblées par le programme" },
 ]
 
 export const businessLinkageOffers = [
@@ -726,10 +912,10 @@ export const businessLinkageOffers = [
   },
   {
     description:
-      "Un parcours d’accompagnement pour aider les dirigeants à clarifier leur modèle, renforcer leur pilotage et accélérer leur accès au marché.",
+      "PACTES accompagne les jeunes, femmes, startups et PME dans la création, la structuration, l’accès au marché et la mobilisation de financements.",
     href: "/business-linkage-program/parcours-entrepreneur",
     image: "/media/cogesto/ai/business-linkage/parcours-entrepreneur.png",
-    label: "Parcours de l’entrepreneur",
+    label: "PACTES - Parcours de l’entrepreneur",
   },
 ]
 
@@ -759,33 +945,156 @@ export const businessLinkageOfferPages = {
       "Entrepreneurs, PME, organisations et porteurs de projets engagés dans l’énergie, l’agriculture, l’économie circulaire, les services essentiels ou la transition durable.",
   },
   "parcours-entrepreneur": {
-    eyebrow: "Business Linkage Program",
+    eyebrow: "PACTES",
     heroImage: "/media/cogesto/ai/business-linkage/parcours-entrepreneur.png",
     intro:
-      "Le Parcours de l’entrepreneur aide les dirigeants à consolider leur vision, leur posture, leur organisation et leur capacité à saisir les opportunités de marché.",
+      "Le Parcours de l’entrepreneur accompagne les jeunes et femmes entrepreneurs sénégalais dans la conceptualisation, la structuration, le développement et la pérennisation de leurs entreprises.",
     lead:
-      "Le dispositif combine diagnostic, formation, coaching, outils de gestion et mise en situation pour faire progresser l’entreprise de manière structurée.",
+      "Le programme PACTES se déploie sur une période de trois à six mois, selon le niveau de maturité de la startup ou de la PME, avec des ateliers, formations, coaching, mentorat, outils digitaux et appui à l’accès aux marchés et aux financements.",
     slug: "parcours-entrepreneur",
     title: "Parcours de l’entrepreneur",
     outcomes: [
-      "Une vision d’entreprise clarifiée et traduite en priorités opérationnelles.",
-      "Des outils de pilotage adaptés aux réalités de l’entreprise.",
-      "Une meilleure préparation à la négociation, au financement et aux partenariats.",
-      "Un plan de croissance concret, séquencé et suivi.",
+      "100 entreprises formalisées et opérationnelles par an.",
+      "150 jeunes et femmes entrepreneurs formés par an.",
+      "100 porteurs de projets disposant d’un business-plan bancable.",
+      "50 PME utilisant un outil digital de vente, CRM ou tunnel de vente.",
+      "30 entreprises structurées.",
+      "50 entreprises bénéficiant d’un financement auprès d’institutions financières ou de bailleurs.",
     ],
     steps: [
-      "Diagnostic entrepreneurial et cartographie des besoins du dirigeant.",
-      "Ateliers sur modèle économique, marché, organisation, finance et leadership.",
-      "Coaching individuel ou collectif sur les décisions clés de croissance.",
-      "Plan d’action, suivi des progrès et préparation aux opportunités commerciales.",
+      "Idéation et formalisation de l’entreprise : créativité, proposition de valeur, business model, capacités managériales, formalisation, plan d’affaires, pitch, coaching et mentorat.",
+      "Organisation et structuration de l’entreprise : lancement commercial, gestion des PME, organisation interne, stratégie digitale, accès au marché et accès au financement.",
+      "Accélération de la croissance et de la transformation : diagnostic organisationnel, structuration avancée, stratégie marketing et commerciale, réseautage, accélération commerciale, transformation digitale et financements structurants.",
+      "Méthodologie inspirée de GERME, enrichie par des outils numériques et d’intelligence artificielle pour les études de marché, les projections financières et la préparation des décisions.",
     ],
     target:
-      "Entrepreneurs, fondateurs, dirigeants de PME et équipes de croissance qui veulent passer d’une intuition à une entreprise mieux structurée.",
+      "Jeunes, femmes, entrepreneurs et porteurs de projets innovants, startups en lancement ou en croissance, et PME actives dans des secteurs stratégiques tels que l’agriculture, l’artisanat, la transformation agroalimentaire, les services numériques et la transition énergétique.",
   },
 } as const
 
+export const parcoursEntrepreneurContent = {
+  menu: [
+    { href: "#contexte", label: "Contexte" },
+    { href: "#justification", label: "Justification" },
+    { href: "#objectifs", label: "Objectifs" },
+    { href: "#resultats", label: "Résultats attendus" },
+    { href: "#cibles", label: "Cibles" },
+    { href: "#programme", label: "Programme & services" },
+  ],
+  context: [
+    "Le Sénégal entre dans une phase historique avec une croissance projetée à 8,8% en 2025, portée notamment par le démarrage de l’exploitation des champs pétroliers et gaziers de Sangomar et GTA.",
+    "Cette dynamique confirme la bonne tenue de l’économie sénégalaise, qui a enregistré une croissance annuelle de 6,9%, contre 4,3% en 2023, marquant un rebond significatif après plusieurs années de croissance soutenue.",
+    "L’économie nationale reste particulièrement portée par les TPE et PME, qui représentent près de 99,8% des entreprises et contribuent fortement à la création de richesse et d’emplois, malgré des défis persistants de productivité, de capitalisation, d’accès aux marchés, d’accès au financement et de qualification.",
+    "La Vision Sénégal 2050 met l’accent sur la transformation structurelle de l’économie, le capital humain, l’inclusion, la transition numérique et l’intégration de l’intelligence artificielle dans l’entrepreneuriat.",
+    "Dans ce contexte, l’entrepreneuriat devient à la fois une nécessité économique et une opportunité stratégique pour créer des emplois, réduire la pauvreté et renforcer la compétitivité du pays.",
+  ],
+  justification: [
+    "Le Sénégal ambitionne de bâtir une économie prospère, solidaire, résiliente et inclusive, où l’emploi constitue un levier central de croissance et de cohésion sociale.",
+    "Plusieurs contraintes limitent encore la pleine réalisation de ce potentiel : chômage structurel, disparités territoriales, accompagnement insuffisant à l’auto-emploi, accès difficile aux financements, barrières d’accès aux marchés et inadéquation entre formation et besoins réels du marché.",
+    "La promotion de l’auto-emploi des jeunes et des femmes, la valorisation des compétences et la création de conditions favorables à l’investissement privé constituent des réponses prioritaires.",
+    "Le Parcours de l’Entrepreneur propose une réponse structurée à ces enjeux en accompagnant les jeunes et les femmes dans la création, la formalisation, la structuration, la croissance et le financement de leurs entreprises.",
+  ],
+  objective:
+    "Faciliter le développement des jeunes et femmes entrepreneurs sénégalais à travers un parcours d’accompagnement innovant, structuré et adapté à leur niveau de maturité.",
+  objectives: [
+    "Accompagner les entrepreneurs dans la conceptualisation et la structuration de leurs projets.",
+    "Renforcer les capacités des jeunes et femmes entrepreneurs.",
+    "Aider les entrepreneurs à structurer et à pérenniser leurs activités.",
+    "Faciliter l’accès et le développement de marchés pour les entrepreneurs.",
+    "Accompagner la croissance des startups et MTPME.",
+    "Faciliter aux entrepreneurs l’accès au financement.",
+    "Améliorer la compétitivité des entrepreneurs et startups.",
+  ],
+  results: [
+    "100 entreprises formalisées et opérationnelles par an.",
+    "150 jeunes et femmes entrepreneurs formés par an.",
+    "100 porteurs de projets disposant de business-plans bancables.",
+    "50 PME utilisant un outil digital de vente, CRM ou tunnel de vente.",
+    "30 entreprises structurées.",
+    "50 entreprises bénéficiant d’un financement auprès d’institutions financières, SFD, banques ou bailleurs.",
+  ],
+  targets: [
+    "Jeunes entrepreneurs.",
+    "Femmes entrepreneures.",
+    "Entrepreneurs et porteurs de projets innovants.",
+    "Startups en phase de lancement ou de croissance.",
+    "PME en quête d’optimisation ou d’expansion.",
+    "Activités dans les secteurs stratégiques : agriculture, artisanat, transformation agroalimentaire, services numériques et transition énergétique.",
+  ],
+  phases: [
+    {
+      acronym: "IFE",
+      title: "Idéation et Formalisation de l’Entreprise",
+      image: "/media/cogesto/ai/business-linkage/phases/pactes-ife.png",
+      description:
+        "Clarifier l’idée de projet, construire le business model et formuler la proposition de valeur, accompagner la formalisation de l’entreprise, renforcer les capacités managériales, produire un plan bancable, préparer le pitch et accompagner le lancement.",
+      summaryPoints: [
+        "Clarifier l’idée de projet.",
+        "Construire le business model et formuler la proposition de valeur.",
+        "Accompagner la formalisation de l’entreprise.",
+        "Renforcer les capacités managériales.",
+        "Produire un plan bancable et préparer le pitch.",
+        "Accompagner le lancement.",
+      ],
+      services: [
+        "Atelier d’idéation, de créativité et de prototypage.",
+        "Atelier de formulation de proposition de valeur.",
+        "Renforcement de capacités managériales.",
+        "Accompagnement à la formalisation.",
+        "Assistance à l’élaboration de plan d’affaires.",
+        "Pitch, coaching et mentorat.",
+      ],
+    },
+    {
+      acronym: "OSE",
+      title: "Organisation et Structuration de l’Entreprise",
+      image: "/media/cogesto/ai/business-linkage/phases/pactes-ose.png",
+      description:
+        "Accompagner le lancement, organiser l’entreprise, structurer les responsabilités, digitaliser la communication et les ventes, renforcer les compétences commerciales et préparer l’accès au marché et au financement.",
+      summaryPoints: [
+        "Organiser et structurer l’entreprise.",
+        "Renforcer les compétences managériales et commerciales.",
+        "Digitaliser l’entreprise.",
+        "Préparer l’accès au marché et au financement.",
+      ],
+      services: [
+        "Accompagnement au lancement et à la mise sur le marché.",
+        "Renforcement de capacités en gestion, vente, marketing et communication.",
+        "Structuration de l’organisation de l’entreprise.",
+        "Élaboration et opérationnalisation de la stratégie digitale.",
+        "Accès au marché et accélération commerciale.",
+        "Accès au financement et montage de dossiers bancables.",
+      ],
+    },
+    {
+      acronym: "ACTE",
+      title: "Accélération de la Croissance et de la Transformation des Entreprises",
+      image: "/media/cogesto/ai/business-linkage/phases/pactes-acte.png",
+      description:
+        "Identifier les leviers de croissance, renforcer la gouvernance, structurer la transformation, accélérer la performance commerciale, digitaliser les processus et mobiliser des financements structurants.",
+      summaryPoints: [
+        "Renforcer la gouvernance.",
+        "Structurer la transformation.",
+        "Identifier les leviers de croissance.",
+        "Accélérer la performance commerciale.",
+        "Digitaliser les processus.",
+        "Mobiliser des financements structurants.",
+      ],
+      services: [
+        "Diagnostic organisationnel, financier, commercial et opérationnel.",
+        "Structuration et mise à niveau avancée.",
+        "Élaboration de stratégie marketing et commerciale.",
+        "Réseautage et développement d’opportunités.",
+        "Accélération commerciale et préparation aux appels d’offres.",
+        "Transformation digitale et accès aux financements structurants.",
+      ],
+    },
+  ],
+  methodology:
+    "Le parcours s’inspire de la méthodologie GERME, développée par le Bureau International du Travail, et l’enrichit par l’intégration d’outils numériques et d’intelligence artificielle pour faciliter les études de marché, les projections financières et la préparation de décisions entrepreneuriales.",
+}
+
 export const programExperts = [
-  "Directeur de mission, consultant ingénieur industriel et pétrolier",
   "Experte en organisation et capital humain",
   "Experte en organisation et finance",
   "Expert en management de projet et renforcement de compétences",
@@ -798,52 +1107,27 @@ export const programExperts = [
 
 export const programConsultants = [
   {
-    image: "/media/cogesto/blp/consultants/lamine-kaba.png",
-    name: "Directeur de mission",
-    role: "Consultant ingénieur industriel et pétrolier BLP",
-    summary:
-      "35 ans d’expérience, ingénieur en électromécanique, ancien dirigeant et responsable opérations dans le secteur Oil & Gas.",
-  },
-  {
     image: "/media/cogesto/blp/consultants/babacar-sow-blp.png",
-    name: "Babacar Sow",
+    name: "M. Babacar Sow",
     role: "Engaging Partner - Senior Advisor en stratégie",
     summary:
-      "Président de Cogesto Consulting SAS, plus de 30 ans d’expérience dans les métiers du conseil et de l’administration des entreprises.",
+      "Président de Cogesto Consulting SAS, plus de 32 ans d’expérience dans les métiers du conseil et de l’administration des entreprises.",
   },
   {
     image: "/media/cogesto/blp/consultants/amy-rose-konate-blp.png",
     name: "Amy Rose Konaté",
     role: "Directrice de mission adjointe - développement personnel et coaching",
     summary:
-      "28 ans d’expérience professionnelle, consultante en organisation stratégique et conduite du changement, coach professionnelle certifiée.",
+      "30 ans d’expérience professionnelle, consultante en organisation stratégique et conduite du changement, coach professionnelle certifiée.",
   },
 ]
 
 export const programExpertRoster = [
   {
-    highlights: [
-      "35 ans d’expérience",
-      "Consultant indépendant",
-      "Ingénieur en électromécanique",
-      "Ancien Conseiller Spécial de l’Administrateur Général Libya Oil Sénégal",
-      "Ancien Administrateur Général Libya Oil Tchad et Libya Oil Sudan",
-      "Ancien Directeur de l’Exploitation et de la Clientèle Libya Oil Sudan et Libya Oil Sénégal",
-      "Ancien Chef Supply Fuel Projet SAP R3 Afrique Exxon Mobil Afrique et Moyen Orient",
-      "Ancien Directeur des Opérations Exxon Mobil Afrique de l’Ouest",
-      "Ancien Chef de Dépôt Dakar Océan Terminal Mobil Côte d’Ivoire",
-      "Ancien Responsable Support Technique et Projet Mobil Sénégal",
-      "Ancien Chef de Service Maintenance et Projet Sonacos Sénégal",
-      "Ancien Chef de Division Électricité et Instrumentation Sonacos Sénégal",
-      "Ancien Ingénieur Production Sonacos Sénégal",
-    ],
-    image: "/media/cogesto/blp/consultants/lamine-kaba.png",
-    title: "Directeur de mission, consultant ingénieur industriel et pétrolier",
-  },
-  {
+    name: "M. Babacar Sow",
     highlights: [
       "Président de Cogesto Consulting SAS",
-      "+30 ans d’expérience dans les métiers du conseil et de l’administration des entreprises",
+      "+32 ans d’expérience dans les métiers du conseil et de l’administration des entreprises",
       "Ancien Directeur Développement à l’International de Jet Group",
       "Ancien Directeur Administratif et Financier",
       "Ancien Directeur Audit et Contrôle de Gestion",
@@ -853,11 +1137,12 @@ export const programExpertRoster = [
       "Diplôme du Cycle Normal - Option Finances-Comptabilité",
     ],
     image: "/media/cogesto/blp/consultants/babacar-sow-blp.png",
-    title: "Engaging Partner, Senior Advisor en stratégie",
+    title: "Engaging Partner - Senior Advisor en stratégie",
   },
   {
+    name: "Mme. Aminata Rose Konaté",
     highlights: [
-      "28 ans d’expérience professionnelle",
+      "30 ans d’expérience professionnelle",
       "Consultante en organisation stratégique et conduite du changement",
       "Coach professionnelle certifiée, coach d’entreprise, développement personnel et communication",
       "Coach et formatrice en séminaires et renforcement de capacités",
@@ -867,11 +1152,12 @@ export const programExpertRoster = [
       "DUT Technicien en Marketing-Communication",
     ],
     image: "/media/cogesto/blp/consultants/amy-rose-konate-blp.png",
-    title: "Directrice de mission adjointe, experte senior en développement personnel et coaching",
+    title: "Directrice de Mission Adjointe - Experte Senior en développement personnel et Coaching",
   },
   {
+    name: "Mme Coumba Diop Ndiaye",
     highlights: [
-      "22 ans d’expérience en RH et organisation",
+      "24 ans d’expérience en RH et organisation",
       "Consultante experte en RH et organisation",
       "Ancienne DRH de Neurotech, Matforce et Unilever Sénégal",
       "Senior Executive Program - BEM Management School Bordeaux",
@@ -882,9 +1168,10 @@ export const programExpertRoster = [
     title: "Experte en organisation et capital humain",
   },
   {
+    name: "Mme. Codou Sow",
     highlights: [
       "Certified Public Accountant à Montréal, spécialiste IFRS",
-      "27 ans d’expérience dans le conseil et le business",
+      "29 ans d’expérience dans le conseil et le business",
       "Administrative and Financial Director",
       "Former Financial Analyst Consultant at L’Oréal",
       "Former Financial Accountant at the League of Conservation Voters in Washington DC",
@@ -899,9 +1186,10 @@ export const programExpertRoster = [
     title: "Experte en organisation et finance",
   },
   {
+    name: "M. Ousseynou Ndiaye",
     highlights: [
       "Spécialiste en restructuration d’entreprises et diagnostic organisationnel",
-      "37 ans d’expérience en conseil et en entreprise",
+      "39 ans d’expérience en conseil et en entreprise",
       "Président de SOFICO SAS, cabinet de conseil financier et conseil à l’investissement",
       "Business développeur",
       "Ancien Directeur Général Adjoint de la Société de Conserveries en Afrique SA",
@@ -915,9 +1203,10 @@ export const programExpertRoster = [
     title: "Senior en restructuration d’entreprises",
   },
   {
+    name: "M. Ousmane Birame Sane",
     highlights: [
       "Expert international en marchés financiers et banque",
-      "32 ans d’expérience dans les métiers du conseil et de la finance",
+      "34 ans d’expérience dans les métiers du conseil et de la finance",
       "Docteur en économie et enseignant chercheur",
       "Expert financier de l’équipe d’experts en charge de l’élaboration de la loi sur le développement des PME et la modernisation de l’économie",
       "Ancien Directeur de l’Antenne de la BRVM au Sénégal",
@@ -929,8 +1218,9 @@ export const programExpertRoster = [
     title: "Économiste, expert en banque et finance",
   },
   {
+    name: "M. Serigne Ndiaye",
     highlights: [
-      "29 ans d’expérience",
+      "31 ans d’expérience",
       "Enseignant vacataire",
       "Directeur, formateur et concepteur de programmes",
       "Assistant au Département de Littérature Comparée",
@@ -945,8 +1235,9 @@ export const programExpertRoster = [
     title: "Expert en pédagogie",
   },
   {
+    name: "M. Issa Diop Ndoye",
     highlights: [
-      "27 ans d’expérience dans le conseil et la formation",
+      "29 ans d’expérience dans le conseil et la formation",
       "Consultant international en management de projets et stratégie de développement",
       "Consultant dans l’ingénierie de la formation dans les domaines Oil & Gas et contenu local",
       "Ancien Directeur scientifique",
@@ -963,8 +1254,9 @@ export const programExpertRoster = [
     title: "Expert en management de projet et renforcement de compétences",
   },
   {
+    name: "M. Abou Wahab Touré",
     highlights: [
-      "28 ans d’expérience en logistique et supply chain",
+      "30 ans d’expérience en logistique et supply chain",
       "Consultant et coach, DG Confluence Conseils & Events",
       "Spécialisé dans la distribution, l’agroalimentaire et les industries",
       "Chef de projets Intelligence Économique et Sales Intelligence",
@@ -979,8 +1271,9 @@ export const programExpertRoster = [
     title: "Expert senior en logistique et supply chain",
   },
   {
+    name: "M. Pape Samba Sow",
     highlights: [
-      "25 ans d’expérience en administration et conseil HSE",
+      "27 ans d’expérience en administration et conseil HSE",
       "Consultant HSE et chef de projet",
       "Ancien Directeur HSE chez Lomé Containers Terminal",
       "Ancien Directeur adjoint HSE chez Dubai Port World",
@@ -993,45 +1286,107 @@ export const programExpertRoster = [
     title: "QHSE et sécurité au BLP",
   },
   {
-    highlights: [
-      "Avocate au Barreau de l’Ontario",
-      "Senior Associate DLA Piper Africa",
-      "Spécialiste en droit corporate, droit informatique et droit international",
-      "Titulaire d’un LLM en droit informatique de l’Université de Montréal",
-      "Titulaire d’un LLM en droit international privé",
-      "Certificat en droit international public et comparé de l’Université Howard à Washington",
-    ],
+    name: "Mame Ngoné Sow",
+    experience: mameNgoneExperience,
+    experienceTitle: "EXPERIENCE",
+    highlights: [],
     image: "/media/cogesto/team/mame-ngone-sow.png",
-    title: "Avocate au Barreau de l’Ontario, consultante senior et juriste corporate",
+    profileParagraphs: mameNgoneProfileParagraphs,
+    title: mameNgoneProfileTitle,
   },
   {
+    name: "M. Doudou Ndiaye",
     highlights: [
-      "38 ans d’expérience en fiscalité",
-      "Ancien Directeur du Contrôle interne de la DGID",
-      "Ancien Conseiller Technique du Directeur Général des Impôts et des Domaines",
-      "Ancien Chef du Centre des Professions Réglementées",
-      "Ancien Chef du Centre des Services Fiscaux de Dakar Plateau II",
-      "Ancien Chef du Centre des Services Fiscaux des Parcelles Assainies",
-      "Ancien Chef de la Section Taxes Indirectes au Bureau de la Législation et du Contentieux",
-      "Ancien Vérificateur à la DVEF/DGID",
-      "Ancien Chef d’Inspection fusionnée d’Assiette et de Contrôle",
-      "Ancien Inspecteur divisionnaire aux Impôts de Kaolack, Tambacounda et Dakar",
+      "Expert Fiscal, formé à l’Académie de Lyon et à l’INTEC (DECS)",
+      "Ancien Directeur Administratif et Juridique – Oryx Sénégal",
+      "Spécialiste en audit interne, fiscalité et gestion administrative",
+      "Plus de 40 ans d’expérience en audit, comptabilité et fiscalité",
+      "Ancien Directeur Général de Universel Conseil (cabinet agréé FONDEF/ADPME)",
+      "Ancien West African Cluster Payroll Manager chez ExxonMobil (Bureau régional)",
+      "Ancien Accounting Manager & Tax Advisor chez Mobil Oil Sénégal",
+      "Ancien Auditeur Interne chez Mobil Oil (Bureau régional : Sénégal, Mauritanie, Mali, Guinée, Côte d’Ivoire)",
+      "Ancien Auditeur, chef de mission au Cabinet GARECGO (correspondant Ernst & Whinney)",
+      "Délégué Général de l’IIA-Sénégal (Institute of Internal Auditors)",
+      "Membre de l’IIA Global et de l’UFAI (Union Francophone de l’Audit Interne)",
+      "Probatoire du DECS – Académie de Lyon (1981)",
+      "DECS partiel (Certificat Économique et Certificat Juridique) – INTEC (1982)",
     ],
     image: "/media/cogesto/blp/consultants/cheikh-ahmadou-bamba-badji-1.png",
-    title: "Consultant senior en organisation et fiscalité",
+    title: "Expert Fiscal - Audit - Comptabilité - GRH",
   },
   {
+    name: "M. Madiou Soumaré",
     highlights: [
       "Expert-comptable diplômé inscrit à l’ONECCA Sénégal",
-      "21 ans d’expérience",
+      "23 ans d’expérience",
       "Consultant indépendant : conseil et consultant stratégique, corporate finance",
       "Ancien Manager chez Baker Tilly Sénégal : audit et conseil financier, juridique, fiscal et organisationnel",
       "Ancien Directeur Général et Directeur Adjoint chez NSIA",
       "Ancien Directeur Financier et Directeur Adjoint chez SAHAM",
       "Senior Manager chez Mazars : audit, due diligences, conseil stratégique et corporate finance",
     ],
+    image: "/media/cogesto/blp/consultants/cheikh-ahmadou-bamba-badji-2.png",
+    title: "Expert senior en structuration de financement / Expert-comptable inscrit à l’ONECCA du Sénégal",
+  },
+  {
+    name: "M. Mamadou Ndiaye",
+    highlights: [],
+    image: "/media/cogesto/blp/consultants/cheikh-ahmadou-bamba-badji-4.png",
+    title: "Expert financier",
+  },
+  {
+    name: "M. Cheikh Ahmadou Bamba Badji",
+    highlights: [
+      "5 ans d’expériences dans le conseil organisationnel et opérationnel;",
+      "Coordinateur des missions de conseil;",
+      "Consultant en QHSE et ESG",
+      "Coordonnateur de programme dans le cadre du « Business Linkage Programme », mission d’assistance Technique relative au renforcement des capacités et l’accompagnent de 40 PME Sénégalaises;",
+      "Coach certifié",
+      "Certifié ISO 50001, 26001, Risques des Produits Dangereux",
+      "certificate in casing and cementing",
+      "Certificate of H.S.E in the oil & Gas Industry",
+      "Certificate of First Aid",
+      "Advanced petroleum Engineering (Drilling, Reservoir Engineering and Production)",
+      "Master 2 en Géologie Minière",
+    ],
+    image: "/media/cogesto/blp/consultants/cheikh-ahmadou-bamba-badji.png",
+    title: "Ingénieur Pétrolier et expert en organisation",
+  },
+  {
+    name: "M. Yankhouba Dianesy",
+    highlights: [
+      "6 ans d’expérience en finance et conseil",
+      "Consultant en finance chez Cogesto consulting",
+      "Responsable du Programme d’Accélération de la Croissance et de la Transformation des Entreprises et Startups de Cogesto Consulting;",
+      "Expert en Entreprenariat et Coach certifié",
+      "Formateur en information financière, gestion financière et Entreprenariat",
+      "Préparation et la structuration des dossiers de financement de 20 PME dans le cadre du programme Affirmative Procurement Reform in West Africa ONUFEMME/ADEPME;",
+      "Coordination de la mission du Parcours du Chefs d’entreprise de 3FPT pour le renforcement de capacités de 30 dirigeants d’entreprises;",
+      "Ancien Coordinateur des activités de formation",
+      "Master 2 en Ingénierie financière à l’Institut supérieur des finances (ISF);",
+      "Certificat en Entreprenariat à Africa Management Institut (AMI);",
+      "Certificat en Data Science Fundamentals (Sénégal numérique)",
+    ],
     image: "/media/cogesto/blp/consultants/equipe-cogesto-13.png",
-    title: "Expert senior en structuration de financement",
+    title: "Expert Financier et coach certifié",
+  },
+  {
+    name: "M. Saodou Amadou Ba",
+    highlights: [
+      "3 ans d’expérience en finance;",
+      "Analyste financier;",
+      "Consultant en finance;",
+      "Participation à plusieurs missions d’ingénierie financière dans le cadre de mission d’évaluation d’entreprises et de due diligence d’acquisition;",
+      "Responsable de suivi-évaluation des programmes PAAICE/ETER pilotés par l’ADEPME;",
+      "Conseil financier et Élaboration de plans d’affaires pour plusieurs entreprises;",
+      "Chargé de la structuration de dossier de financement dans le cadre du programme Affirmative Procurement Reform in West Africa ONUFEMME/ADEPME;",
+      "Assistance à la rédaction de la procédure RSE de Cogesto Consulting",
+      "Master 2 en finance d’entreprise et ingénierie financière;",
+      "Licence en finance et comptabilité",
+    ],
+    image: "/media/cogesto/blp/consultants/saodou-amadou-ba.png",
+    imageScale: 1.62,
+    title: "Analyste financier et Consultant en Finance",
   },
 ]
 
@@ -1050,7 +1405,7 @@ export const programEventGallery = [
   { alt: "Séance terrain BLP", src: "/media/cogesto/blp/tof2870-1200x801.jpg" },
 ]
 
-export const events = [
+export const programEvents = [
   {
     date: "14 juin 2023",
     image: "/media/cogesto/tof8053.jpg",
@@ -1059,51 +1414,73 @@ export const events = [
       "Lancement officiel du BLP à l’Hôtel King Fahd Place pour accélérer l’intégration des PME sénégalaises dans l’Oil & Gas.",
   },
   {
-    date: "Formation",
+    date: "Séminaire",
     image: "/media/cogesto/tof8105.jpg",
-    title: "Séminaires de formation organisés par 3FPT",
+    title: "Seminaire de sensibilisation sur les opportunités du O&G",
     summary:
-      "Séminaires en marketing et communication pour 30 dirigeants dans le cadre du parcours du chef d’entreprise.",
-  },
-  {
-    date: "Coaching",
-    image: "/media/cogesto/tof8077.jpg",
-    title: "Sessions de coaching de l’équipe dirigeante de FGI",
-    summary:
-      "Sessions de coaching pour renforcer les pratiques de pilotage, de gouvernance et de transformation.",
+      "Séminaire de sensibilisation autour des opportunités du secteur Oil & Gas pour les entreprises accompagnées par le programme.",
   },
 ]
 
-export const eventGalleries = [
+export type SiteEvent = {
+  category: string
+  date: string
+  day: string
+  gallery: Array<string>
+  galleryImagePositions?: Record<number, string>
+  href: string
+  image: string
+  imagePosition?: string
+  location?: string
+  month: string
+  organizer: string
+  slug: string
+  summary: string
+  time: string
+  title: string
+  venue?: string
+  year?: string
+}
+
+export const events: Array<SiteEvent> = [
   {
-    images: [
-      "/media/cogesto/events/launch/tof4019.jpg",
-      "/media/cogesto/events/launch/1-2.jpg",
-      "/media/cogesto/events/launch/7-2.jpg",
-      "/media/cogesto/events/launch/4-2.jpg",
-      "/media/cogesto/events/launch/5-2.jpg",
-      "/media/cogesto/events/launch/6-2.jpg",
-      "/media/cogesto/events/launch/2-2.jpg",
-      "/media/cogesto/events/launch/3-2.jpg",
+    category: "Formation",
+    date: "17 septembre 2024",
+    day: "17",
+    gallery: [
+      "/media/cogesto/events/uba-financial-analysis/uba-analysis-01-group.jpg",
+      "/media/cogesto/events/uba-financial-analysis/uba-analysis-02-session.jpg",
+      "/media/cogesto/events/uba-financial-analysis/uba-analysis-03-certificate.jpg",
+      "/media/cogesto/events/uba-financial-analysis/uba-analysis-04-certificate.jpg",
+      "/media/cogesto/events/uba-financial-analysis/uba-analysis-05-certificate.jpg",
+      "/media/cogesto/events/uba-financial-analysis/uba-analysis-06-certificate.jpg",
     ],
-    title: "Cérémonie lancement BLP 14 juin 2023",
+    galleryImagePositions: {
+      0: "50% 26%",
+      1: "48% 16%",
+      2: "48% 10%",
+      3: "48% 10%",
+      4: "48% 10%",
+      5: "48% 10%",
+    },
+    href: "/event/seminaire-uba-senegal-analyse-financiere",
+    image: "/media/cogesto/events/uba-financial-analysis/uba-analysis-01-group.jpg",
+    location: "UBA Sénégal, Dakar",
+    month: "SEPT",
+    organizer: "Cogesto Consulting, 3FPT et UBA Sénégal",
+    slug: "seminaire-uba-senegal-analyse-financiere",
+    title: "Séminaire UBA Sénégal en analyse financière",
+    summary:
+      "Séminaire de formation pour l’équipe de UBA Sénégal sur l’analyse financière, animé par l’Expert-Comptable Madiou Soumaré de Cogesto Consulting en partenariat avec 3FPT. Cette formation pratique, déroulée en 5 sessions, a permis de former 74 cadres de la banque aux techniques d’analyse financière.",
+    time: "5 sessions",
+    venue: "UBA Sénégal",
+    year: "2024",
   },
   {
-    images: [
-      "/media/cogesto/events/training/design-2.jpg",
-      "/media/cogesto/events/training/1.jpg",
-      "/media/cogesto/events/training/7.jpg",
-      "/media/cogesto/events/training/6.jpg",
-      "/media/cogesto/events/training/4.jpg",
-      "/media/cogesto/events/training/5.jpg",
-      "/media/cogesto/events/training/2.jpg",
-      "/media/cogesto/events/training/3.jpg",
-    ],
-    title: "Séminaires de formation organisé par 3FPT",
-  },
-  {
-    images: [
-      "/media/cogesto/events/coaching/telechargement-2.jpeg",
+    category: "Coaching",
+    date: "20 décembre 2023",
+    day: "20",
+    gallery: [
       "/media/cogesto/events/coaching/1-1.jpg",
       "/media/cogesto/events/coaching/2-1.jpg",
       "/media/cogesto/events/coaching/3-1.jpg",
@@ -1113,9 +1490,63 @@ export const eventGalleries = [
       "/media/cogesto/events/coaching/8.jpg",
       "/media/cogesto/events/coaching/7-1.jpg",
     ],
-    title: "Sessions de coaching de l’équipe dirigeante de la société de bourse FGI",
+    href: "/event/coaching-du-top-management",
+    image: "/media/cogesto/events/coaching/1-1.jpg",
+    month: "Déc",
+    organizer: "Cogesto",
+    slug: "coaching-du-top-management",
+    title: "Coaching du Top Management",
+    summary:
+      "Sessions de coaching de l’équipe dirigeante de la société de bourse FGI animées par Amy Rose KONATE (Cogesto Consulting SAS) - Novembre 2023.",
+    time: "08:00 - 17:00",
+    year: "2023",
+  },
+  {
+    category: "Formation",
+    date: "20 décembre 2023",
+    day: "20",
+    gallery: [
+      "/media/cogesto/events/training/4.jpg",
+      "/media/cogesto/events/training/2.jpg",
+      "/media/cogesto/events/training/3.jpg",
+      "/media/cogesto/events/training/5.jpg",
+      "/media/cogesto/events/training/6.jpg",
+      "/media/cogesto/events/training/7.jpg",
+      "/media/cogesto/events/training/1.jpg",
+    ],
+    href: "/event/seminaires-de-formation-en-marketing-communication",
+    image: "/media/cogesto/events/training/4.jpg",
+    location: "Novotel Dakar et Hôtel Le Ndiambour, Dakar",
+    month: "Déc",
+    organizer: "Cogesto",
+    slug: "seminaires-de-formation-en-marketing-communication",
+    title: "Séminaires de formation en Marketing & Communication",
+    summary:
+      "Séminaires de formation en Marketing & Communication pour 30 dirigeants d’entreprise organisé par 3FPT dans le cadre du programme « Parcours du Chef d’entreprise » assurés par Cogesto Consulting SAS. Séminaires Abdoul Wahab Touré et Amy Rose KONATÉ. Octobre 2023.",
+    time: "08:00 - 17:00",
+    venue: "Novotel Dakar et Hôtel Le Ndiambour",
+    year: "2023",
   },
 ]
+
+export const eventGalleries = [
+  {
+    images: events[0].gallery,
+    title: "Séminaire UBA Sénégal en analyse financière",
+  },
+  {
+    images: events[1].gallery,
+    title: "Coaching du Top Management",
+  },
+  {
+    images: events[2].gallery,
+    title: "Séminaires de formation en Marketing & Communication",
+  },
+]
+
+export function getEventBySlug(slug: string): SiteEvent | undefined {
+  return events.find((event) => event.slug === slug)
+}
 
 export const siteCopy = {
   description:

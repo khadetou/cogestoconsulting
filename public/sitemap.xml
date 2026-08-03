@@ -1,43 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://www.cogestoconsulting.com/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/about</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://www.cogestoconsulting.com/about</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/expertises</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://www.cogestoconsulting.com/expertises</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/business-linkage-program</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://www.cogestoconsulting.com/business-linkage-program</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/business-linkage-program/finance-verte-durable</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://www.cogestoconsulting.com/business-linkage-program/finance-verte-durable</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/business-linkage-program/parcours-entrepreneur</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://www.cogestoconsulting.com/business-linkage-program/parcours-entrepreneur</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/events</loc>
-    <lastmod>2026-05-05</lastmod>
-    <priority>0.7</priority>
+    <loc>https://www.cogestoconsulting.com/events</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cogestoconsulting.vercel.app/contact</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://www.cogestoconsulting.com/event/seminaire-uba-senegal-analyse-financiere</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/uba-financial-analysis/uba-analysis-01-group.jpg</image:loc>
+      <image:title>Séminaire UBA Sénégal en analyse financière</image:title>
+      <image:caption>Formation de 74 cadres de UBA Sénégal aux techniques d’analyse financière par Cogesto Consulting et 3FPT.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/uba-financial-analysis/uba-analysis-02-session.jpg</image:loc>
+      <image:title>Session de formation analyse financière UBA Sénégal</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/uba-financial-analysis/uba-analysis-03-certificate.jpg</image:loc>
+      <image:title>Remise d’attestation formation UBA Sénégal</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/uba-financial-analysis/uba-analysis-04-certificate.jpg</image:loc>
+      <image:title>Attestation de formation analyse financière UBA Sénégal</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/uba-financial-analysis/uba-analysis-05-certificate.jpg</image:loc>
+      <image:title>Formation UBA Sénégal avec Cogesto Consulting</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/uba-financial-analysis/uba-analysis-06-certificate.jpg</image:loc>
+      <image:title>Séminaire analyse financière Cogesto Consulting</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.cogestoconsulting.com/event/coaching-du-top-management</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/coaching/1-1.jpg</image:loc>
+      <image:title>Coaching du Top Management</image:title>
+      <image:caption>Sessions de coaching de l’équipe dirigeante de FGI animées par Cogesto Consulting.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.cogestoconsulting.com/event/seminaires-de-formation-en-marketing-communication</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/training/4.jpg</image:loc>
+      <image:title>Séminaires de formation en Marketing &amp; Communication</image:title>
+      <image:caption>Séminaires de formation en marketing et communication pour dirigeants d’entreprise par Cogesto Consulting.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.cogestoconsulting.com/contact</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 </urlset>

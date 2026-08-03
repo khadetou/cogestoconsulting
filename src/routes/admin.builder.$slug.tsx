@@ -3,7 +3,7 @@ import "@puckeditor/core/puck.css"
 import "@/styles/puck-editor.css"
 import { Link, createFileRoute, useRouter } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/react-start"
-import { ArrowRight, CheckCircle2, ChevronDown, CircleDot, Loader2, LogOut, Maximize2, Minimize2, Save, ShieldAlert, UploadCloud } from "lucide-react"
+import { ArrowRight, CheckCircle2, ChevronDown, CircleDot, Loader2, LogOut, Maximize2, MenuSquare, Minimize2, Save, ShieldAlert, UploadCloud } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 import type { Data } from "@puckeditor/core"
 
@@ -19,6 +19,7 @@ import {
 import { broadcastBuilderPageUpdate } from "@/builder/live-sync"
 import { normalizeBuilderPageData } from "@/builder/normalize"
 import { EditorAccessShell } from "@/components/editor-access-shell"
+import { NavigationManager } from "@/components/navigation-manager"
 import { Button } from "@/components/ui/button"
 import {
   getEditableBuilderPage,
@@ -33,7 +34,7 @@ const editorPages = [
   { label: "Accueil", slug: "accueil" },
   { label: "À propos", slug: "about" },
   { label: "Nos expertises", slug: "expertises" },
-  { label: "Business Linkage Program", slug: "business-linkage-program" },
+  { label: "Programmes", slug: "business-linkage-program" },
   { label: "Évènements", slug: "events" },
   { label: "Contact", slug: "contact" },
 ] as const
@@ -83,6 +84,7 @@ function AdminBuilderPage() {
       : null,
   )
   const [focusMode, setFocusMode] = useState(true)
+  const [navigationManagerOpen, setNavigationManagerOpen] = useState(false)
   const [saving, setSaving] = useState<"draft" | "published" | null>(null)
   const [statusMessage, setStatusMessage] = useState("")
 
@@ -188,11 +190,11 @@ function AdminBuilderPage() {
         }
         onPublish={(data) => void persist("published", data)}
         permissions={{
-          delete: false,
-          drag: false,
-          duplicate: false,
+          delete: true,
+          drag: true,
+          duplicate: true,
           edit: true,
-          insert: false,
+          insert: true,
         }}
         overrides={{
           headerActions: () => (
@@ -214,10 +216,12 @@ function AdminBuilderPage() {
               saving={saving}
               statusMessage={statusMessage}
               toggleFocusMode={() => setFocusMode((value) => !value)}
+              openNavigationManager={() => setNavigationManagerOpen(true)}
             />
           ),
         }}
       />
+      <NavigationManager open={navigationManagerOpen} onOpenChange={setNavigationManagerOpen} />
     </div>
   )
 }
@@ -229,6 +233,7 @@ function BuilderHeaderActions({
   navigateToPage,
   onInlineEdit,
   persist,
+  openNavigationManager,
   saving,
   statusMessage,
   toggleFocusMode,
@@ -238,6 +243,7 @@ function BuilderHeaderActions({
   logout: () => Promise<void>
   navigateToPage: (slug: string) => Promise<void>
   onInlineEdit: () => void
+  openNavigationManager: () => void
   persist: (status: "draft" | "published", data: Data) => Promise<void>
   saving: "draft" | "published" | null
   statusMessage: string
@@ -322,6 +328,15 @@ function BuilderHeaderActions({
       </label>
 
       <div className="builder-editor-action-group">
+        <Button
+          className="builder-editor-button builder-editor-button--quiet"
+          onClick={openNavigationManager}
+          type="button"
+          variant="outline"
+        >
+          <MenuSquare className="size-4" />
+          <span>Menus</span>
+        </Button>
         <Button
           aria-pressed={focusMode}
           className="builder-editor-button builder-editor-button--quiet"

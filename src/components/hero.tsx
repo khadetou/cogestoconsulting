@@ -1,14 +1,14 @@
 import { Link } from "@tanstack/react-router"
 import { ArrowRight, BriefcaseBusiness, CirclePlay, Sparkles, TrendingUp, Users } from "lucide-react"
-import gsap from "gsap"
 import { useEffect, useRef } from "react"
 
 import { SiteHeader } from "@/components/site-header"
+import { animateNativeReveal } from "@/lib/dom-animations"
 
 const metrics = [
-  { icon: Users, label: "Bureaux", value: "3" },
-  { icon: TrendingUp, label: "Heures de formation", value: "+700" },
-  { icon: BriefcaseBusiness, label: "Années d’expérience", value: "30+" },
+  { icon: Users, label: "Bureaux", value: "4" },
+  { icon: TrendingUp, label: "personnes formées", value: "+1840" },
+  { icon: BriefcaseBusiness, label: "Années d’expérience", value: "14+" },
   { icon: Sparkles, label: "Pays de présence", value: "3" },
 ]
 
@@ -18,17 +18,11 @@ export function Hero() {
   useEffect(() => {
     if (!scopeRef.current) return
 
-    const context = gsap.context(() => {
-      gsap.from("[data-hero-item]", {
-        opacity: 0,
-        y: 18,
-        duration: 0.8,
-        stagger: 0.08,
-        ease: "power3.out",
-      })
-    }, scopeRef)
-
-    return () => context.revert()
+    return animateNativeReveal(scopeRef.current, "[data-hero-item]", {
+      duration: 800,
+      stagger: 80,
+      y: 18,
+    })
   }, [])
 
   return (
@@ -37,6 +31,8 @@ export function Hero() {
         src="/media/cogesto/hero-candidates/black-professionals-strategy-session.png"
         alt="Professionnels africains en séance de travail stratégique, illustrant l’accompagnement humain et institutionnel de Cogesto Consulting"
         className="hero-banner__background"
+        decoding="async"
+        fetchPriority="high"
       />
       <div className="hero-banner__wash" />
       <div className="hero-banner__left-fade" />
@@ -53,7 +49,7 @@ export function Hero() {
               data-hero-item
               className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/24 px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white/72 backdrop-blur-sm"
             >
-              Conseil, finance et management de la performance
+              Conseil strategique et management
             </span>
 
             <h1
@@ -61,10 +57,10 @@ export function Hero() {
               className="mt-7 font-heading text-[2.45rem] tracking-[-0.07em] text-white drop-shadow-[0_12px_28px_rgba(0,0,0,0.44)] sm:mt-8 sm:text-[3.45rem] lg:text-[3.65rem] xl:text-[3.9rem]"
             >
               <span className="block max-w-[8.3ch] leading-[1.04] sm:max-w-[11.6ch] sm:leading-[1.08] lg:max-w-none lg:whitespace-nowrap">
-                Bâtir des organisations fortes.
+                Accompagner la transformation des entreprises
               </span>
               <span className="mt-2 block max-w-[8ch] leading-[1.06] text-[#d8ceb9] sm:mt-1 sm:max-w-[11.4ch] sm:leading-[1.12] lg:max-w-none lg:whitespace-nowrap">
-                Piloter la performance.
+                pour accélérer leur croissance.
               </span>
             </h1>
 
@@ -72,7 +68,7 @@ export function Hero() {
               data-hero-item
               className="mt-6 max-w-[26ch] text-[0.98rem] leading-[1.8] text-white/72 sm:mt-8 sm:max-w-[54ch] sm:text-[1.08rem] sm:leading-[1.88]"
             >
-              Cogesto Consulting met son expertise au service de la performance des organisations en favorisant le développement du capital humain, la transformation structurelle et la création de valeur.
+              Cogesto Consulting met au service des entreprises et startups une expertise pointue et des solutions innovantes pour améliorer durablement leur croissance et leur compétitivité.
             </p>
 
             <div data-hero-item className="mt-8 flex flex-col items-start gap-4 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
@@ -92,7 +88,7 @@ export function Hero() {
                   </span>
                 </span>
                 <span className="block max-w-[330px] text-[0.98rem] leading-7 text-white/66">
-                  Un retour d’expérience d’experts seniors, des méthodes éprouvées et des solutions adaptées aux réalités de chaque mission.
+                  Nous mobilisons l'expertise de consultants de haut niveau investis dans la recherche de solutions innovantes et adaptées aux réalités de nos clients.
                 </span>
               </div>
             </div>

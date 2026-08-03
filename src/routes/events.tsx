@@ -1,133 +1,83 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { ArrowRight } from "lucide-react"
+import { createFileRoute } from "@tanstack/react-router"
+import { ChevronLeft, ChevronRight, Search } from "lucide-react"
 
-import type { BuilderPage } from "@/builder/types"
-import { PublicPayloadBackedPage, getPublicPayloadPageHead } from "@/builder/public-page-route"
-import { EventCard } from "@/components/cards"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
-import { eventGalleries, events } from "@/lib/site-data"
-import { getPublishedBuilderPage } from "@/server/payload/pages"
-
-const eventsMeta = {
-  description: "Cérémonies, formations et sessions de coaching menées par Cogesto Consulting.",
-  title: "Évènements | Cogesto Consulting",
-}
+import { events } from "@/lib/site-data"
+import { buildBreadcrumbSchema, buildSeoHead, seoPages } from "@/lib/seo"
 
 export const Route = createFileRoute("/events")({
-  head: ({ loaderData }) =>
-    getPublicPayloadPageHead(loaderData, eventsMeta.title, eventsMeta.description),
-  loader: async (): Promise<BuilderPage> => getPublishedBuilderPage({ data: { slug: "events" } }),
+  head: () =>
+    buildSeoHead({
+      ...seoPages.events,
+      jsonLd: [
+        buildBreadcrumbSchema([
+          { name: "Accueil", path: "/" },
+          { name: "Évènements", path: "/events" },
+        ]),
+      ],
+    }),
   component: EventsPage,
 })
 
-const blpStory = [
-  "Cogesto Consulting SAS, cabinet de conseil et de formation, a été sélectionné à l’issue d’un appel d’offres pour opérationnaliser l’accompagnement des PME sénégalaises en vue de leur faciliter l’accès aux marchés et aux financements dans le cadre du Business Linkage Program.",
-  "Le BLP est une initiative d’Invest In Africa, financée par la Banque Africaine de Développement et en partenariat avec le Fonds pour les Partenariats Africains, pour apporter une réponse concrète à la problématique de déficit de compétences locales dans le secteur de l’Oil & Gas.",
-  "Ce programme vise en particulier à apporter un appui technique aux PME sénégalaises pour leur intégration dans les chaînes d’approvisionnement des grandes entreprises par le renforcement de leurs capacités, de leurs normes QHSE, de leurs infrastructures et par l’accès au financement.",
-  "Depuis la cérémonie d’information et de lancement officiel organisée le 14 juin 2023 à l’Hôtel King Fahd Place, Cogesto Consulting a mené plusieurs activités dans le cadre du BLP.",
-  "Après des sessions de formation et de sensibilisation sur les opportunités du secteur de l’Oil & Gas, Cogesto Consulting déploie une phase de diagnostic 360° pour les entreprises bénéficiaires de l’accompagnement.",
-  "À travers ces activités, Cogesto Consulting œuvre au quotidien pour permettre aux entreprises sénégalaises de se préparer aux exigences et normes du secteur.",
-  "À côté de ses partenaires et des entreprises accompagnées, Cogesto Consulting est résolument engagé pour le développement et la prospérité des entreprises africaines dans le domaine du Oil & Gas.",
-  "Cogesto Consulting s’est donné pour mission de créer un écosystème plus fort et plus durable dans le secteur du Oil & Gas, offrant non seulement des opportunités de croissance pour les entreprises mais aussi contribuant à l’économie globale du continent africain.",
-]
-
 function EventsPage() {
-  const page = Route.useLoaderData() as unknown as BuilderPage | undefined
-
-  return <PublicPayloadBackedPage fallback={<EventsBasePage />} page={page} slug="events" />
-}
-
-function EventsBasePage() {
   return (
     <PageLayout>
-      <section className="inner-hero text-white">
-        <div className="site-container py-20 sm:py-28">
-          <p className="eyebrow text-white/70 before:bg-white/20">Évènements</p>
-          <h1 className="mt-5 max-w-4xl font-heading text-4xl font-semibold leading-tight tracking-tight text-white sm:text-6xl">
-            Des évènements tournés vers l’action.
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-white/72">
-            Cogesto Consulting mène des cérémonies de lancement, des séminaires de formation et des sessions de coaching pour accompagner les entreprises dans leur structuration, leur montée en capacité et leur accès aux opportunités du marché.
-          </p>
-        </div>
-      </section>
+      <section className="bg-[linear-gradient(180deg,#f4f8fb_0%,#ffffff_32%,#f6fafc_100%)] py-14 sm:py-18">
+        <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
+            <div>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#978360]">Agenda Cogesto</p>
+              <h1 className="mt-4 max-w-4xl font-heading text-[2.5rem] font-semibold leading-[0.98] tracking-[-0.05em] text-[#152036] sm:text-[3.5rem]">
+                Évènements, formations et sessions de coaching.
+              </h1>
+              <p className="mt-5 max-w-2xl text-[1.04rem] leading-7 text-slate-600">
+                Retrouvez les derniers rendez-vous professionnels conduits par Cogesto Consulting, avec les comptes rendus et galeries associés.
+              </p>
+            </div>
+            <div className="rounded-[28px] border border-[#d7e4ef] bg-white p-5 shadow-[0_18px_50px_rgba(21,32,54,0.07)]">
+              <p className="text-sm font-semibold text-slate-500">Évènements passés</p>
+              <p className="mt-2 font-heading text-[3rem] leading-none tracking-[-0.06em] text-[#152036]">{events.length}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-500">Fiches détaillées avec photos et synthèse des activités.</p>
+            </div>
+          </div>
 
-      <section className="py-16 sm:py-20">
-        <div className="page-shell">
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="mt-12 rounded-[28px] border border-[#d7e4ef] bg-white p-4 shadow-[0_20px_55px_rgba(21,32,54,0.06)]">
+            <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div className="flex min-h-12 items-center gap-3 rounded-[20px] bg-slate-50 px-4 text-slate-500 ring-1 ring-slate-200">
+                <Search className="size-5 text-[#476582]" />
+                <span className="text-sm">Rechercher évènements</span>
+              </div>
+              <div className="flex items-center gap-6 text-sm font-semibold">
+                <span className="rounded-full bg-[#152036] px-6 py-3 text-white shadow-[0_10px_22px_rgba(21,32,54,0.16)]">Chercher</span>
+                <span className="rounded-full bg-[#eef4f8] px-4 py-2 text-[#152036]">Liste</span>
+                <span className="text-slate-500">Mois</span>
+                <span className="text-slate-500">Jour</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-7 flex items-center gap-3 text-slate-700">
+            <button className="inline-flex size-11 items-center justify-center rounded-full border border-[#d7e4ef] bg-white text-[#152036] shadow-[0_10px_24px_rgba(21,32,54,0.05)]" type="button" aria-label="Période précédente">
+              <ChevronLeft className="size-5" />
+            </button>
+            <button className="inline-flex size-11 items-center justify-center rounded-full border border-[#d7e4ef] bg-white text-[#152036] shadow-[0_10px_24px_rgba(21,32,54,0.05)]" type="button" aria-label="Période suivante">
+              <ChevronRight className="size-5" />
+            </button>
+            <span className="rounded-full border border-[#d7e4ef] bg-white px-5 py-3 text-sm font-semibold text-slate-500">Aujourd’hui</span>
+          </div>
+
+          <div className="mt-7 rounded-[22px] border border-[#cfe8f6] bg-[#eaf7ff] px-5 py-5 text-center text-sm font-semibold text-[#476582]">
+            Il n’y a pas d’évènements à venir.
+          </div>
+
+          <h2 className="mt-12 font-heading text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-[#152036] sm:text-[2.45rem]">
+            Derniers Évènements passés
+          </h2>
+
+          <div className="mt-8 grid gap-6">
             {events.map((event) => (
-              <EventCard key={event.title} {...event} />
-            ))}
-          </div>
-
-          <div className="mt-12 grid gap-6 rounded-[32px] border border-slate-200/80 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.05)] lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-            <div>
-              <span className="eyebrow before:hidden">Cérémonie lancement BLP</span>
-              <h2 className="section-title mt-5 max-w-[13ch]">
-                Une expertise locale pour accélérer la croissance dans <span className="accent-text">l’Oil & Gas.</span>
-              </h2>
-              <div className="mt-6 space-y-4">
-                {blpStory.map((paragraph) => (
-                  <p key={paragraph} className="section-copy">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <img src="/media/cogesto/tof8053.jpg" alt="Cérémonie de lancement du BLP" className="rounded-[28px] border border-slate-200/80 object-cover shadow-[0_18px_45px_rgba(15,23,42,0.08)]" />
-              <div className="mt-5 rounded-[24px] border border-slate-200 bg-slate-50 p-5">
-                <span className="eyebrow before:hidden">Sur le terrain</span>
-                <p className="mt-4 text-[1rem] leading-7 text-slate-600">
-                  À travers ces activités, Cogesto Consulting œuvre au quotidien pour permettre aux entreprises de se préparer aux exigences, normes et opportunités de leurs marchés, en particulier dans le secteur de l’Oil & Gas.
-                </p>
-                <Link to="/contact" className="mt-5 inline-flex items-center gap-3 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white">
-                  Organiser un échange
-                  <ArrowRight className="size-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            <article className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">Séminaires de formation organisé par 3FPT</p>
-              <h3 className="mt-3 font-heading text-[1.55rem] leading-[1.1] tracking-[-0.04em] text-slate-950">
-                Marketing & Communication pour 30 dirigeants d’entreprise.
-              </h3>
-              <p className="mt-4 text-[1rem] leading-7 text-slate-600">
-                Séminaires organisés par 3FPT dans le cadre du programme « Parcours du Chef d’entreprise », assurés par Cogesto Consulting SAS et animés par Abdoul Wahab Touré et Amy Rose Konaté en octobre 2023 au Novotel Dakar et à l’Hôtel Le Ndiambour.
-              </p>
-            </article>
-            <article className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">Sessions de coaching</p>
-              <h3 className="mt-3 font-heading text-[1.55rem] leading-[1.1] tracking-[-0.04em] text-slate-950">
-                Accompagnement de l’équipe dirigeante de FGI.
-              </h3>
-              <p className="mt-4 text-[1rem] leading-7 text-slate-600">
-                Sessions de coaching de l’équipe dirigeante de la société de bourse FGI, animées par Amy Rose Konaté, pour renforcer les pratiques de pilotage, de gouvernance et de transformation.
-              </p>
-            </article>
-          </div>
-
-          <div className="mt-12 grid gap-6">
-            {eventGalleries.map((gallery) => (
-              <section key={gallery.title} className="rounded-[32px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-                <h3 className="font-heading text-[1.55rem] leading-[1.1] tracking-[-0.04em] text-slate-950">{gallery.title}</h3>
-                <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  {gallery.images.map((src) => (
-                    <img
-                      key={src}
-                      src={src}
-                      alt={gallery.title}
-                      className="aspect-[3/2] w-full rounded-[20px] border border-slate-200/80 object-cover"
-                      loading="lazy"
-                    />
-                  ))}
-                </div>
-              </section>
+              <EventTimelineItem key={event.slug} event={event} />
             ))}
           </div>
         </div>
@@ -135,5 +85,49 @@ function EventsBasePage() {
 
       <CtaSection />
     </PageLayout>
+  )
+}
+
+function EventTimelineItem({ event }: { event: (typeof events)[number] }) {
+  return (
+    <article className="grid gap-6 rounded-[32px] border border-[#d7e4ef] bg-white p-5 shadow-[0_20px_60px_rgba(21,32,54,0.07)] lg:grid-cols-[88px_1fr_380px] lg:gap-7 lg:p-6">
+      <div className="flex justify-start lg:justify-center">
+        <EventDateBadge event={event} />
+      </div>
+
+      <div className="border-l-4 border-[#978360] pl-6 lg:py-2">
+        <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
+          <span className="rounded-full bg-[#f5f0e7] px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[#978360]">{event.category}</span>
+          <span className="font-semibold text-[#476582]">Mis en avant</span>
+          <span>{event.date} @ {event.time}</span>
+        </div>
+        <a href={event.href} className="mt-4 block font-heading text-[1.75rem] font-semibold leading-tight tracking-[-0.04em] text-[#152036] transition-colors hover:text-[#978360]">
+          {event.title}
+        </a>
+        {event.location ? <p className="mt-4 text-[0.98rem] leading-6 text-[#476582]">{event.location}</p> : null}
+        <p className="mt-4 max-w-2xl text-[0.98rem] leading-7 text-slate-600">{event.summary}</p>
+      </div>
+
+      <a href={event.href} className="group relative block overflow-hidden rounded-[26px] bg-slate-100 ring-1 ring-[#d7e4ef]">
+        <img src={event.image} alt={event.title} className="aspect-[1.32] h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" loading="lazy" decoding="async" />
+        <span className="absolute bottom-4 right-4 rounded-full bg-white/92 px-4 py-2 text-sm font-bold text-[#152036] shadow-[0_12px_28px_rgba(21,32,54,0.14)] backdrop-blur-sm">
+          Voir détails
+        </span>
+      </a>
+    </article>
+  )
+}
+
+function EventDateBadge({ event }: { event: (typeof events)[number] }) {
+  const hasYear = Boolean(event.year)
+
+  return (
+    <div className="flex size-20 shrink-0 flex-col items-center justify-center rounded-[24px] bg-[#152036] text-white shadow-[0_14px_30px_rgba(21,32,54,0.18)]">
+      <p className="text-[0.68rem] font-semibold uppercase leading-none tracking-[0.14em] text-white/62">{event.month}</p>
+      <p className={hasYear ? "font-heading text-[2rem] font-semibold leading-none tracking-[-0.04em]" : "mt-1 font-heading text-[1.72rem] font-semibold leading-none tracking-[-0.035em]"}>
+        {event.day}
+      </p>
+      {hasYear ? <p className="text-[0.72rem] font-semibold leading-none text-white/62">{event.year}</p> : null}
+    </div>
   )
 }

@@ -49,6 +49,25 @@ bun install
 bun run dev
 ```
 
+## Pulling Live Editorial Changes
+
+Online page edits live in Payload as `pages.puckData`. Before changing code, pull the published live pages into the local baseline:
+
+```bash
+bun run cms:pull-live
+```
+
+That updates `src/builder/live-page-snapshots.ts`, which is what `bun run dev` uses for public pages by default. To also write the pulled pages into a local Payload database, run:
+
+```bash
+bun run cms:pull-live:local-db
+bun run dev:payload:local
+```
+
+`cms:pull-live:local-db` uses `postgres://<your-mac-user>@localhost:5432/cogesto_consulting_builder` unless `COGESTO_LOCAL_DATABASE_URL` is set. It also forces the app to ignore remote Neon URLs loaded from `.env.local`. The generic `cms:pull-live:db` command refuses to write to a remote database unless `COGESTO_ALLOW_REMOTE_PAYLOAD_WRITE=true` is set. Keep that override for intentional staging/production maintenance only.
+
+Production keeps using the hosted Payload database through the production `DATABASE_URL`. Deploy code changes normally; do not set `COGESTO_USE_PAYLOAD_PUBLIC` in production unless you are intentionally changing the content source behavior.
+
 Useful checks:
 
 ```bash

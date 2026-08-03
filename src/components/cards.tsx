@@ -80,17 +80,21 @@ export function ExpertiseCard({
 
 export function EventCard({
   date,
+  href,
   image,
   title,
   summary,
 }: {
   date: string
+  href?: string
   image: string
   title: string
   summary: string
 }) {
+  const Wrapper = href ? "a" : "article"
+
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.05)] transition-transform duration-300 hover:-translate-y-1">
+    <Wrapper href={href} className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.05)] transition-transform duration-300 hover:-translate-y-1">
       <div className="relative h-[220px] overflow-hidden bg-slate-100">
         <img
           src={image}
@@ -107,7 +111,7 @@ export function EventCard({
         <h3 className="font-heading text-[1.42rem] leading-[1.15] tracking-[-0.04em] text-slate-950">{title}</h3>
         <p className="mt-3 text-[0.98rem] leading-6 text-slate-600">{summary}</p>
       </div>
-    </article>
+    </Wrapper>
   )
 }
 
