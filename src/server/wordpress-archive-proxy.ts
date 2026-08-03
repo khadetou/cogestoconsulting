@@ -1,4 +1,5 @@
 import https from "node:https"
+import type { IncomingHttpHeaders } from "node:http"
 
 const OLD_WORDPRESS_HOST = "www.cogestoconsulting.com"
 const OLD_WORDPRESS_IP = "77.111.240.238"
@@ -21,7 +22,7 @@ const hopByHopHeaders = new Set([
 
 type UpstreamResponse = {
   body: Buffer
-  headers: https.IncomingHttpHeaders
+  headers: IncomingHttpHeaders
   status: number
 }
 
@@ -206,7 +207,9 @@ export async function proxyWordPressArchive(request: Request, splat?: string) {
     body = Buffer.from(text, "utf8")
   }
 
-  return new Response(request.method === "HEAD" ? null : body, {
+  const responseBody = request.method === "HEAD" ? null : Uint8Array.from(body).buffer
+
+  return new Response(responseBody, {
     headers: buildResponseHeaders(upstream, request, body),
     status: upstream.status,
   })

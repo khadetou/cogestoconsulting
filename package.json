@@ -13,7 +13,7 @@
     "cms:seed": "bun scripts/seed-payload.ts",
     "cms:reset-page": "bun scripts/reset-builder-page.ts",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "playwright test",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx}\"",
     "typecheck": "tsc --noEmit"

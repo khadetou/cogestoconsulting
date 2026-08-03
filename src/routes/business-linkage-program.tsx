@@ -6,7 +6,6 @@ import { PublicPayloadBackedPage, getPublicPayloadPageHead } from "@/builder/pub
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
 import { ProgramExpertCard } from "@/components/program-expert-card"
-import { TeamPortrait } from "@/components/team-portrait"
 import {
   programContextHighlights,
   programExpertRoster,

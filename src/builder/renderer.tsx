@@ -42,7 +42,10 @@ export function BuilderPageRenderer({ data }: { data: BuilderPageData }) {
 
     if (!Component) return null
 
-    const props = item.props && typeof item.props === "object" ? item.props : {}
+    const props: Record<string, unknown> =
+      item.props && typeof item.props === "object"
+        ? (item.props as Record<string, unknown>)
+        : {}
     const key = typeof props.id === "string" ? props.id : `${item.type}-${index}`
 
     return <Component key={key} {...props} />

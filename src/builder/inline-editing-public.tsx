@@ -1,4 +1,5 @@
 import { createContext, lazy, Suspense, useContext, useEffect, useMemo } from "react"
+import type { JSONContent } from "@tiptap/core"
 import type { CSSProperties, ReactNode } from "react"
 
 export const BUILDER_NAVIGATE_MESSAGE = "cogesto-builder:navigate"
@@ -29,16 +30,7 @@ export type InlineTextStyle = {
   underline?: boolean
 }
 
-export type InlineRichTextDocument = {
-  attrs?: Record<string, unknown>
-  content?: Array<InlineRichTextDocument>
-  marks?: Array<{
-    attrs?: Record<string, unknown>
-    type?: string
-  }>
-  text?: string
-  type?: string
-}
+export type InlineRichTextDocument = JSONContent
 
 export type InlineTextStyleMap = Record<string, InlineTextStyle>
 export type InlineRichTextMap = Record<string, InlineRichTextDocument>
@@ -63,7 +55,6 @@ const InlineTextContext = createContext<{
   styles: {},
 })
 
-const textSizeOptions: Array<InlineTextSize> = ["inherit", "12px", "14px", "16px", "18px", "20px", "24px"]
 const formatOptions: Array<InlineFormat> = ["paragraph", "heading1", "heading2", "heading3", "blockquote"]
 const themeColorTokens: Array<InlineThemeColorToken> = ["foreground", "muted", "accent", "white", "primary"]
 const editablePageSlugs = new Set(["accueil", "about", "expertises", "business-linkage-program", "events", "contact"])
