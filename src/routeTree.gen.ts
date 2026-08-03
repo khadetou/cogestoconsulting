@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RapportStudioRouteImport } from './routes/rapport-studio'
 import { Route as ExpertisesRouteImport } from './routes/expertises'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -21,6 +22,11 @@ import { Route as BusinessLinkageProgramFinanceVerteDurableRouteImport } from '.
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminBuilderSlugRouteImport } from './routes/admin.builder.$slug'
 
+const RapportStudioRoute = RapportStudioRouteImport.update({
+  id: '/rapport-studio',
+  path: '/rapport-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExpertisesRoute = ExpertisesRouteImport.update({
   id: '/expertises',
   path: '/expertises',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/rapport-studio': typeof RapportStudioRoute
   '/admin/login': typeof AdminLoginRoute
   '/business-linkage-program/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
   '/business-linkage-program/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/rapport-studio': typeof RapportStudioRoute
   '/admin/login': typeof AdminLoginRoute
   '/business-linkage-program/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
   '/business-linkage-program/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/expertises': typeof ExpertisesRoute
+  '/rapport-studio': typeof RapportStudioRoute
   '/admin/login': typeof AdminLoginRoute
   '/business-linkage-program_/finance-verte-durable': typeof BusinessLinkageProgramFinanceVerteDurableRoute
   '/business-linkage-program_/parcours-entrepreneur': typeof BusinessLinkageProgramParcoursEntrepreneurRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/rapport-studio'
     | '/admin/login'
     | '/business-linkage-program/finance-verte-durable'
     | '/business-linkage-program/parcours-entrepreneur'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/rapport-studio'
     | '/admin/login'
     | '/business-linkage-program/finance-verte-durable'
     | '/business-linkage-program/parcours-entrepreneur'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/expertises'
+    | '/rapport-studio'
     | '/admin/login'
     | '/business-linkage-program_/finance-verte-durable'
     | '/business-linkage-program_/parcours-entrepreneur'
@@ -168,6 +180,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   ExpertisesRoute: typeof ExpertisesRoute
+  RapportStudioRoute: typeof RapportStudioRoute
   AdminLoginRoute: typeof AdminLoginRoute
   BusinessLinkageProgramFinanceVerteDurableRoute: typeof BusinessLinkageProgramFinanceVerteDurableRoute
   BusinessLinkageProgramParcoursEntrepreneurRoute: typeof BusinessLinkageProgramParcoursEntrepreneurRoute
@@ -177,6 +190,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/rapport-studio': {
+      id: '/rapport-studio'
+      path: '/rapport-studio'
+      fullPath: '/rapport-studio'
+      preLoaderRoute: typeof RapportStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/expertises': {
       id: '/expertises'
       path: '/expertises'
@@ -264,6 +284,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   ExpertisesRoute: ExpertisesRoute,
+  RapportStudioRoute: RapportStudioRoute,
   AdminLoginRoute: AdminLoginRoute,
   BusinessLinkageProgramFinanceVerteDurableRoute:
     BusinessLinkageProgramFinanceVerteDurableRoute,
