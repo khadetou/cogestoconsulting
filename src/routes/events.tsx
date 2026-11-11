@@ -99,7 +99,7 @@ function EventTimelineItem({ event }: { event: (typeof events)[number] }) {
         <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
           <span className="rounded-full bg-[#f5f0e7] px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[#978360]">{event.category}</span>
           <span className="font-semibold text-[#476582]">Mis en avant</span>
-          <span>{event.date} @ {event.time}</span>
+          <span>{event.date} · {event.time}</span>
         </div>
         <a href={event.href} className="mt-4 block font-heading text-[1.75rem] font-semibold leading-tight tracking-[-0.04em] text-[#152036] transition-colors hover:text-[#978360]">
           {event.title}
