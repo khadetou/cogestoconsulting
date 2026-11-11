@@ -950,7 +950,7 @@ export const businessLinkageOfferPages = {
     intro:
       "Le Parcours de l’entrepreneur accompagne les jeunes et femmes entrepreneurs sénégalais dans la conceptualisation, la structuration, le développement et la pérennisation de leurs entreprises.",
     lead:
-      "Le programme PACTES se déploie sur une période de trois à six mois, selon le niveau de maturité de la startup ou de la PME, avec des ateliers, formations, coaching, mentorat, outils digitaux et appui à l’accès aux marchés et aux financements.",
+      "Chaque cycle du programme PACTES dure six mois. L’accompagnement s’adapte au niveau de maturité de l’entreprise et combine ateliers, formations, coaching, mentorat, outils digitaux et appui à l’accès aux marchés et aux financements.",
     slug: "parcours-entrepreneur",
     title: "Parcours de l’entrepreneur",
     outcomes: [
@@ -974,6 +974,7 @@ export const businessLinkageOfferPages = {
 
 export const parcoursEntrepreneurContent = {
   menu: [
+    { href: "#videos", label: "Vidéos" },
     { href: "#contexte", label: "Contexte" },
     { href: "#justification", label: "Justification" },
     { href: "#objectifs", label: "Objectifs" },
@@ -1067,8 +1068,8 @@ export const parcoursEntrepreneurContent = {
       ],
     },
     {
-      acronym: "ACTE",
-      title: "Accélération de la Croissance et de la Transformation des Entreprises",
+      acronym: "ACTES",
+      title: "Accélération de la Croissance et de la Transformation des Entreprises et Startups",
       image: "/media/cogesto/ai/business-linkage/phases/pactes-acte.png",
       description:
         "Identifier les leviers de croissance, renforcer la gouvernance, structurer la transformation, accélérer la performance commerciale, digitaliser les processus et mobiliser des financements structurants.",
@@ -1427,6 +1428,7 @@ export type SiteEvent = {
   date: string
   day: string
   gallery: Array<string>
+  galleryImageAlts?: Array<string>
   galleryImagePositions?: Record<number, string>
   href: string
   image: string
@@ -1434,6 +1436,8 @@ export type SiteEvent = {
   location?: string
   month: string
   organizer: string
+  publications?: Array<{ title: string; href: string; platform: string }>
+  recap?: Array<string>
   slug: string
   summary: string
   time: string
@@ -1442,7 +1446,57 @@ export type SiteEvent = {
   year?: string
 }
 
+const pactesLaunchMedia = "/media/cogesto/events/pactes-premiere-cohorte"
+
 export const events: Array<SiteEvent> = [
+  {
+    category: "Lancement de programme",
+    date: "28 octobre 2026",
+    day: "28",
+    gallery: [
+      `${pactesLaunchMedia}/premiere-cohorte.webp`,
+      `${pactesLaunchMedia}/panneau-pactes.webp`,
+      `${pactesLaunchMedia}/prise-de-parole.webp`,
+      `${pactesLaunchMedia}/presentation.webp`,
+      `${pactesLaunchMedia}/participante.webp`,
+    ],
+    galleryImageAlts: [
+      "Photo de groupe de la première cohorte PACTES avec l’équipe de Cogesto Consulting",
+      "Panneau du Parcours de l’entrepreneur PACTES",
+      "Prise de parole pendant la séance de lancement",
+      "Un intervenant devant le panneau de présentation PACTES",
+      "Une participante pendant les échanges",
+    ],
+    galleryImagePositions: { 2: "center 36%", 3: "center 35%", 4: "center 30%" },
+    href: "/event/lancement-premiere-cohorte-pactes",
+    image: "/media/cogesto/pactes/formation-groupe.webp",
+    location: "Dakar, Sénégal",
+    month: "Oct",
+    organizer: "Cogesto Consulting",
+    publications: [
+      {
+        title: "Le compte rendu du lancement et ses photos",
+        href: "https://www.facebook.com/share/p/18f2ANwSF2/",
+        platform: "Facebook",
+      },
+      {
+        title: "Le compte rendu relayé par Cogesto Consulting",
+        href: "https://www.linkedin.com/posts/share-7522445326193065984-lGNA/",
+        platform: "LinkedIn",
+      },
+    ],
+    recap: [
+      "La matinée a permis de présenter le Parcours de l’entrepreneur, de répondre aux questions des participants et de signer les conventions d’accompagnement.",
+      "La cohorte a commencé le cycle IFE le 2 novembre 2026. Le cycle prévoit des ateliers pour préciser son idée, formaliser son entreprise, préparer son plan d’affaires et présenter son projet devant un jury. Le coaching et le mentorat individuels sont prévus jusqu’en avril 2027.",
+    ],
+    slug: "lancement-premiere-cohorte-pactes",
+    summary:
+      "Cogesto Consulting a accueilli à Dakar les 12 entrepreneurs et entrepreneures de la première cohorte du PACTES, le Parcours de l’entrepreneur.",
+    time: "Matinée",
+    title: "Lancement de la première cohorte PACTES",
+    venue: "Dakar, Sénégal",
+    year: "2026",
+  },
   {
     category: "Formation",
     date: "17 septembre 2024",
@@ -1529,20 +1583,7 @@ export const events: Array<SiteEvent> = [
   },
 ]
 
-export const eventGalleries = [
-  {
-    images: events[0].gallery,
-    title: "Séminaire UBA Sénégal en analyse financière",
-  },
-  {
-    images: events[1].gallery,
-    title: "Coaching du Top Management",
-  },
-  {
-    images: events[2].gallery,
-    title: "Séminaires de formation en Marketing & Communication",
-  },
-]
+export const eventGalleries = events.map(({ gallery: images, title }) => ({ images, title }))
 
 export function getEventBySlug(slug: string): SiteEvent | undefined {
   return events.find((event) => event.slug === slug)

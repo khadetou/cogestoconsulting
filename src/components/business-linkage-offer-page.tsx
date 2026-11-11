@@ -5,9 +5,32 @@ import { ArrowRight, CheckCircle2, Compass, Leaf, Target, Users } from "lucide-r
 import type { businessLinkageOfferPages } from "@/lib/site-data"
 import { CtaSection } from "@/components/common-sections"
 import { PageLayout } from "@/components/layout"
+import { PactesBannerPlayer } from "@/components/pactes-banner-player"
 import { parcoursEntrepreneurContent } from "@/lib/site-data"
 
 type BusinessLinkageOffer = (typeof businessLinkageOfferPages)[keyof typeof businessLinkageOfferPages]
+
+const pactesMedia = "/media/cogesto/pactes"
+const pactesVideos = [
+  {
+    title: "Présentation de la formation PACTES",
+    description: "L’équipe Cogesto présente le Parcours de l’entrepreneur.",
+    file: "presentation-formation.mp4",
+    poster: "presentation-formation.webp",
+  },
+  {
+    title: "Au cœur d’un atelier PACTES",
+    description: "Des échanges entre les participants et l’équipe pendant la formation.",
+    file: "atelier-formation.mp4",
+    poster: "atelier-formation.webp",
+  },
+]
+const pactesPhotos = [
+  { file: "formation-groupe.webp", alt: "Photo de groupe devant les affiches de Cogesto et du PACTES" },
+  { file: "formation-echanges.webp", alt: "Deux participantes échangent autour de la table de formation" },
+  { file: "formation-intervention.webp", alt: "Un intervenant prend la parole pendant l’atelier" },
+  { file: "formation-participantes.webp", alt: "Deux participantes écoutent la discussion dans la salle de formation" },
+]
 
 export function BusinessLinkageOfferPage({ offer }: { offer: BusinessLinkageOffer }) {
   const isFinance = offer.slug === "finance-verte-durable"
@@ -39,14 +62,22 @@ export function BusinessLinkageOfferPage({ offer }: { offer: BusinessLinkageOffe
 
           <div className="relative">
             <div className="overflow-hidden rounded-[34px] border border-white/12 bg-white/7 p-2 shadow-[0_30px_80px_rgba(5,8,18,0.34)]">
-              <img
-                alt={offer.title}
-                className="aspect-[16/10] w-full rounded-[26px] object-cover"
-                fetchPriority="high"
-                src={offer.heroImage}
-              />
+              {isParcours ? (
+                <PactesBannerPlayer
+                  durationHint={10}
+                  poster={`${pactesMedia}/banniere-atelier.webp`}
+                  src={`${pactesMedia}/banniere-atelier.mp4`}
+                />
+              ) : (
+                <img
+                  alt={offer.title}
+                  className="aspect-[16/10] w-full rounded-[26px] object-cover"
+                  fetchPriority="high"
+                  src={offer.heroImage}
+                />
+              )}
             </div>
-            <div className="absolute -bottom-6 left-6 right-6 rounded-[24px] border border-white/12 bg-[#fbfbf8] p-5 text-[#152036] shadow-[0_24px_55px_rgba(5,8,18,0.22)]">
+            <div className={`${isParcours ? "mt-4" : "absolute -bottom-6 left-6 right-6"} rounded-[24px] border border-white/12 bg-[#fbfbf8] p-5 text-[#152036] shadow-[0_24px_55px_rgba(5,8,18,0.22)]`}>
               <div className="flex items-start gap-4">
                 <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-white">
                   <HeroIcon className="size-5" />
@@ -174,6 +205,64 @@ function ParcoursEntrepreneurDetails() {
         </nav>
       </section>
 
+      <section id="videos" aria-labelledby="pactes-video-title" className="scroll-mt-28 bg-[#f5f2ec] py-16 sm:py-20">
+        <div className="page-shell">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="eyebrow before:hidden">La formation</span>
+              <h2 id="pactes-video-title" className="section-title mt-5">Le PACTES en vidéo</h2>
+            </div>
+            <img
+              alt="PACTES — Parcours de l’entrepreneur"
+              className="h-auto w-48 rounded-lg bg-white p-2"
+              height={244}
+              loading="lazy"
+              src={`${pactesMedia}/logo-pactes.jpeg`}
+              width={550}
+            />
+          </div>
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {pactesVideos.map((video) => (
+              <article key={video.file} className="overflow-hidden rounded-[26px] border border-slate-200 bg-white">
+                <video
+                  aria-label={video.title}
+                  className="block aspect-video w-full bg-primary"
+                  controls
+                  playsInline
+                  poster={`${pactesMedia}/${video.poster}`}
+                  preload="none"
+                >
+                  <source src={`${pactesMedia}/${video.file}`} type="video/mp4" />
+                  <a href={`${pactesMedia}/${video.file}`}>Ouvrir la vidéo</a>
+                </video>
+                <div className="p-5 sm:p-6">
+                  <h3 className="font-heading text-xl font-semibold text-slate-950">{video.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{video.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="mt-12 border-t border-slate-200 pt-8">
+            <h3 className="font-heading text-2xl font-semibold text-slate-950 sm:text-3xl">La formation en images</h3>
+            <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+              {pactesPhotos.map((photo) => (
+                <li key={photo.file}>
+                  <img
+                    alt={photo.alt}
+                    className="block aspect-[3/2] w-full rounded-2xl object-cover"
+                    decoding="async"
+                    height={600}
+                    loading="lazy"
+                    src={`${pactesMedia}/${photo.file}`}
+                    width={900}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section id="contexte" className="py-20 sm:py-24">
         <div className="page-shell">
           <SectionIntro eyebrow="Contexte" title="Un programme aligné avec les mutations économiques du Sénégal." />
@@ -245,7 +334,7 @@ function ParcoursEntrepreneurDetails() {
 
       <section id="programme" className="bg-[#eef6fc] py-20 sm:py-24">
         <div className="page-shell">
-          <SectionIntro eyebrow="Programme & services" title="Trois phases complémentaires sur 6 à 18 mois." />
+          <SectionIntro eyebrow="Programme & services" title="Trois cycles d’accompagnement de six mois chacun." />
           <p className="section-copy mt-6 max-w-4xl">{content.methodology}</p>
           <PhaseExplorer phases={content.phases} />
         </div>
@@ -267,8 +356,8 @@ function PhaseExplorer({ phases }: { phases: typeof parcoursEntrepreneurContent.
     <div className="mt-12 grid gap-6 lg:grid-cols-[0.31fr_0.69fr] lg:items-start">
       <div className="flex flex-col rounded-[30px] border border-[#d4e6f5] bg-white/85 p-3 shadow-[0_24px_65px_rgba(15,23,42,0.06)] backdrop-blur">
         <div className="px-2 pb-4 pt-1">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9b835c]">Phases du parcours</p>
-          <p className="mt-2 text-sm leading-6 text-slate-500">Trois niveaux progressifs, de l’idée au financement structurant.</p>
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9b835c]">Cycles du parcours</p>
+          <p className="mt-2 text-sm leading-6 text-slate-500">Un accompagnement adapté au niveau de maturité de l’entreprise.</p>
         </div>
 
         <div className="grid gap-3">
@@ -313,7 +402,7 @@ function PhaseExplorer({ phases }: { phases: typeof parcoursEntrepreneurContent.
         </div>
 
         <div className="mt-4 rounded-[24px] border border-slate-200 bg-[#f8fbff] p-4">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Phase active</p>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Cycle affiché</p>
           <div className="mt-3 flex items-end justify-between gap-4">
             <div>
               <p className="font-heading text-[2rem] leading-none text-primary">{activePhase.acronym}</p>

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { CalendarDays, ChevronLeft, Clock, MapPin } from "lucide-react"
+import { ArrowUpRight, CalendarDays, ChevronLeft, Clock, MapPin } from "lucide-react"
 
 import { PageLayout } from "@/components/layout"
 import { getEventBySlug, type SiteEvent } from "@/lib/site-data"
@@ -83,6 +83,17 @@ function EventDetailPage() {
             </figure>
           </article>
 
+          {event.recap?.length ? (
+            <section className="mt-10 rounded-[28px] border border-[#d7e4ef] bg-white p-5 sm:p-8" aria-labelledby="event-recap-title">
+              <h2 id="event-recap-title" className="font-heading text-[1.75rem] font-semibold tracking-[-0.04em] text-[#152036]">
+                Retour sur la rencontre
+              </h2>
+              <div className="mt-4 max-w-3xl space-y-4 leading-7 text-slate-700">
+                {event.recap.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              </div>
+            </section>
+          ) : null}
+
           <div className="mt-12 flex items-end justify-between gap-6">
             <div>
               <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#978360]">Photos</p>
@@ -100,7 +111,7 @@ function EventDetailPage() {
                 <figure key={image} className={index === 0 ? "overflow-hidden rounded-[26px] bg-slate-100 shadow-[0_18px_45px_rgba(21,32,54,0.08)] ring-1 ring-[#d7e4ef] sm:col-span-2 sm:row-span-2" : "overflow-hidden rounded-[26px] bg-slate-100 shadow-[0_18px_45px_rgba(21,32,54,0.08)] ring-1 ring-[#d7e4ef]"}>
                   <img
                     src={image}
-                    alt={`${event.title} ${index + 1}`}
+                    alt={event.galleryImageAlts?.[index] ?? `${event.title} ${index + 1}`}
                     className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.04]"
                     style={imagePosition ? { objectPosition: imagePosition } : undefined}
                     loading="lazy"
@@ -110,6 +121,27 @@ function EventDetailPage() {
               )
             })}
           </div>
+
+          {event.publications?.length ? (
+            <section className="mt-12" aria-labelledby="event-publications-title">
+              <h2 id="event-publications-title" className="font-heading text-[2rem] font-semibold tracking-[-0.04em] text-[#152036]">
+                Publications liées
+              </h2>
+              <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+                {event.publications.map(({ href, platform, title }) => (
+                  <li key={href}>
+                    <a href={href} className="flex h-full items-center justify-between gap-4 rounded-[22px] border border-[#d7e4ef] bg-white p-5 text-[#152036] transition-colors hover:border-[#978360]">
+                      <div>
+                        <p className="text-sm font-semibold text-[#476582]">{platform}</p>
+                        <p className="mt-1 font-semibold">{title}</p>
+                      </div>
+                      <ArrowUpRight className="size-5 shrink-0 text-[#978360]" aria-hidden="true" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
         </div>
       </section>
     </PageLayout>
