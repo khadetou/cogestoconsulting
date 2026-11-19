@@ -57,10 +57,12 @@ function EventDetailPage() {
                   <CalendarDays className="size-4 text-[#978360]" />
                   {event.date}
                 </span>
-                <span className="inline-flex items-center gap-3 rounded-[20px] border border-[#d7e4ef] bg-slate-50 px-4 py-3 text-sm font-semibold text-[#476582]">
-                  <Clock className="size-4 text-[#978360]" />
-                  {event.time}
-                </span>
+                {event.time ? (
+                  <span className="inline-flex items-center gap-3 rounded-[20px] border border-[#d7e4ef] bg-slate-50 px-4 py-3 text-sm font-semibold text-[#476582]">
+                    <Clock className="size-4 text-[#978360]" />
+                    {event.time}
+                  </span>
+                ) : null}
                 {"venue" in event && event.venue ? (
                   <span className="inline-flex items-center gap-3 rounded-[20px] border border-[#d7e4ef] bg-slate-50 px-4 py-3 text-sm font-semibold text-[#476582] sm:col-span-2">
                     <MapPin className="size-4 text-[#978360]" />
@@ -100,6 +102,7 @@ function EventDetailPage() {
               <h2 className="mt-3 font-heading text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-[#152036] sm:text-[2.55rem]">
                 Galerie de l’évènement.
               </h2>
+              {event.photoCredit ? <p className="mt-2 text-sm text-slate-600">{event.photoCredit}</p> : null}
             </div>
           </div>
 

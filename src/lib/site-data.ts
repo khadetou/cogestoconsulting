@@ -1436,17 +1436,19 @@ export type SiteEvent = {
   location?: string
   month: string
   organizer: string
+  photoCredit?: string
   publications?: Array<{ title: string; href: string; platform: string }>
   recap?: Array<string>
   slug: string
   summary: string
-  time: string
+  time?: string
   title: string
   venue?: string
   year?: string
 }
 
 const pactesLaunchMedia = "/media/cogesto/events/pactes-premiere-cohorte"
+const fundingAcademyMedia = "/media/cogesto/events/academie-financement-guf-pme"
 
 export const events: Array<SiteEvent> = [
   {
@@ -1495,6 +1497,50 @@ export const events: Array<SiteEvent> = [
     time: "Matinée",
     title: "Lancement de la première cohorte PACTES",
     venue: "Dakar, Sénégal",
+    year: "2026",
+  },
+  {
+    category: "Formation",
+    date: "23 octobre 2026",
+    day: "23",
+    gallery: [
+      `${fundingAcademyMedia}/vue-de-la-salle.webp`,
+      `${fundingAcademyMedia}/babacar-sow-atelier.webp`,
+      `${fundingAcademyMedia}/intervenant.webp`,
+      `${fundingAcademyMedia}/intervenante.webp`,
+      `${fundingAcademyMedia}/participants-travail.webp`,
+      `${fundingAcademyMedia}/participants-atelier.webp`,
+    ],
+    galleryImageAlts: [
+      "Vue d’ensemble de la salle de l’Académie de financement",
+      "Babacar Sow prend la parole devant le panneau de l’ADEPME",
+      "Un intervenant s’exprime au micro pendant la session",
+      "Une intervenante s’exprime au micro devant son ordinateur",
+      "Deux participants travaillent sur leurs ordinateurs pendant l’atelier",
+      "Des participants suivent la présentation des outils du GUF-PME",
+    ],
+    galleryImagePositions: { 1: "center 32%", 2: "center 30%", 3: "center 25%" },
+    href: "/event/academie-financement-guf-pme",
+    image: `${fundingAcademyMedia}/babacar-sow-atelier.webp`,
+    month: "Oct",
+    organizer: "ADEPME et GIZ",
+    photoCredit: "ADEPME · Photos partagées par Babacar Sow",
+    publications: [
+      {
+        title: "Le compte rendu de Babacar Sow sur LinkedIn",
+        href: "https://fr.linkedin.com/posts/babacar-sow-05753112_cogestoconsulting-adepme-giz-activity-7529010680759214080-dHdP",
+        platform: "LinkedIn",
+      },
+    ],
+    recap: [
+      "Au troisième trimestre 2026, Cogesto Consulting a refondu les outils du Guichet Unique de Financement des PME (GUF-PME). La session du 23 octobre a permis aux structures d’appui et d’encadrement de prendre en main ces outils pour accompagner les entreprises dans leurs demandes de financement.",
+      "L’atelier a présenté les étapes de traitement d’une demande et les responsabilités des différents acteurs. Les participants ont travaillé sur le CEP refondu, la note synthétique harmonisée et la grille d’évaluation de la qualité des dossiers.",
+      "L’objectif est d’aider les PME à déposer des dossiers mieux préparés, qui répondent aux attentes des établissements financiers et peuvent être instruits plus rapidement.",
+    ],
+    slug: "academie-financement-guf-pme",
+    summary:
+      "Lors de la 4ᵉ session de l’Académie de financement organisée par l’ADEPME et la GIZ, Babacar Sow, président de Cogesto Consulting, a animé un atelier sur les nouveaux outils du GUF-PME auprès de 47 structures d’appui et d’encadrement.",
+    title: "Académie de financement — 47 structures formées aux outils du GUF-PME",
     year: "2026",
   },
   {

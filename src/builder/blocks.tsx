@@ -2582,7 +2582,7 @@ function EventTimelineItemEditable({
         <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
           <span className="font-semibold text-[#3347ff]">Mis en avant</span>
           <span>-</span>
-          <InlineText as="span" blockId={blockId} editing={editing} field="event.date" path={[...pathRoot, "date"]} value={`${event.date} @ ${event.time}`} />
+          <InlineText as="span" blockId={blockId} editing={editing} field="event.date" path={[...pathRoot, "date"]} value={event.time ? `${event.date} @ ${event.time}` : event.date} />
         </div>
         <a href={event.href} onClick={(clickEvent) => handleBuilderLinkClick(clickEvent, event.href, editing)} className="mt-4 block font-heading text-[1.7rem] font-semibold leading-tight tracking-[-0.04em] text-slate-950 transition-colors hover:text-[#3347ff]">
           <InlineText as="span" blockId={blockId} editing={editing} field="event.title" multiline path={[...pathRoot, "title"]} value={event.title} />

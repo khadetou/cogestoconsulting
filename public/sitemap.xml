@@ -41,9 +41,19 @@
   </url>
   <url>
     <loc>https://www.cogestoconsulting.com/events</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.cogestoconsulting.com/event/academie-financement-guf-pme</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://www.cogestoconsulting.com/media/cogesto/events/academie-financement-guf-pme/babacar-sow-atelier.webp</image:loc>
+      <image:title>Babacar Sow à l’Académie de financement</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.cogestoconsulting.com/event/seminaire-uba-senegal-analyse-financiere</loc>
